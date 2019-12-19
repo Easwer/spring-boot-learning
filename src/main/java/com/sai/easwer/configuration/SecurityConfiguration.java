@@ -15,31 +15,49 @@ import com.sai.easwer.security.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter
-{
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthProvider authProvider;
-
+	@Autowired
+	private AuthProvider authProvider;
+    
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
-
+    
     @Autowired
     private LoginFailureHandler loginFailureHandler;
-
+    
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
-
+    
     @Autowired
     private LogoutHandler logoutHandler;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http.csrf().disable().authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().authenticationProvider(authProvider)
-                .formLogin().loginPage("/login").permitAll().failureHandler(loginFailureHandler).successHandler(loginSuccessHandler).and().logout()
-                .invalidateHttpSession(true).clearAuthentication(true).logoutUrl("/logout").logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessHandler(logoutSuccessHandler).addLogoutHandler(logoutHandler).permitAll();
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			    .csrf()
+			        .disable()
+			    .authorizeRequests()
+			    .antMatchers("/login")
+			        .permitAll()
+			    .anyRequest()
+			        .authenticated()
+			.and()
+			    .authenticationProvider(authProvider)
+			    .formLogin()
+			    .loginPage("/login")
+			        .permitAll()
+			    .failureHandler(loginFailureHandler)
+			    .successHandler(loginSuccessHandler)
+            .and()
+                .logout()
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .addLogoutHandler(logoutHandler)
+                    .permitAll();
+	}
 
 }
