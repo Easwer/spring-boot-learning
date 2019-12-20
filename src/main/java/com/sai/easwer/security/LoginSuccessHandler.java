@@ -41,7 +41,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler
         userSession.setId(UUID.randomUUID());
         userSession.setLastAccsessTime(Timestamp.valueOf(LocalDateTime.now()));
         userSession.setStartedTime(Timestamp.valueOf(LocalDateTime.now()));
-        userSession.setUser(user.get());
+        userSession.setUserId(user.get().getId());
         userSessionRepository.save(userSession);
         
         response.sendRedirect("/home");

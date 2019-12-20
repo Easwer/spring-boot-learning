@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,8 +18,8 @@ public class UserSession
     @Column(name = "session_id")
     private String sessionId;
 
-    @OneToOne
-    private UserDetails user;
+    @Column(name = "user_id")
+    private UUID userId;
 
     @Column(name = "started_time")
     private Timestamp startedTime;
@@ -48,14 +47,14 @@ public class UserSession
         this.sessionId = sessionId;
     }
 
-    public UserDetails getUser()
+    public UUID getUserId()
     {
-        return user;
+        return userId;
     }
 
-    public void setUser(UserDetails user)
+    public void setUserId(UUID userId)
     {
-        this.user = user;
+        this.userId = userId;
     }
 
     public Timestamp getStartedTime()

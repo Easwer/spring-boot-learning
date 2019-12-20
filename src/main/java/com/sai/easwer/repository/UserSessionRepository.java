@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
 
 @Repository
@@ -19,5 +18,5 @@ public interface UserSessionRepository extends PagingAndSortingRepository<UserSe
     
     Optional<UserSession> findBySessionId(UUID sessionId);
     
-    Optional<UserSession> findByUser(UserDetails user);
+    Optional<UserSession> findByUserId(UUID userId);
 }

@@ -29,7 +29,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
         if(request.getParameter("username") != null) {
             Optional<UserDetails> user = userRepository.findByUsername(request.getParameter("username"));
             if(user.isPresent()) {
-                user.get().setFailedLoginAttempt(user.get().getFailedLoginAttempt() + 1);
+                user.get().setFailedLoginAttemptCount(user.get().getFailedLoginAttemptCount() + 1);
             }
         }
     }

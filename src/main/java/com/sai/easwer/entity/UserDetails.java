@@ -26,8 +26,8 @@ public class UserDetails {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-    @Column(name = "failed_login_attempt")
-    private int failedLoginAttempt = 0;
+    @Column(name = "failed_login_attempt_count")
+    private int failedLoginAttemptCount = 0;
 
 	public UUID getId() {
 		return id;
@@ -69,14 +69,14 @@ public class UserDetails {
 		this.password = password;
 	}
 
-    public int getFailedLoginAttempt()
+    public int getFailedLoginAttemptCount()
     {
-        return failedLoginAttempt;
+        return failedLoginAttemptCount;
     }
 
-    public void setFailedLoginAttempt(int failedLoginAttempt)
+    public void setFailedLoginAttemptCount(int failedLoginAttemptCount)
     {
-        this.failedLoginAttempt = failedLoginAttempt;
+        this.failedLoginAttemptCount = failedLoginAttemptCount;
     }
 
 }

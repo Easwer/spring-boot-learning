@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
 <title>Logout</title>
 </head>
 <body>
-Logout success... 
-<a href="/login">Click here to login again</a>
+	Logout success...
+	<a href="/login">Click here to login again</a>
 </body>
 </html>

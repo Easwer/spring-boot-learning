@@ -6,8 +6,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.sai.easwer.security.AuthAccessDeniedHandler;
 import com.sai.easwer.security.AuthProvider;
 import com.sai.easwer.security.LoginFailureHandler;
 import com.sai.easwer.security.LoginSuccessHandler;
@@ -29,6 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
+    
+    @Autowired
+    private AuthAccessDeniedHandler accessDeniedHandler;
 //    
 //    @Autowired
 //    private LogoutHandler logoutHandler;
@@ -38,6 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	{
 	    auth.authenticationProvider(authProvider);
 	}
+	
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -56,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			    .successHandler(loginSuccessHandler)
             .and()
                 .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                 .logoutUrl("/logout")
@@ -63,6 +71,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler)
 //                .addLogoutHandler(logoutHandler)
                     .permitAll();
+            
+		http
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .accessDeniedPage("/unauthorized");
+		
+		http
+		        .headers()
+		        .frameOptions()
+		        .sameOrigin();
 	}
 
 }

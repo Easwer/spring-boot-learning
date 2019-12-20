@@ -7,17 +7,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SecurityController
 {
     @GetMapping(value = "/login")
-    public String getLogin() {
+    public String getLogin()
+    {
         return "login.jsp";
     }
 
     @GetMapping(value = "/unauthorized")
-    public String getUnauthorized() {
+    public String getUnauthorized()
+    {
         return "unauthorized.jsp";
     }
 
+    @GetMapping(value = "/expired")
+    public String getExpired()
+    {
+        return "expired.jsp";
+    }
+
     @GetMapping(value = "/logout-success")
-    public String getLogout() {
+    public String getLogout()
+    {
         return "logout.jsp";
     }
 }

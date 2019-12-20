@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Spring Boot Application</title>
+<title>Home</title>
 </head>
 <body>
-	Hi Sai Rajeswari...
+	Welcome to home page....
 	<a href="/logout">Logout</a>
 </body>
 </html>

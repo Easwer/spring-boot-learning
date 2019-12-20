@@ -32,7 +32,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         
         if (user.isPresent())
         {
-            Optional<UserSession> userSession = userSessionRepository.findByUser(user.get());
+            Optional<UserSession> userSession = userSessionRepository.findByUserId(user.get().getId());
             if (userSession.isPresent())
             {
                 userSessionRepository.delete(userSession.get());
