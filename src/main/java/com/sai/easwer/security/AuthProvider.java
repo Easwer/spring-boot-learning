@@ -1,5 +1,7 @@
 package com.sai.easwer.security;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,13 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.repository.UserRepository;
+import com.sai.easwer.service.UserService;
 
 @Component
 public class AuthProvider implements AuthenticationProvider
@@ -21,21 +26,27 @@ public class AuthProvider implements AuthenticationProvider
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException
     {
+
+        userService.createUser();
+
         String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
 
         if (username == null || username.trim().equals(""))
         {
             throw new AuthenticationCredentialsNotFoundException("Username is empty.");
         }
 
-        if (password == null || password.trim().equals(""))
+        if (authentication.getCredentials() == null || authentication.getCredentials().toString().trim().equals(""))
         {
             throw new AuthenticationCredentialsNotFoundException("Password is empty.");
         }
+        String password = authentication.getCredentials().toString();
 
         Optional<UserDetails> loginUser = userRepository.findByUsername(username);
 
@@ -43,7 +54,8 @@ public class AuthProvider implements AuthenticationProvider
         {
             if (loginUser.get().getPassword().equals(password))
             {
-                return new UsernamePasswordAuthenticationToken(username, password);
+                Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+                return new UsernamePasswordAuthenticationToken(username, password, authorities);
             }
             else
             {
@@ -59,7 +71,7 @@ public class AuthProvider implements AuthenticationProvider
     @Override
     public boolean supports(Class<?> authentication)
     {
-        return true;
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
 }

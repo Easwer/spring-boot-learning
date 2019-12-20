@@ -2,6 +2,7 @@ package com.sai.easwer.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,9 +29,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
-    
-    @Autowired
-    private LogoutHandler logoutHandler;
+//    
+//    @Autowired
+//    private LogoutHandler logoutHandler;
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception
+	{
+	    auth.authenticationProvider(authProvider);
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -42,7 +49,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			    .anyRequest()
 			        .authenticated()
 			.and()
-			    .authenticationProvider(authProvider)
 			    .formLogin()
 			    .loginPage("/login")
 			        .permitAll()
@@ -53,9 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                 .logoutUrl("/logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logout-success")
                 .logoutSuccessHandler(logoutSuccessHandler)
-                .addLogoutHandler(logoutHandler)
+//                .addLogoutHandler(logoutHandler)
                     .permitAll();
 	}
 

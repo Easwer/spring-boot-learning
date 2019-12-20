@@ -7,8 +7,8 @@
 <title>Login</title>
 </head>
 <body>
+	${SPRING_SECURITY_LAST_EXCEPTION.message}
 	<form action="login" method="post">
-		${SPRING_SECURITY_LAST_EXCEPTION.message}
 		<label>Username</label>
 		<input type="text" name="username" />
 		

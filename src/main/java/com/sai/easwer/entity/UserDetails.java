@@ -26,6 +26,9 @@ public class UserDetails {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+    @Column(name = "failed_login_attempt")
+    private int failedLoginAttempt = 0;
+
 	public UUID getId() {
 		return id;
 	}
@@ -65,5 +68,15 @@ public class UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+    public int getFailedLoginAttempt()
+    {
+        return failedLoginAttempt;
+    }
+
+    public void setFailedLoginAttempt(int failedLoginAttempt)
+    {
+        this.failedLoginAttempt = failedLoginAttempt;
+    }
 
 }

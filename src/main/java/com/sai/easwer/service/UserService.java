@@ -29,19 +29,8 @@ public class UserService extends BaseService implements UserContoller
         List<UserDetails> users = new ArrayList<UserDetails>();
         if (userId == null)
         {
+            createUser();
             users = userRepository.findAll();
-            if (users.isEmpty())
-            {
-                UserDetails user = new UserDetails();
-                user.setId(UUID.randomUUID());
-                user.setUsername("admin@att.com");
-                user.setFirstName("ATT");
-                user.setLastName("USA");
-                user.setPassword("admin");
-                userRepository.save(user);
-                users = userRepository.findAll();
-            }
-
         }
         else
         {
@@ -56,6 +45,21 @@ public class UserService extends BaseService implements UserContoller
             }
         }
         return createResponse("Users found successfully.", ResponseStatus.SUCCESS, users, HttpStatus.OK);
+    }
+
+    public void createUser()
+    {
+        List<UserDetails> users = userRepository.findAll();
+        if (users == null || users.isEmpty())
+        {
+            UserDetails user = new UserDetails();
+            user.setId(UUID.randomUUID());
+            user.setUsername("admin");
+            user.setFirstName("ATT");
+            user.setLastName("USA");
+            user.setPassword("admin");
+            userRepository.save(user);
+        }
     }
 
 }
