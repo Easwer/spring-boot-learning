@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Logout</title>
+<title>Access Denied</title>
 </head>
 <body>
-	Logout success...
+	Access Denied to the Request....
 	<a href="/login">Click here to login again</a>
 </body>
 </html>
