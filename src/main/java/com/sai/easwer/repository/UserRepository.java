@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 import com.sai.easwer.entity.UserDetails;
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository<UserDetails, UUID>{
+public interface UserRepository extends PagingAndSortingRepository<UserDetails, UUID>
+{
+    public Optional<UserDetails> findById(UUID id);
 
-	public Optional<UserDetails> findById(UUID id);
-	
-	public List<UserDetails> findAll();
+    public List<UserDetails> findAll();
 	
 	public Optional<UserDetails> findByUsername(String id);
 }

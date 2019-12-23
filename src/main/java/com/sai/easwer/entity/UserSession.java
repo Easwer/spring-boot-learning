@@ -1,6 +1,5 @@
 package com.sai.easwer.entity;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -22,10 +21,13 @@ public class UserSession
     private UUID userId;
 
     @Column(name = "started_time")
-    private Timestamp startedTime;
+    private Long startedTime;
 
     @Column(name = "last_accsess_time")
-    private Timestamp lastAccsessTime;
+    private Long lastAccsessTime;
+
+    @Column(name = "ip")
+    private String ipAddress;
 
     public UUID getId()
     {
@@ -57,24 +59,34 @@ public class UserSession
         this.userId = userId;
     }
 
-    public Timestamp getStartedTime()
+    public Long getStartedTime()
     {
         return startedTime;
     }
 
-    public void setStartedTime(Timestamp startedTime)
+    public void setStartedTime(Long startedTime)
     {
         this.startedTime = startedTime;
     }
 
-    public Timestamp getLastAccsessTime()
+    public Long getLastAccsessTime()
     {
         return lastAccsessTime;
     }
 
-    public void setLastAccsessTime(Timestamp lastAccsessTime)
+    public void setLastAccsessTime(Long lastAccsessTime)
     {
         this.lastAccsessTime = lastAccsessTime;
+    }
+
+    public String getIpAddress()
+    {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress)
+    {
+        this.ipAddress = ipAddress;
     }
 
 }

@@ -39,8 +39,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler
         
         UserSession userSession = new UserSession();
         userSession.setId(UUID.randomUUID());
-        userSession.setLastAccsessTime(Timestamp.valueOf(LocalDateTime.now()));
-        userSession.setStartedTime(Timestamp.valueOf(LocalDateTime.now()));
+        userSession.setLastAccsessTime(Calendar.getInstance().getTimeInMillis());
+        userSession.setStartedTime(Calendar.getInstance().getTimeInMillis());
         userSession.setUserId(user.get().getId());
         userSessionRepository.save(userSession);
         

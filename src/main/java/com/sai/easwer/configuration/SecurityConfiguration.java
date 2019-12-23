@@ -8,32 +8,86 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.sai.easwer.security.AuthAccessDeniedHandler;
 import com.sai.easwer.security.AuthProvider;
+import com.sai.easwer.security.LoginFailureHandler;
+import com.sai.easwer.security.LoginSuccessHandler;
+import com.sai.easwer.security.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private AuthProvider authProvider;
+    @Autowired
+    private AuthProvider authProvider;
+    
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+    
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+    
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+    
+    @Autowired
+    private AuthAccessDeniedHandler accessDeniedHandler;
+//    
+//    @Autowired
+//    private LogoutHandler logoutHandler;
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    {
+        auth.authenticationProvider(authProvider);
+    }
+    
+    
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authProvider);
-	}
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.csrf().disable()
-			.authorizeRequests().antMatchers("/login").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin().loginPage("/login").permitAll()
-			.and()
-			.logout().invalidateHttpSession(true).clearAuthentication(true)
-			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/logout-success").permitAll();
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/login")
+                    .permitAll()
+                .antMatchers("/logout-success")
+                    .permitAll()
+                .anyRequest()
+                    .authenticated()
+            .and()
+                .formLogin()
+                .loginPage("/login")
+                    .permitAll()
+                .failureHandler(loginFailureHandler)
+                .successHandler(loginSuccessHandler)
+            .and()
+                .logout()
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .permitAll()
+                .logoutUrl("/logout")
+                    .permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler);
+            
+        //Exception handling
+        http
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .accessDeniedPage("/unauthorized");
+        
+        // To view H2 console
+        http
+                .headers()
+                .frameOptions()
+                .sameOrigin();
+        
+        // To use HTTPS
+        http
+                .requiresChannel()
+                .anyRequest()
+                .requiresSecure();  
+    }
 
 }
