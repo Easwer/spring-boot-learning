@@ -51,9 +51,9 @@ public class AuditLogService extends BaseService implements AuditLogController
     @Override
     public ResponseEntity<Response> getAllAuditLogByUser(String username)
     {
-        if (userId == null)
+        if (username == null)
         {
-            List<AuditLog> auditLogs = auditLogRepository.findByUsername(username)
+            List<AuditLog> auditLogs = auditLogRepository.findByUsername(username);
             
             if (auditLogs.isEmpty())
             {
