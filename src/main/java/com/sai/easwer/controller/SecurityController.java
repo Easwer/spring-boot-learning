@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SecurityController
 {
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/login-page")
     public String getLogin()
     {
         return "login.jsp";

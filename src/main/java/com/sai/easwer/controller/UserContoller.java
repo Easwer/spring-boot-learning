@@ -18,6 +18,9 @@ import com.sai.easwer.model.Response;
 public interface UserContoller
 {
 
+    @GetMapping(value = "login")
+    public ResponseEntity<Response> login(@RequestParam(name = "username") String name, @RequestParam(name = "password") String password); 
+
     @GetMapping(value = "/user")
     public ResponseEntity<Response> getUser(@RequestParam(required = false, name = "id") UUID userId);
 

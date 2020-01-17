@@ -1,19 +1,19 @@
-package com.sai.easwer.security;
+// package com.sai.easwer.security;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+// import javax.servlet.http.HttpServletRequest;
+// import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.stereotype.Component;
 
-@Component
-public class LogoutHandler implements org.springframework.security.web.authentication.logout.LogoutHandler
-{
+// @Component
+// public class LogoutHandler implements org.springframework.security.web.authentication.logout.LogoutHandler
+// {
 
-    @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-    {
-        authentication.setAuthenticated(false);
-    }
+//     @Override
+//     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+//     {
+//         authentication.setAuthenticated(false);
+//     }
 
-}
+// }

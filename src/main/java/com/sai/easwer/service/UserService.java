@@ -165,4 +165,26 @@ public class UserService extends BaseService implements UserContoller
         }
     }
 
+    @Override
+    public ResponseEntity<Response> login(String username, String password) {
+        if( null == username) {
+            return createResponse("Username cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (null == password) {
+            return createResponse("Password cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+        }
+
+        createDefaultUser();
+        Optional<UserDetails> user = userRepository.findByUsername(username);
+        if(user.isPresent()) {
+            if(!user.get().getPassword().equals(password)) {
+                return createResponse("Authentication Error.", ResponseStatus.FAILURE, null, HttpStatus.FORBIDDEN);
+            }
+        } else {
+            return createResponse("Invalid User details.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+        }
+        return createResponse("Login successfull.", ResponseStatus.SUCCESS, user.get(), HttpStatus.OK);
+    }
+
 }

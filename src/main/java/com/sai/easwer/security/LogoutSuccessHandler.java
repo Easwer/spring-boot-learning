@@ -1,46 +1,46 @@
-package com.sai.easwer.security;
+// package com.sai.easwer.security;
 
-import java.io.IOException;
-import java.util.Optional;
+// import java.io.IOException;
+// import java.util.Optional;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+// import javax.servlet.ServletException;
+// import javax.servlet.http.HttpServletRequest;
+// import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.stereotype.Component;
 
-import com.sai.easwer.entity.UserDetails;
-import com.sai.easwer.entity.UserSession;
-import com.sai.easwer.repository.UserRepository;
-import com.sai.easwer.repository.UserSessionRepository;
+// import com.sai.easwer.entity.UserDetails;
+// import com.sai.easwer.entity.UserSession;
+// import com.sai.easwer.repository.UserRepository;
+// import com.sai.easwer.repository.UserSessionRepository;
 
-@Component
-public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler
-{
-    @Autowired
-    private UserRepository userRepository;
+// @Component
+// public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler
+// {
+//     @Autowired
+//     private UserRepository userRepository;
 
-    @Autowired
-    private UserSessionRepository userSessionRepository;
+//     @Autowired
+//     private UserSessionRepository userSessionRepository;
 
-    @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException
-    {
-        if (authentication != null)
-        {
-            Optional<UserDetails> user = userRepository.findByUsername(authentication.getName());
-            if (user.isPresent())
-            {
-                Optional<UserSession> userSession = userSessionRepository.findByUserId(user.get().getId());
-                if (userSession.isPresent())
-                {
-                    userSessionRepository.delete(userSession.get());
-                }
-            }
-            response.sendRedirect("/logout-success");
-        }
-    }
+//     @Override
+//     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException
+//     {
+//         if (authentication != null)
+//         {
+//             Optional<UserDetails> user = userRepository.findByUsername(authentication.getName());
+//             if (user.isPresent())
+//             {
+//                 Optional<UserSession> userSession = userSessionRepository.findByUserId(user.get().getId());
+//                 if (userSession.isPresent())
+//                 {
+//                     userSessionRepository.delete(userSession.get());
+//                 }
+//             }
+//             response.sendRedirect("/logout-success");
+//         }
+//     }
     
-}
+// }
