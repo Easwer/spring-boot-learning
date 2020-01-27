@@ -1,2 +1,2 @@
 # springBoot
-Spring boot demo application
+Spring Boot Application with React Material GUI
