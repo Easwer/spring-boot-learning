@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import LandingPage from '../LandingPage/LandingPage';
+import Cookies from 'universal-cookie';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="outlined" {...props} />;
@@ -77,14 +78,21 @@ class Login extends React.Component {
         $.ajax({
             url: '/login?username=' + this.state.username + '&password=' + this.state.password,
             success: function (result) {
-                ReactDOM.render(<LandingPage />, document.getElementById('root'));
-                me.setState({
-                    alert: {
-                        message: result.message,
-                        severity: 'success',
-                        openAlert: true
+                if (result && result.message) {
+                    me.setState({
+                        alert: {
+                            message: result.message,
+                            severity: 'success',
+                            openAlert: true
+                        }
+                    })
+                    const cookies = new Cookies();
+                    cookies.set("authToken", result.object.authToken, { path: "/" });
+                    if (result.object && result.object.user) {
+                        localStorage.setItem("userDetails", result.object.user);
                     }
-                })
+                    ReactDOM.render(<LandingPage />, document.getElementById('root'));
+                }
             },
             error: function (result) {
                 if (result && result.responseJSON && result.responseJSON.message) {

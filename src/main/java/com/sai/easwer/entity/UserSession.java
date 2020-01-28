@@ -14,8 +14,8 @@ public class UserSession
     @Id
     private UUID id;
 
-    @Column(name = "session_id")
-    private String sessionId;
+    @Column(name = "auth_token")
+    private UUID authToken;
 
     @Column(name = "user_id")
     private UUID userId;
@@ -39,14 +39,14 @@ public class UserSession
         this.id = id;
     }
 
-    public String getSessionId()
+    public UUID getAuthToken()
     {
-        return sessionId;
+        return authToken;
     }
 
-    public void setSessionId(String sessionId)
+    public void setAuthToken(UUID authToken)
     {
-        this.sessionId = sessionId;
+        this.authToken = authToken;
     }
 
     public UUID getUserId()

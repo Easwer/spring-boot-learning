@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Cookies from 'universal-cookie';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +8,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Login from '../Login/Login';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="outlined" {...props} />;
@@ -41,6 +44,11 @@ class LandingPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const cookies = new Cookies();
+    const cookie = cookies.get("authToken")
+    if (!cookie) {
+      ReactDOM.render(<Login />, document.getElementById('root'));
+    }
 
     return (
       <div>

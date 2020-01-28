@@ -16,7 +16,7 @@ public interface UserSessionRepository extends PagingAndSortingRepository<UserSe
     
     List<UserSession> findAll();
     
-    Optional<UserSession> findBySessionId(UUID sessionId);
+    Optional<UserSession> findByAuthToken(UUID authToken);
     
     Optional<UserSession> findByUserId(UUID userId);
 }

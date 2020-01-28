@@ -1,8 +1,11 @@
 package com.sai.easwer.service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sai.easwer.constants.ResponseStatus;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;
+import com.sai.easwer.entity.UserSession;
+import com.sai.easwer.model.LoginResponse;
 import com.sai.easwer.model.Response;
 import com.sai.easwer.repository.UserRepository;
+import com.sai.easwer.repository.UserSessionRepository;
 
 @RestController
 public class UserService extends BaseService implements UserContoller {
@@ -21,10 +27,15 @@ public class UserService extends BaseService implements UserContoller {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserSessionRepository userSessionRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
     @Override
     public ResponseEntity<Response> getUser(UUID userId) {
         if (userId == null) {
-            // createDefaultUser();
             List<UserDetails> users = userRepository.findAll();
 
             if (users.isEmpty()) {
@@ -42,23 +53,10 @@ public class UserService extends BaseService implements UserContoller {
         }
     }
 
-    public void createDefaultUser() {
-        List<UserDetails> users = userRepository.findAll();
-        if (users == null || users.isEmpty()) {
-            UserDetails user = new UserDetails();
-            user.setId(UUID.randomUUID());
-            user.setUsername("admin");
-            user.setFirstName("ATT");
-            user.setLastName("USA");
-            user.setPassword("admin");
-            userRepository.save(user);
-        }
-    }
-
     @Override
     public ResponseEntity<Response> createUser(UserDetails user) {
         try {
-            validateInput(user);
+            validateUserInput(user);
 
             user.setId(UUID.randomUUID());
 
@@ -74,7 +72,7 @@ public class UserService extends BaseService implements UserContoller {
     @Override
     public ResponseEntity<Response> updateUser(UserDetails user) {
         try {
-            validateInput(user);
+            validateUserInput(user);
             if (user.getId() != null) {
                 Optional<UserDetails> userDetails = userRepository.findById(user.getId());
                 if (userDetails.isPresent()) {
@@ -104,7 +102,7 @@ public class UserService extends BaseService implements UserContoller {
         return createResponse("Users deleted successfully.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
-    private void validateInput(UserDetails user) throws Exception {
+    private void validateUserInput(UserDetails user) throws Exception {
         if (user == null) {
             throw new IllegalArgumentException("Invalid Input.");
         }
@@ -136,7 +134,6 @@ public class UserService extends BaseService implements UserContoller {
             return createResponse("Password cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
 
-        // createDefaultUser();
         Optional<UserDetails> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             if (!user.get().getPassword().equals(password)) {
@@ -145,7 +142,29 @@ public class UserService extends BaseService implements UserContoller {
         } else {
             return createResponse("Invalid User details.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
-        return createResponse("Login successfull.", ResponseStatus.SUCCESS, user.get(), HttpStatus.OK);
+
+        UserSession userSession =  createUserSession(user.get());
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUser(user.get());
+        loginResponse.setAuthToken(userSession.getAuthToken());
+
+        return createResponse("Login successfull.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
+    }
+
+    private UserSession createUserSession(UserDetails userDetails) {
+        UserSession userSession = new UserSession();
+        
+        userSession.setId(UUID.randomUUID());
+        userSession.setUserId(userDetails.getId());
+        userSession.setAuthToken(UUID.randomUUID());
+        userSession.setIpAddress(request.getRemoteHost());
+        userSession.setStartedTime(Calendar.getInstance().getTimeInMillis());
+        userSession.setLastAccsessTime(Calendar.getInstance().getTimeInMillis());
+
+        userSessionRepository.save(userSession);
+
+        return userSession;
     }
 
 }
