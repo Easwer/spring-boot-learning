@@ -9,6 +9,8 @@ public class LoginResponse {
     private UUID authToken;
     
     private UserDetails user;
+    
+    private boolean isChangePassword = false;
 
     public UUID getAuthToken() {
         return authToken;
@@ -24,6 +26,14 @@ public class LoginResponse {
 
     public void setUser(UserDetails user) {
         this.user = user;
+    }
+
+    public boolean isChangePassword() {
+        return isChangePassword;
+    }
+
+    public void setChangePassword(boolean isChangePassword) {
+        this.isChangePassword = isChangePassword;
     }
 
 }

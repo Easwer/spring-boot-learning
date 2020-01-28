@@ -149,6 +149,7 @@ public class UserService extends BaseService implements UserContoller {
         loginResponse.setUser(user.get());
         loginResponse.setAuthToken(userSession.getAuthToken());
 
+        // TODO Update change password flag based on user account status
         return createResponse("Login successfull.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 

@@ -9,12 +9,23 @@ import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Login from '../Login/Login';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="outlined" {...props} />;
 }
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
   appBarTitle: {
     flexGrow: 1,
   },
@@ -26,10 +37,14 @@ class LandingPage extends React.Component {
       severity: 'success',
       message: '',
       openAlert: false
+    },
+    userMenu: {
+      anchorEl: null,
+      open: false
     }
   }
 
-  handleClose = (event, reason) => {
+  handleAlertClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -39,8 +54,33 @@ class LandingPage extends React.Component {
         message: '',
         openAlert: false
       }
-    })
-  };
+    });
+  }
+
+  handleMenu = event => {
+    this.setState({
+      userMenu: {
+        anchorEl: event.currentTarget,
+        open: true
+      }
+    });
+  }
+
+  handleMenuClose = event => {
+    this.setState({
+      userMenu: {
+        anchorEl: event.currentTarget,
+        open: false
+      }
+    });
+  }
+
+  logout = event => {
+    const authCookie = new Cookies();
+    authCookie.remove("authToken");
+    localStorage.clear();
+    ReactDOM.render(<Login />, document.getElementById('root'));
+  }
 
   render() {
     const { classes } = this.props;
@@ -48,28 +88,58 @@ class LandingPage extends React.Component {
     const cookie = cookies.get("authToken")
     if (!cookie) {
       ReactDOM.render(<Login />, document.getElementById('root'));
+      return;
     }
 
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar position="static" color="primary">
           <Toolbar>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
             <Typography variant="h6" className={classes.appBarTitle}>
               Spring Boot Application
-          </Typography>
+            </Typography>
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit">
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={this.state.userMenu.anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={this.state.userMenu.open}
+                onClose={this.handleMenuClose}>
+                <MenuItem onClick={this.logout}>Logout</MenuItem>
+              </Menu>
+            </div>
           </Toolbar>
         </AppBar>
         <Snackbar
           open={this.state.alert.openAlert}
           autoHideDuration={6000}
-          onClose={this.handleClose}
+          onClose={this.handleAlertClose}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'center'
           }}>
           <Alert
             severity={this.state.alert.severity}
-            onClose={this.handleClose}
+            onClose={this.handleAlertClose}
             variant="filled">
             {this.state.alert.message}
           </Alert>
