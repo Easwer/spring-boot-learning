@@ -143,19 +143,18 @@ public class UserService extends BaseService implements UserContoller {
             return createResponse("Invalid User details.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
 
-        UserSession userSession =  createUserSession(user.get());
+        UserSession userSession = createUserSession(user.get());
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUser(user.get());
         loginResponse.setAuthToken(userSession.getAuthToken());
 
-        // TODO Update change password flag based on user account status
         return createResponse("Login successfull.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 
     private UserSession createUserSession(UserDetails userDetails) {
         UserSession userSession = new UserSession();
-        
+
         userSession.setId(UUID.randomUUID());
         userSession.setUserId(userDetails.getId());
         userSession.setAuthToken(UUID.randomUUID());
@@ -166,6 +165,19 @@ public class UserService extends BaseService implements UserContoller {
         userSessionRepository.save(userSession);
 
         return userSession;
+    }
+
+    @Override
+    public ResponseEntity<Response> logout(UUID authToken) {
+        try {
+            Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+            if (userSession.isPresent()) {
+                userSessionRepository.delete(userSession.get());
+            }
+        } catch (Exception e) {
+            return createResponse("Logout Failure.", ResponseStatus.FAILURE, null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return createResponse("Logout successfull.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
 }

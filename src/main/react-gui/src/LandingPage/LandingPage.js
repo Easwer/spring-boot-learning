@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import ReactDOM from 'react-dom';
 import Cookies from 'universal-cookie';
 import AppBar from '@material-ui/core/AppBar';
@@ -76,10 +77,44 @@ class LandingPage extends React.Component {
   }
 
   logout = event => {
-    const authCookie = new Cookies();
-    authCookie.remove("authToken");
-    localStorage.clear();
-    ReactDOM.render(<Login />, document.getElementById('root'));
+    var me = this;
+    me.authCookie = new Cookies();
+    $.ajax({
+      url: '/logout?authToken=' + me.authCookie.get("authToken"),
+      success: function (result) {
+        me.authCookie.remove("authToken");
+        localStorage.clear();
+        if (result && result.message) {
+          me.setState({
+            alert: {
+              message: result.message,
+              severity: 'success',
+              openAlert: true
+            }
+          })
+        }
+        ReactDOM.render(<Login />, document.getElementById('root'));
+      },
+      error: function (result) {
+        if (result && result.responseJSON && result.responseJSON.message) {
+          me.setState({
+            alert: {
+              message: result.responseJSON.message,
+              severity: 'error',
+              openAlert: true
+            }
+          })
+        } else if (result && result.statusText) {
+          me.setState({
+            alert: {
+              message: result.statusText,
+              severity: 'error',
+              openAlert: true
+            }
+          })
+        }
+      }
+    });
   }
 
   render() {
