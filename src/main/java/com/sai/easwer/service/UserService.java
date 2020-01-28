@@ -16,46 +16,35 @@ import com.sai.easwer.model.Response;
 import com.sai.easwer.repository.UserRepository;
 
 @RestController
-public class UserService extends BaseService implements UserContoller
-{
+public class UserService extends BaseService implements UserContoller {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public ResponseEntity<Response> getUser(UUID userId)
-    {
-        if (userId == null)
-        {
-            createDefaultUser();
+    public ResponseEntity<Response> getUser(UUID userId) {
+        if (userId == null) {
+            // createDefaultUser();
             List<UserDetails> users = userRepository.findAll();
 
-            if (users.isEmpty())
-            {
+            if (users.isEmpty()) {
                 return createResponse("No users found.", ResponseStatus.SUCCESS, null, HttpStatus.NO_CONTENT);
             }
 
             return createResponse("Users found successfully.", ResponseStatus.SUCCESS, users, HttpStatus.OK);
-        }
-        else
-        {
+        } else {
             Optional<UserDetails> user = userRepository.findById(userId);
-            if (user == null)
-            {
+            if (user == null) {
                 return createResponse("Invalid user id.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
-            }
-            else
-            {
+            } else {
                 return createResponse("User found successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
             }
         }
     }
 
-    public void createDefaultUser()
-    {
+    public void createDefaultUser() {
         List<UserDetails> users = userRepository.findAll();
-        if (users == null || users.isEmpty())
-        {
+        if (users == null || users.isEmpty()) {
             UserDetails user = new UserDetails();
             user.setId(UUID.randomUUID());
             user.setUsername("admin");
@@ -67,107 +56,79 @@ public class UserService extends BaseService implements UserContoller
     }
 
     @Override
-    public ResponseEntity<Response> createUser(UserDetails user)
-    {
-        try
-        {
+    public ResponseEntity<Response> createUser(UserDetails user) {
+        try {
             validateInput(user);
 
             user.setId(UUID.randomUUID());
 
             userRepository.save(user);
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return createResponse("Invalid Input.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
         return createResponse("Users created successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Response> updateUser(UserDetails user)
-    {
-        try
-        {
+    public ResponseEntity<Response> updateUser(UserDetails user) {
+        try {
             validateInput(user);
-            if (user.getId() != null)
-            {
+            if (user.getId() != null) {
                 Optional<UserDetails> userDetails = userRepository.findById(user.getId());
-                if (userDetails.isPresent())
-                {
+                if (userDetails.isPresent()) {
                     userRepository.save(user);
-                }
-                else
-                {
+                } else {
                     throw new IllegalArgumentException("User not found.");
                 }
-            }
-            else
-            {
+            } else {
                 throw new IllegalArgumentException("User not found.");
             }
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return createResponse("Invalid Input.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
         return createResponse("Users created successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Response> deleteUser(UUID userId)
-    {
+    public ResponseEntity<Response> deleteUser(UUID userId) {
         Optional<UserDetails> userDetails = userRepository.findById(userId);
-        if (userDetails.isPresent())
-        {
+        if (userDetails.isPresent()) {
             userRepository.delete(userDetails.get());
-        }
-        else
-        {
+        } else {
             return createResponse("User not found.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
         return createResponse("Users deleted successfully.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
-    private void validateInput(UserDetails user) throws Exception
-    {
-        if (user == null)
-        {
+    private void validateInput(UserDetails user) throws Exception {
+        if (user == null) {
             throw new IllegalArgumentException("Invalid Input.");
         }
 
-        if (user.getUsername() == null || user.getUsername().trim().equals(""))
-        {
+        if (user.getUsername() == null || user.getUsername().trim().equals("")) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
 
-        if (user.getFirstName() == null || user.getFirstName().trim().equals(""))
-        {
+        if (user.getFirstName() == null || user.getFirstName().trim().equals("")) {
             throw new IllegalArgumentException("First name cannot be empty");
         }
 
-        if (user.getLastName() == null || user.getLastName().trim().equals(""))
-        {
+        if (user.getLastName() == null || user.getLastName().trim().equals("")) {
             throw new IllegalArgumentException("Last Name cannot be empty");
         }
 
-        if (user.getPassword() == null || user.getPassword().trim().equals(""))
-        {
+        if (user.getPassword() == null || user.getPassword().trim().equals("")) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
     }
 
     @Override
     public ResponseEntity<Response> login(String username, String password) {
-        if( null == username) {
+        if (null == username) {
             return createResponse("Username cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
 
@@ -175,10 +136,10 @@ public class UserService extends BaseService implements UserContoller
             return createResponse("Password cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
 
-        createDefaultUser();
+        // createDefaultUser();
         Optional<UserDetails> user = userRepository.findByUsername(username);
-        if(user.isPresent()) {
-            if(!user.get().getPassword().equals(password)) {
+        if (user.isPresent()) {
+            if (!user.get().getPassword().equals(password)) {
                 return createResponse("Authentication Error.", ResponseStatus.FAILURE, null, HttpStatus.FORBIDDEN);
             }
         } else {
