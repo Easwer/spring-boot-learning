@@ -130,9 +130,9 @@ class Login extends React.Component {
         }
         this.setState({
             alert: {
+                openAlert: false,
                 severity: 'success',
-                message: '',
-                openAlert: false
+                message: ''
             }
         })
     };
