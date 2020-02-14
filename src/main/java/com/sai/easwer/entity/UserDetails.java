@@ -1,18 +1,19 @@
 package com.sai.easwer.entity;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
 @Entity
 @Table(name = "user_details")
-public class UserDetails {
-
-	@Id
-	private UUID id;
+public class UserDetails extends BaseEntity {
 
 	@Column(name = "username", nullable = false)
 	private String username;
@@ -26,57 +27,77 @@ public class UserDetails {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-    @Column(name = "failed_login_attempt_count")
-    private int failedLoginAttemptCount = 0;
+	@Column(name = "failed_login_attempt_count")
+	private int failedLoginAttemptCount = 0;
 
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(final String username) {
 		this.username = username;
 	}
 
+	/**
+	 * @return the firstName
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
+	/**
+	 * @return the lastName
+	 */
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
-    public int getFailedLoginAttemptCount()
-    {
-        return failedLoginAttemptCount;
-    }
+	/**
+	 * @return the failedLoginAttemptCount
+	 */
+	public int getFailedLoginAttemptCount() {
+		return failedLoginAttemptCount;
+	}
 
-    public void setFailedLoginAttemptCount(int failedLoginAttemptCount)
-    {
-        this.failedLoginAttemptCount = failedLoginAttemptCount;
-    }
+	/**
+	 * @param failedLoginAttemptCount the failedLoginAttemptCount to set
+	 */
+	public void setFailedLoginAttemptCount(final int failedLoginAttemptCount) {
+		this.failedLoginAttemptCount = failedLoginAttemptCount;
+	}
 
 }

@@ -14,52 +14,47 @@ import com.sai.easwer.entity.AuditLog;
 import com.sai.easwer.model.Response;
 import com.sai.easwer.repository.AuditLogRepository;
 
-public class AuditLogService extends BaseService implements AuditLogController
-{
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
+public class AuditLogService extends BaseService implements AuditLogController {
 
     @Autowired
     private AuditLogRepository auditLogRepository;
 
     @Override
-    public ResponseEntity<Response> getAllAuditLog(UUID auditLogId)
-    {
-        if (auditLogId == null)
-        {
-            List<AuditLog> auditLogs = auditLogRepository.findAll();
-            
-            if (auditLogs.isEmpty())
-            {
+    public ResponseEntity<Response> getAllAuditLog(final UUID auditLogId) {
+        if (auditLogId == null) {
+            final List<AuditLog> auditLogs = auditLogRepository.findAll();
+
+            if (auditLogs.isEmpty()) {
                 return createResponse("No audit logs found.", ResponseStatus.SUCCESS, null, HttpStatus.NO_CONTENT);
             }
-            
+
             return createResponse("Audit Logs found successfully.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.OK);
-        }
-        else
-        {
-            Optional<AuditLog> auditLog = auditLogRepository.findById(auditLogId);
-            if (auditLog == null)
-            {
+        } else {
+            final Optional<AuditLog> auditLog = auditLogRepository.findById(auditLogId);
+            if (auditLog == null) {
                 return createResponse("Invalid user id.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
-            }
-            else
-            {
+            } else {
                 return createResponse("User found successfully.", ResponseStatus.SUCCESS, auditLog, HttpStatus.OK);
             }
         }
     }
 
     @Override
-    public ResponseEntity<Response> getAllAuditLogByUser(String username)
-    {
-        if (username == null)
-        {
-            List<AuditLog> auditLogs = auditLogRepository.findByUsername(username);
-            
-            if (auditLogs.isEmpty())
-            {
+    public ResponseEntity<Response> getAllAuditLogByUser(final String username) {
+        if (username == null) {
+            final List<AuditLog> auditLogs = auditLogRepository.findByUsername(username);
+
+            if (auditLogs.isEmpty()) {
                 return createResponse("No audit log found.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.NO_CONTENT);
             }
-            
+
             return createResponse("Audit Logs found successfully.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.OK);
         }
         return null;

@@ -8,6 +8,13 @@ import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
 
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:28
+ * @desc [description]
+ */
 @Entity
 @Table(name = "audit_log")
 public class AuditLog extends BaseEntity
@@ -30,64 +37,87 @@ public class AuditLog extends BaseEntity
     @Column(name = "modules")
     private Modules modules;
 
-    public AuditLogType getType()
-    {
+    /**
+     * @return the type
+     */
+    public AuditLogType getType() {
         return type;
     }
 
-    public void setType(AuditLogType type)
-    {
+    /**
+     * @param type the type to set
+     */
+    public void setType(final AuditLogType type) {
         this.type = type;
     }
 
-    public String getDescription()
-    {
+    /**
+     * @return the description
+     */
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getUsername()
-    {
+    /**
+     * @return the username
+     */
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username)
-    {
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public ResponseStatus getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus(ResponseStatus status)
-    {
-        this.status = status;
-    }
-    
-    public String getIpAddress()
-    {
+    /**
+     * @return the ipAddress
+     */
+    public String getIpAddress() {
         return ipAddress;
     }
 
-    public void setIpAddress(String ipAddress)
-    {
+    /**
+     * @param ipAddress the ipAddress to set
+     */
+    public void setIpAddress(final String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
-    public Modules getModules()
-    {
+    /**
+     * @return the status
+     */
+    public ResponseStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(final ResponseStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the modules
+     */
+    public Modules getModules() {
         return modules;
     }
 
-    public void setModules(Modules modules)
-    {
+    /**
+     * @param modules the modules to set
+     */
+    public void setModules(final Modules modules) {
         this.modules = modules;
     }
-
 }

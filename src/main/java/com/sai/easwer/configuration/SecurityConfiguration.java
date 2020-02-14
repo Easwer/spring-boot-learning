@@ -12,7 +12,13 @@
 // import com.sai.easwer.security.LoginFailureHandler;
 // import com.sai.easwer.security.LoginSuccessHandler;
 // import com.sai.easwer.security.LogoutSuccessHandler;
-
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
 // @Configuration
 // @EnableWebSecurity
 // public class SecurityConfiguration extends WebSecurityConfigurerAdapter {

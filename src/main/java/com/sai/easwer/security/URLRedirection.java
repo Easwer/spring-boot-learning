@@ -9,16 +9,21 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
 @Component
-public class URLRedirection
-{
+public class URLRedirection {
 
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
-            protected void postProcessContext(Context context)
-            {
+            protected void postProcessContext(Context context) {
                 SecurityConstraint securityConstraint = new SecurityConstraint();
                 securityConstraint.setUserConstraint("CONFIDENTIAL");
                 SecurityCollection collection = new SecurityCollection();

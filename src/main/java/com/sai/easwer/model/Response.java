@@ -2,41 +2,59 @@ package com.sai.easwer.model;
 
 import com.sai.easwer.constants.ResponseStatus;
 
-public class Response
-{
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
+public class Response {
     private String message;
 
     private Object object;
 
     private ResponseStatus status;
 
-    public String getMessage()
-    {
+    /**
+     * @return the message
+     */
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message)
-    {
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(final String message) {
         this.message = message;
     }
 
-    public Object getObject()
-    {
+    /**
+     * @return the object
+     */
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(Object object)
-    {
+    /**
+     * @param object the object to set
+     */
+    public void setObject(final Object object) {
         this.object = object;
     }
 
-    public ResponseStatus getStatus()
-    {
+    /**
+     * @return the status
+     */
+    public ResponseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ResponseStatus status)
-    {
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(final ResponseStatus status) {
         this.status = status;
     }
 }

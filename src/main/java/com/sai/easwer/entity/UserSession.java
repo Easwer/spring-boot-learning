@@ -7,10 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-14 15:12:28
+ * @modify date 2020-02-14 15:12:49
+ * @desc [description]
+ */
 @Entity
 @Table(name = "user_session")
-public class UserSession
-{
+public class UserSession {
     @Id
     private UUID id;
 
@@ -29,64 +35,87 @@ public class UserSession
     @Column(name = "ip")
     private String ipAddress;
 
-    public UUID getId()
-    {
+    /**
+     * @return the id
+     */
+    public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id)
-    {
+    /**
+     * @param id the id to set
+     */
+    public void setId(final UUID id) {
         this.id = id;
     }
 
-    public UUID getAuthToken()
-    {
+    /**
+     * @return the authToken
+     */
+    public UUID getAuthToken() {
         return authToken;
     }
 
-    public void setAuthToken(UUID authToken)
-    {
+    /**
+     * @param authToken the authToken to set
+     */
+    public void setAuthToken(final UUID authToken) {
         this.authToken = authToken;
     }
 
-    public UUID getUserId()
-    {
+    /**
+     * @return the userId
+     */
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId)
-    {
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(final UUID userId) {
         this.userId = userId;
     }
 
-    public Long getStartedTime()
-    {
+    /**
+     * @return the startedTime
+     */
+    public Long getStartedTime() {
         return startedTime;
     }
 
-    public void setStartedTime(Long startedTime)
-    {
+    /**
+     * @param startedTime the startedTime to set
+     */
+    public void setStartedTime(final Long startedTime) {
         this.startedTime = startedTime;
     }
 
-    public Long getLastAccsessTime()
-    {
+    /**
+     * @return the lastAccsessTime
+     */
+    public Long getLastAccsessTime() {
         return lastAccsessTime;
     }
 
-    public void setLastAccsessTime(Long lastAccsessTime)
-    {
+    /**
+     * @param lastAccsessTime the lastAccsessTime to set
+     */
+    public void setLastAccsessTime(final Long lastAccsessTime) {
         this.lastAccsessTime = lastAccsessTime;
     }
 
-    public String getIpAddress()
-    {
+    /**
+     * @return the ipAddress
+     */
+    public String getIpAddress() {
         return ipAddress;
     }
 
-    public void setIpAddress(String ipAddress)
-    {
+    /**
+     * @param ipAddress the ipAddress to set
+     */
+    public void setIpAddress(final String ipAddress) {
         this.ipAddress = ipAddress;
     }
-
 }
