@@ -33,4 +33,4 @@ build/
 src/main/react-gui/node_modules/
 src/main/react-gui/yarn.lock
 nohup.out
-.attach_pid20808
+.attach_pid*

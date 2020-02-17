@@ -192,8 +192,10 @@ public class UserService extends BaseService implements UserContoller {
                 userSessionRepository.delete(userSession.get());
             }
         } catch (final Exception e) {
-            auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.",
-                    Modules.SECURITY, AuditLogType.LOGOUT);
+            if (loginUser != null && loginUser.isPresent()) {
+                auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.",
+                        Modules.SECURITY, AuditLogType.LOGOUT);
+            }
             return createResponse("Logout Failure.", ResponseStatus.FAILURE, null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.", Modules.SECURITY,

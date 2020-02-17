@@ -10,6 +10,7 @@
 	<groupId>com.sai.easwer</groupId>
 	<artifactId>SpringBootDemo</artifactId>
 	<version>1.0</version>
+	<packaging>jar</packaging>
 	<name>Spring Boot Application</name>
 	<description>Spring Boot Application with React Material GUI</description>
 
@@ -20,6 +21,8 @@
 		<yarn.version>v1.22.0</yarn.version>
 		<tomcat-jasper.version>9.0.31</tomcat-jasper.version>
 		<frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
+		<flyway.version>6.2.3</flyway.version>
+		<h2-version>1.4.200</h2-version>
 	</properties>
 
 	<dependencies>
@@ -42,6 +45,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+			<version>${h2-version}</version>
 		</dependency>
 
 		<dependency>
@@ -77,6 +81,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
 		</dependency>
 
 	</dependencies>
