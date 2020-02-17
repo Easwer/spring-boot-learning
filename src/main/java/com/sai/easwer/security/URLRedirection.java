@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-14 15:12:49
- * @desc [description]
+ * @modify date 2020-02-17 12:50:42
+ * @desc This class is used for URL redirection from http:8080 to https:8083
  */
 @Component
 public class URLRedirection {
@@ -41,7 +41,7 @@ public class URLRedirection {
         connector.setScheme("http");
         connector.setPort(8080);
         connector.setSecure(false);
-        connector.setRedirectPort(8443);
+        connector.setRedirectPort(8083);
         return connector;
     }
 

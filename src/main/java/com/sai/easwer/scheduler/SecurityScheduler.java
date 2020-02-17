@@ -25,7 +25,7 @@ public class SecurityScheduler {
      */
     @Scheduled(cron = "0 0/30 * * * *")
     public void printLog() {
-        LOGGER.error(Calendar.getInstance().getTime().toString());
+        LOGGER.info(Calendar.getInstance().getTime().toString());
     }
 
 }

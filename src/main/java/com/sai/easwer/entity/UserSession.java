@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user_session")
 public class UserSession {
+    
     @Id
     private UUID id;
 

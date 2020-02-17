@@ -7,11 +7,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.sai.easwer.constants.AuditLogType;
+import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;
@@ -20,6 +17,12 @@ import com.sai.easwer.model.LoginResponse;
 import com.sai.easwer.model.Response;
 import com.sai.easwer.repository.UserRepository;
 import com.sai.easwer.repository.UserSessionRepository;
+import com.sai.easwer.util.AuditLogger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Easwer AP
@@ -39,6 +42,9 @@ public class UserService extends BaseService implements UserContoller {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private AuditLogger auditLogger;
 
     @Override
     public ResponseEntity<Response> getUser(final UUID userId) {
@@ -156,7 +162,9 @@ public class UserService extends BaseService implements UserContoller {
         loginResponse.setUser(user.get());
         loginResponse.setAuthToken(userSession.getAuthToken());
 
-        return createResponse("Login successfull.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
+        auditLogger.auditLog("Login successful for user '" + username + "'.", Modules.SECURITY, AuditLogType.LOGIN);
+
+        return createResponse("Login successful.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 
     private UserSession createUserSession(final UserDetails userDetails) {
@@ -176,14 +184,20 @@ public class UserService extends BaseService implements UserContoller {
 
     @Override
     public ResponseEntity<Response> logout(final UUID authToken) {
+        Optional<UserDetails> loginUser = null;
         try {
             final Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+            loginUser = userRepository.findById(userSession.get().getUserId());
             if (userSession.isPresent()) {
                 userSessionRepository.delete(userSession.get());
             }
         } catch (final Exception e) {
+            auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.",
+                    Modules.SECURITY, AuditLogType.LOGOUT);
             return createResponse("Logout Failure.", ResponseStatus.FAILURE, null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.", Modules.SECURITY,
+                AuditLogType.LOGOUT);
         return createResponse("Logout successfull.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 

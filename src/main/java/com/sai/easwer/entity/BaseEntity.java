@@ -1,5 +1,6 @@
 package com.sai.easwer.entity;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import com.sai.easwer.listener.EntityChangeListener;
  */
 @MappedSuperclass
 @EntityListeners(EntityChangeListener.class)
-public class BaseEntity {
+public class BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = -439857631252669874L;
 
     @Id
     private UUID id;

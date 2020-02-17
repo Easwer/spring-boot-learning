@@ -19,6 +19,8 @@ import com.sai.easwer.constants.ResponseStatus;
 @Table(name = "audit_log")
 public class AuditLog extends BaseEntity
 {
+    private static final long serialVersionUID = -2440675000750394264L;
+
     @Column(name = "type")
     private AuditLogType type = AuditLogType.SYSTEM;
 
