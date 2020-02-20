@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sai.easwer.constants.AuditLogType;
+import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
 import com.sai.easwer.controller.UserContoller;
@@ -23,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Easwer AP
@@ -33,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class UserService extends BaseService implements UserContoller {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -52,16 +57,20 @@ public class UserService extends BaseService implements UserContoller {
             final List<UserDetails> users = userRepository.findAll();
 
             if (users.isEmpty()) {
-                return createResponse("No users found.", ResponseStatus.SUCCESS, null, HttpStatus.NO_CONTENT);
+                return createResponse(MessageConstants.NO_USERS_FOUND, ResponseStatus.SUCCESS, null,
+                        HttpStatus.NO_CONTENT);
             }
 
-            return createResponse("Users found successfully.", ResponseStatus.SUCCESS, users, HttpStatus.OK);
+            return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, users,
+                    HttpStatus.OK);
         } else {
             final Optional<UserDetails> user = userRepository.findById(userId);
             if (user == null) {
-                return createResponse("Invalid user id.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+                return createResponse(MessageConstants.INVALID_USER_ID, ResponseStatus.FAILURE, null,
+                        HttpStatus.BAD_REQUEST);
             } else {
-                return createResponse("User found successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
+                return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, user,
+                        HttpStatus.OK);
             }
         }
     }
@@ -77,9 +86,10 @@ public class UserService extends BaseService implements UserContoller {
         } catch (final IllegalArgumentException e) {
             return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         } catch (final Exception e) {
-            return createResponse("Invalid Input.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
-        return createResponse("Users created successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
+        LOGGER.info(MessageConstants.USERS_CREATED_SUCCESSFULLY);
+        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
@@ -91,17 +101,17 @@ public class UserService extends BaseService implements UserContoller {
                 if (userDetails.isPresent()) {
                     userRepository.save(user);
                 } else {
-                    throw new IllegalArgumentException("User not found.");
+                    throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
                 }
             } else {
-                throw new IllegalArgumentException("User not found.");
+                throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
             }
         } catch (final IllegalArgumentException e) {
             return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         } catch (final Exception e) {
-            return createResponse("Invalid Input.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
-        return createResponse("Users created successfully.", ResponseStatus.SUCCESS, user, HttpStatus.OK);
+        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
@@ -110,50 +120,55 @@ public class UserService extends BaseService implements UserContoller {
         if (userDetails.isPresent()) {
             userRepository.delete(userDetails.get());
         } else {
-            return createResponse("User not found.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.USER_NOT_FOUND, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
-        return createResponse("Users deleted successfully.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
+        return createResponse(MessageConstants.USER_DELETED_SUCCESSFULLY, ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
     private void validateUserInput(final UserDetails user) throws Exception {
         if (user == null) {
-            throw new IllegalArgumentException("Invalid Input.");
+            throw new IllegalArgumentException(MessageConstants.INVALID_INPUT);
         }
 
-        if (user.getUsername() == null || user.getUsername().trim().equals("")) {
-            throw new IllegalArgumentException("Username cannot be empty");
+        if (user.getUsername() == null || user.getUsername().trim().equals(MessageConstants.EMPTY)) {
+            throw new IllegalArgumentException(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
         }
 
-        if (user.getFirstName() == null || user.getFirstName().trim().equals("")) {
-            throw new IllegalArgumentException("First name cannot be empty");
+        if (user.getFirstName() == null || user.getFirstName().trim().equals(MessageConstants.EMPTY)) {
+            throw new IllegalArgumentException(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
         }
 
-        if (user.getLastName() == null || user.getLastName().trim().equals("")) {
-            throw new IllegalArgumentException("Last Name cannot be empty");
+        if (user.getLastName() == null || user.getLastName().trim().equals(MessageConstants.EMPTY)) {
+            throw new IllegalArgumentException(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
         }
 
-        if (user.getPassword() == null || user.getPassword().trim().equals("")) {
-            throw new IllegalArgumentException("Password cannot be empty");
+        if (user.getPassword() == null || user.getPassword().trim().equals(MessageConstants.EMPTY)) {
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
         }
     }
 
     @Override
     public ResponseEntity<Response> login(final String username, final String password) {
         if (null == username) {
-            return createResponse("Username cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.USERNAME_CANNOT_BE_EMPTY, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         if (null == password) {
-            return createResponse("Password cannot be empty.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.PASSWORD_CANNOT_BE_EMPTY, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         final Optional<UserDetails> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             if (!user.get().getPassword().equals(password)) {
-                return createResponse("Authentication Error.", ResponseStatus.FAILURE, null, HttpStatus.FORBIDDEN);
+                return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE, null,
+                        HttpStatus.FORBIDDEN);
             }
         } else {
-            return createResponse("Invalid User details.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_USER_DETAILS, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         final UserSession userSession = createUserSession(user.get());
@@ -162,9 +177,10 @@ public class UserService extends BaseService implements UserContoller {
         loginResponse.setUser(user.get());
         loginResponse.setAuthToken(userSession.getAuthToken());
 
-        auditLogger.auditLog("Login successful for user '" + username + "'.", Modules.SECURITY, AuditLogType.LOGIN);
+        auditLogger.auditLog(MessageConstants.LOGIN_SUCCESSFUL_FOR_USER + username + "'.", Modules.SECURITY,
+                AuditLogType.LOGIN, userSession);
 
-        return createResponse("Login successful.", ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
+        return createResponse(MessageConstants.LOGIN_SUCCESSFUL, ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 
     private UserSession createUserSession(final UserDetails userDetails) {
@@ -185,22 +201,27 @@ public class UserService extends BaseService implements UserContoller {
     @Override
     public ResponseEntity<Response> logout(final UUID authToken) {
         Optional<UserDetails> loginUser = null;
+        Optional<UserSession> userSession = null;
         try {
-            final Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+            userSession = userSessionRepository.findByAuthToken(authToken);
             loginUser = userRepository.findById(userSession.get().getUserId());
             if (userSession.isPresent()) {
                 userSessionRepository.delete(userSession.get());
+            } else {
+                return createResponse(MessageConstants.INVALID_SESSION_DETAILS, ResponseStatus.FAILURE, null,
+                        HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (final Exception e) {
             if (loginUser != null && loginUser.isPresent()) {
-                auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.",
+                auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
                         Modules.SECURITY, AuditLogType.LOGOUT);
             }
-            return createResponse("Logout Failure.", ResponseStatus.FAILURE, null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return createResponse(MessageConstants.LOGOUT_FAILURE, ResponseStatus.FAILURE, null,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        auditLogger.auditLog("Logout successful for user '" + loginUser.get().getUsername() + "'.", Modules.SECURITY,
-                AuditLogType.LOGOUT);
-        return createResponse("Logout successfull.", ResponseStatus.SUCCESS, null, HttpStatus.OK);
+        auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
+                Modules.SECURITY, AuditLogType.LOGOUT);
+        return createResponse(MessageConstants.LOGOUT_SUCCESSFUL, ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
 }

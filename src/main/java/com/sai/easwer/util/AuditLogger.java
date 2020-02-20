@@ -19,7 +19,7 @@ import com.sai.easwer.repository.UserRepository;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-14 15:12:49
+ * @modify date 2020-02-17 20:16:44
  * @desc [description]
  */
 @Component
@@ -30,47 +30,111 @@ public class AuditLogger {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     */
     public void auditLog(final String description, final Modules modules) {
         auditLog(description, modules, AuditLogType.SYSTEM, null, null, null);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type) {
         auditLog(description, modules, type, null, null, null);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param responseStatus
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus) {
         auditLog(description, modules, type, responseStatus, null, null);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param responseStatus
+     * @param userSession
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserSession userSession) {
         final Optional<UserDetails> user = userRepository.findById(userSession.getUserId());
         auditLog(description, modules, type, responseStatus, user.get(), userSession);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param userSession
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final UserSession userSession) {
         final Optional<UserDetails> user = userRepository.findById(userSession.getUserId());
         auditLog(description, modules, type, null, user.get(), userSession);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param responseStatus
+     * @param user
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserDetails user) {
         auditLog(description, modules, type, responseStatus, user, null);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param user
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final UserDetails user) {
         auditLog(description, modules, type, null, user, null);
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param userId
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type, final UUID userId) {
         final Optional<UserDetails> user = userRepository.findById(userId);
 
         auditLog(description, modules, type, user.get());
     }
 
+    /**
+     * 
+     * @param description
+     * @param modules
+     * @param type
+     * @param responseStatus
+     * @param user
+     * @param userSession
+     */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserDetails user, final UserSession userSession) {
         final AuditLog auditLog = new AuditLog();

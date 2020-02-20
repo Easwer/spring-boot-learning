@@ -7,7 +7,7 @@ package com.sai.easwer.security;
  * @modify date 2020-02-14 14:58:03
  * @desc [description]
  */
-public class LoggedInUser {
+public class CurrentSessionDetails {
 
     private static final ThreadLocal<String> userHolder = new ThreadLocal<>();
 
@@ -21,7 +21,7 @@ public class LoggedInUser {
         userHolder.remove();
     }
 
-    public static String get() {
+    public static String getUsername() {
         if (null == userHolder.get() || userHolder.get().isEmpty()) {
             return DEFAULT_USER;
         }

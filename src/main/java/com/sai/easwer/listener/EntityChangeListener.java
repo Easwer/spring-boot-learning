@@ -6,7 +6,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import com.sai.easwer.entity.BaseEntity;
-import com.sai.easwer.security.LoggedInUser;
+import com.sai.easwer.security.CurrentSessionDetails;
 
 /**
  * @author Easwer AP
@@ -26,8 +26,8 @@ public class EntityChangeListener {
         entity.setVersion(1);
         entity.setLastUpdatedTime(Calendar.getInstance().getTimeInMillis());
         entity.setCreatedTime(Calendar.getInstance().getTimeInMillis());
-        entity.setCreatedBy(LoggedInUser.get());
-        entity.setLastUpdatedBy(LoggedInUser.get());
+        entity.setCreatedBy(CurrentSessionDetails.getUsername());
+        entity.setLastUpdatedBy(CurrentSessionDetails.getUsername());
     }
 
     /**
@@ -38,7 +38,7 @@ public class EntityChangeListener {
     public void preUpdate(BaseEntity entity) {
         entity.setVersion(entity.getVersion() + 1);
         entity.setLastUpdatedTime(Calendar.getInstance().getTimeInMillis());
-        entity.setLastUpdatedBy(LoggedInUser.get());
+        entity.setLastUpdatedBy(CurrentSessionDetails.getUsername());
     }
 
 }

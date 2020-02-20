@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.ResponseStatus;
 import com.sai.easwer.controller.AuditLogController;
 import com.sai.easwer.entity.AuditLog;
@@ -32,16 +33,20 @@ public class AuditLogService extends BaseService implements AuditLogController {
             final List<AuditLog> auditLogs = auditLogRepository.findAll();
 
             if (auditLogs.isEmpty()) {
-                return createResponse("No audit logs found.", ResponseStatus.SUCCESS, null, HttpStatus.NO_CONTENT);
+                return createResponse(MessageConstants.NO_AUDIT_LOGS_FOUND, ResponseStatus.SUCCESS, null,
+                        HttpStatus.NO_CONTENT);
             }
 
-            return createResponse("Audit Logs found successfully.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.OK);
+            return createResponse(MessageConstants.AUDIT_LOGS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, auditLogs,
+                    HttpStatus.OK);
         } else {
             final Optional<AuditLog> auditLog = auditLogRepository.findById(auditLogId);
             if (auditLog == null) {
-                return createResponse("Invalid user id.", ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+                return createResponse(MessageConstants.INVALID_USER_ID, ResponseStatus.FAILURE, null,
+                        HttpStatus.BAD_REQUEST);
             } else {
-                return createResponse("User found successfully.", ResponseStatus.SUCCESS, auditLog, HttpStatus.OK);
+                return createResponse(MessageConstants.USER_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, auditLog,
+                        HttpStatus.OK);
             }
         }
     }
@@ -52,10 +57,12 @@ public class AuditLogService extends BaseService implements AuditLogController {
             final List<AuditLog> auditLogs = auditLogRepository.findByUsername(username);
 
             if (auditLogs.isEmpty()) {
-                return createResponse("No audit log found.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.NO_CONTENT);
+                return createResponse(MessageConstants.NO_AUDIT_LOG_FOUND, ResponseStatus.SUCCESS, auditLogs,
+                        HttpStatus.NO_CONTENT);
             }
 
-            return createResponse("Audit Logs found successfully.", ResponseStatus.SUCCESS, auditLogs, HttpStatus.OK);
+            return createResponse(MessageConstants.AUDIT_LOGS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, auditLogs,
+                    HttpStatus.OK);
         }
         return null;
     }
