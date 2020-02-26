@@ -25,46 +25,5 @@ public class UserGroup extends BaseEntity {
 
     @Column(name = "is_default")
     private boolean isDefault = false;
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the isDefault
-     */
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    /**
-     * @param isDefault the isDefault to set
-     */
-    public void setDefault(final boolean isDefault) {
-        this.isDefault = isDefault;
-    }
+    
 }

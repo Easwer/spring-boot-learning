@@ -73,6 +73,15 @@ class Login extends React.Component {
         }
     }
 
+    isAlreadyLogin(event) {
+        var me = this;
+        $.ajax({
+            url: '/login?username=' + this.state.username + '&password=' + this.state.password,
+            success: function (result) {
+            }
+        })
+    }
+
     login(event) {
         var me = this;
         $.ajax({
@@ -139,6 +148,7 @@ class Login extends React.Component {
 
     render() {
         const { classes } = this.props;
+
         return (
             <div>
                 <AppBar position="static" color="primary">

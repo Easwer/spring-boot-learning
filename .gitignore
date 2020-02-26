@@ -34,3 +34,4 @@ src/main/react-gui/node_modules/
 src/main/react-gui/yarn.lock
 nohup.out
 .attach_pid*
+src/main/react-gui/yarn-error.log

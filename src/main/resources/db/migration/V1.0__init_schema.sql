@@ -311,7 +311,12 @@ INSERT INTO
         first_name,
         last_name,
         password,
-        failed_login_attempt_count
+        email,
+        failed_login_attempt_count,
+        idle_timeout,
+        user_account_status,
+        account_expiry,
+        password_expiry
     )
 VALUES
     (
@@ -329,5 +334,10 @@ VALUES
         'Administrator',
         'User',
         'admin',
-        0
+        'admin@easwer.com',
+        0,
+        15,
+        'ACTIVE',
+        0,
+        30
     );

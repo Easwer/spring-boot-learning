@@ -103,6 +103,10 @@ export default function AppTopBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const openUserManagement = event => {
+        
+    };
+
     const logout = event => {
         var authCookie = new Cookies();
         $.ajax({
@@ -112,7 +116,7 @@ export default function AppTopBar() {
                 localStorage.clear();
                 ReactDOM.render(<Login />, document.getElementById('root'));
             },
-            error: function (result) {}
+            error: function (result) { }
         });
     };
 
@@ -127,6 +131,7 @@ export default function AppTopBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
+            <MenuItem onClick={openUserManagement}>User Management</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
         </Menu>
     );

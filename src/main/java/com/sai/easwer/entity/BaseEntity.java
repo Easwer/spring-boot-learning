@@ -10,6 +10,8 @@ import javax.persistence.MappedSuperclass;
 
 import com.sai.easwer.listener.EntityChangeListener;
 
+import lombok.Data;
+
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
@@ -17,6 +19,7 @@ import com.sai.easwer.listener.EntityChangeListener;
  * @modify date 2020-02-14 15:12:49
  * @desc [description]
  */
+@Data
 @MappedSuperclass
 @EntityListeners(EntityChangeListener.class)
 public class BaseEntity implements Serializable {
@@ -41,87 +44,4 @@ public class BaseEntity implements Serializable {
     @Column(name = "last_updated_by")
     private String lastUpdatedBy;
 
-    /**
-     * @return the id
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(final UUID id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the version
-     */
-    public int getVersion() {
-        return version;
-    }
-
-    /**
-     * @param version the version to set
-     */
-    public void setVersion(final int version) {
-        this.version = version;
-    }
-
-    /**
-     * @return the createdTime
-     */
-    public Long getCreatedTime() {
-        return createdTime;
-    }
-
-    /**
-     * @param createdTime the createdTime to set
-     */
-    public void setCreatedTime(final Long createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    /**
-     * @return the lastUpdatedTime
-     */
-    public Long getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-
-    /**
-     * @param lastUpdatedTime the lastUpdatedTime to set
-     */
-    public void setLastUpdatedTime(final Long lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-    }
-
-    /**
-     * @return the createdBy
-     */
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    /**
-     * @param createdBy the createdBy to set
-     */
-    public void setCreatedBy(final String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    /**
-     * @return the lastUpdatedBy
-     */
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    /**
-     * @param lastUpdatedBy the lastUpdatedBy to set
-     */
-    public void setLastUpdatedBy(final String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
 }

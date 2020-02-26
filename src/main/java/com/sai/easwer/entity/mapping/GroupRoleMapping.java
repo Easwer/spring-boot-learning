@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import com.sai.easwer.entity.BaseEntity;
 
+import lombok.Data;
+
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
@@ -15,6 +17,7 @@ import com.sai.easwer.entity.BaseEntity;
  * @modify date 2020-02-17 15:18:25
  * @desc [description]
  */
+@Data
 @Entity
 @Table(name = "group_role")
 public class GroupRoleMapping extends BaseEntity {
@@ -26,33 +29,5 @@ public class GroupRoleMapping extends BaseEntity {
 
     @Column(name = "user_role")
     private UUID role;
-
-    /**
-     * @return the group
-     */
-    public UUID getGroup() {
-        return group;
-    }
-
-    /**
-     * @param group the group to set
-     */
-    public void setGroup(UUID group) {
-        this.group = group;
-    }
-
-    /**
-     * @return the role
-     */
-    public UUID getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(UUID role) {
-        this.role = role;
-    }
 
 }

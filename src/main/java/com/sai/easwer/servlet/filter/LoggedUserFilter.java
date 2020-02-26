@@ -42,6 +42,8 @@ public class LoggedUserFilter implements Filter {
             CurrentSessionDetails.login(httpServletRequest.getRemoteUser());
 
             filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            LOGGER.error("");
         } finally {
             CurrentSessionDetails.logout();
         }
