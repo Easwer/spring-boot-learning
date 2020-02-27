@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Easwer AP
@@ -15,6 +16,7 @@ import lombok.Data;
  * @modify date 2020-02-24 22:02:39
  * @desc Entity to store users password history.
  */
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Data
 @Table(name = "user_password_history")

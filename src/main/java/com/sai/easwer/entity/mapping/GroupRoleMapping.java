@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import com.sai.easwer.entity.BaseEntity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Easwer AP
@@ -18,6 +19,7 @@ import lombok.Data;
  * @desc [description]
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "group_role")
 public class GroupRoleMapping extends BaseEntity {

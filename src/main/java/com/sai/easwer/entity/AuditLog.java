@@ -9,6 +9,7 @@ import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Easwer AP
@@ -18,6 +19,7 @@ import lombok.Data;
  * @desc [description]
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "audit_log")
 public class AuditLog extends BaseEntity

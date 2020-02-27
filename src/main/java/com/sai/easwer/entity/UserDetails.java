@@ -5,17 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-24 21:55:46
+ * @modify date 2020-02-28 00:17:19
  * @desc [description]
  */
 @Entity
 @Table(name = "user_details")
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserDetails extends BaseEntity {
 
 	private static final long serialVersionUID = 4427706888381308132L;

@@ -145,6 +145,7 @@ public class UserService extends BaseService implements UserContoller {
         if (user.getPassword() == null || user.getPassword().trim().equals(MessageConstants.EMPTY)) {
             throw new IllegalArgumentException(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
         }
+        
     }
 
     @Override

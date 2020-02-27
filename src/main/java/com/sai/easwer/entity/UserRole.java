@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
@@ -15,6 +15,7 @@ import lombok.Data;
  */
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "user_role")
 public class UserRole extends BaseEntity {
 

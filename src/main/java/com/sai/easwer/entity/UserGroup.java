@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
@@ -11,6 +13,8 @@ import javax.persistence.Table;
  * @modify date 2020-02-17 15:18:25
  * @desc [description]
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "user_group")
 public class UserGroup extends BaseEntity {
