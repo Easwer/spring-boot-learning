@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Easwer AP
@@ -34,10 +34,9 @@ import org.slf4j.LoggerFactory;
  * @modify date 2020-02-14 15:12:49
  * @desc [description]
  */
+@Slf4j
 @RestController
 public class UserService extends BaseService implements UserContoller {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -88,7 +87,7 @@ public class UserService extends BaseService implements UserContoller {
         } catch (final Exception e) {
             return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
-        LOGGER.info(MessageConstants.USERS_CREATED_SUCCESSFULLY);
+        log.info(MessageConstants.USERS_CREATED_SUCCESSFULLY);
         return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 

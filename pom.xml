@@ -23,6 +23,7 @@
 		<frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
 		<flyway.version>6.2.3</flyway.version>
 		<h2-version>1.4.200</h2-version>
+		<lombok.version>1.18.12</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -92,7 +93,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.12</version>
+			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

@@ -2,30 +2,30 @@ package com.sai.easwer.scheduler;
 
 import java.util.Calendar;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-14 15:12:49
+ * @modify date 2020-02-27 10:56:16
  * @desc [description]
  */
+@Slf4j
 @EnableScheduling
 @Component
 public class SecurityScheduler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityScheduler.class);
 
     /**
      * 
      */
     @Scheduled(cron = "0 0/30 * * * *")
     public void printLog() {
-        LOGGER.info(Calendar.getInstance().getTime().toString());
+        log.info(Calendar.getInstance().getTime().toString());
     }
 
 }
