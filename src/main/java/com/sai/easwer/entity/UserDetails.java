@@ -11,13 +11,13 @@ import lombok.EqualsAndHashCode;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-28 00:17:19
- * @desc [description]
+ * @modify date 2020-02-28 11:55:21
+ * @Description Entity class used to store user details.
  */
 @Entity
 @Table(name = "user_details")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class UserDetails extends BaseEntity {
 
 	private static final long serialVersionUID = 4427706888381308132L;

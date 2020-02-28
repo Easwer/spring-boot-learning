@@ -13,10 +13,11 @@ import lombok.EqualsAndHashCode;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-24 21:47:42
- * @modify date 2020-02-24 22:02:39
- * @desc Entity to store users password history.
+ * @modify date 2020-02-28 11:55:10
+ * @Table user_password_history
+ * @Description Entity to store users password history.
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name = "user_password_history")

@@ -11,6 +11,8 @@ import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
+import com.sai.easwer.constants.SecurityConstants;
+import com.sai.easwer.constants.UserAccountStatus;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
@@ -19,6 +21,7 @@ import com.sai.easwer.model.Response;
 import com.sai.easwer.repository.UserRepository;
 import com.sai.easwer.repository.UserSessionRepository;
 import com.sai.easwer.util.AuditLogger;
+import com.sai.easwer.util.SecurityUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,6 +53,9 @@ public class UserService extends BaseService implements UserContoller {
     @Autowired
     private AuditLogger auditLogger;
 
+    @Autowired
+    private SecurityUtils securityUtils;
+
     @Override
     public ResponseEntity<Response> getUser(final UUID userId) {
         if (userId == null) {
@@ -77,7 +83,9 @@ public class UserService extends BaseService implements UserContoller {
     @Override
     public ResponseEntity<Response> createUser(final UserDetails user) {
         try {
-            validateUserInput(user);
+            securityUtils.validateCreateUserRequest(user);
+
+            user.setUserAccountStatus(UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN.getAccountStatus());
 
             user.setId(UUID.randomUUID());
 
@@ -94,7 +102,7 @@ public class UserService extends BaseService implements UserContoller {
     @Override
     public ResponseEntity<Response> updateUser(final UserDetails user) {
         try {
-            validateUserInput(user);
+            securityUtils.validateUpdateUserRequest(user);
             if (user.getId() != null) {
                 final Optional<UserDetails> userDetails = userRepository.findById(user.getId());
                 if (userDetails.isPresent()) {
@@ -123,29 +131,6 @@ public class UserService extends BaseService implements UserContoller {
                     HttpStatus.BAD_REQUEST);
         }
         return createResponse(MessageConstants.USER_DELETED_SUCCESSFULLY, ResponseStatus.SUCCESS, null, HttpStatus.OK);
-    }
-
-    private void validateUserInput(final UserDetails user) throws Exception {
-        if (user == null) {
-            throw new IllegalArgumentException(MessageConstants.INVALID_INPUT);
-        }
-
-        if (user.getUsername() == null || user.getUsername().trim().equals(MessageConstants.EMPTY)) {
-            throw new IllegalArgumentException(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
-        }
-
-        if (user.getFirstName() == null || user.getFirstName().trim().equals(MessageConstants.EMPTY)) {
-            throw new IllegalArgumentException(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
-        }
-
-        if (user.getLastName() == null || user.getLastName().trim().equals(MessageConstants.EMPTY)) {
-            throw new IllegalArgumentException(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
-        }
-
-        if (user.getPassword() == null || user.getPassword().trim().equals(MessageConstants.EMPTY)) {
-            throw new IllegalArgumentException(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
-        }
-        
     }
 
     @Override

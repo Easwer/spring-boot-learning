@@ -1,7 +1,11 @@
 package com.sai.easwer.constants;
 
 /**
- * MessageConstants
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-02-28 14:24:18
+ * @modify date 2020-02-28 14:24:18
+ * @Description Constants file to keep the error messeges.
  */
 public class MessageConstants {
 
@@ -25,13 +29,48 @@ public class MessageConstants {
 
     public static final String PASSWORD_CANNOT_BE_EMPTY = "Password cannot be empty";
 
+    public static final String PASSWORD_PATTERN_ERROR = "Password should contain one uppercase character, one lowercase character, one special character and one number";
+
+    public static final String USERNAME_PATTERN_ERROR = "Username can only have alphanumeric.";
+
+    public static final String FIRST_NAME_ERROR = "Last name can only have alpha charachters.";
+    
+    public static final String LAST_NAME_ERROR = "Last name can only have alpha charachters.";
+
+    public static final String PASSWORD_SHOULD_NOT_HAVE_SPACE = "Password should not have space";
+
+    public static final String PASSWORD_SHOULD_NOT_CONTAIN_USERNAME = "Password should not contain username.";
+
+    public static final String EMAIL_CANNOT_BE_EMPTY = "Email address cannot be empty";
+
     public static final String LAST_NAME_CANNOT_BE_EMPTY = "Last Name cannot be empty";
 
     public static final String FIRST_NAME_CANNOT_BE_EMPTY = "First name cannot be empty";
 
+    public static final String INVALID_EMAIL = "Invalid Email address";
+
     public static final String USERNAME_CANNOT_BE_EMPTY = "Username cannot be empty";
 
+    public static final String GROUPS_CANNOT_BE_EMPTY = "Groups cannot be empty";
+
     public static final String USER_DELETED_SUCCESSFULLY = "User deleted successfully.";
+
+    public static final String IDLE_TIMOUT_ERROR = "Idle timeout value should be between "
+            + SecurityConstants.IDLE_TIMEOUT_MIN + " and " + SecurityConstants.IDLE_TIMEOUT_MAX;
+
+    public static final String ACCOUNT_EXPIRY_ERROR = "Account expiry value should be between "
+            + SecurityConstants.ACCOUNT_EXPIRY_MIN + " and " + SecurityConstants.ACCOUNT_EXPIRY_MAX;
+
+    public static final String PASSWORD_EXPIRY_ERROR = "Password expiry value should be between "
+            + SecurityConstants.PASSWORD_EXPIRY_MIN + " and " + SecurityConstants.PASSWORD_EXPIRY_MAX;
+
+    public static final String PASSWORD_MIN_LENGTH_ERROR = "Password should have minimum "
+            + SecurityConstants.PASSWORD_MIN_LENGTH + " characters.";
+
+    public static final String PASSWORD_MAX_LENGTH_ERROR = "Password should have maximum "
+            + SecurityConstants.PASSWORD_MAX_LENGTH + " characters.";
+
+    public static final String USER_ACCOUNT_STATUS_ERROR = "Invalid User Account Status.";
 
     public static final String USER_NOT_FOUND = "User not found.";
 
@@ -40,6 +79,8 @@ public class MessageConstants {
     public static final String NO_USERS_FOUND = "No users found.";
 
     public static final String USERS_FOUND_SUCCESSFULLY = "Users found successfully.";
+
+    public static final String ERROR_USERNAME_ALREADY_EXISTS = "User already exists.";
 
     public static final String INVALID_INPUT = "Invalid Input.";
 
@@ -50,6 +91,6 @@ public class MessageConstants {
     public static final String USER_FOUND_SUCCESSFULLY = "User found successfully.";
 
     public static final String AUDIT_LOGS_FOUND_SUCCESSFULLY = "Audit Logs found successfully.";
-    
+
     public static final String NO_AUDIT_LOGS_FOUND = "No audit logs found.";
 }

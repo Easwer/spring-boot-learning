@@ -15,11 +15,12 @@ import lombok.EqualsAndHashCode;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-14 15:12:28
- * @desc [description]
+ * @modify date 2020-02-28 11:55:31
+ * @Table audit_log
+ * @Description Entity class used to store audit logs.
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "audit_log")
 public class AuditLog extends BaseEntity
