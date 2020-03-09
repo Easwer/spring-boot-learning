@@ -41,7 +41,23 @@ public class MessageConstants {
 
     public static final String PASSWORD_SHOULD_NOT_CONTAIN_USERNAME = "Password should not contain username.";
 
+    public static final String PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME = "Password should not contain user's firstname.";
+
+    public static final String PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME = "Password should not contain user's lastname.";
+
+    public static final String PASSWORD_SHOULD_NOT_CONTAIN_EMAIL = "Password should not contain user's email address.";
+
     public static final String EMAIL_CANNOT_BE_EMPTY = "Email address cannot be empty";
+
+    public static final String EMAIL_ERROR = "Invalid Email address.";
+
+    public static final String GLOBAL_SETTINGS_RETRIVED_SUCCESSFULLY = "Global Settings retrived Successfully.";
+
+    public static final String GLOBAL_SETTINGS_NO_CONTENT = "No Global settings found.";
+
+    public static final String GLOBAL_SETTINGS_INVALID_KEY = "Invalid key.";
+
+    public static final String GLOBAL_SETTINGS_INVALID_MODULE = "Invalid module.";
 
     public static final String LAST_NAME_CANNOT_BE_EMPTY = "Last Name cannot be empty";
 

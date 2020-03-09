@@ -11,7 +11,6 @@ import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
-import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.constants.UserAccountStatus;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;

@@ -304,7 +304,7 @@ public class SecurityUtils {
     public void validatePassword(final String password, final String username, final String firstname,
             final String lastname, final String email) throws Exception {
 
-        if (password == null || password.trim().equals("")) {
+        if (password == null || password.equals("")) {
             throw new Exception(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
         }
 
@@ -320,12 +320,20 @@ public class SecurityUtils {
             throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_HAVE_SPACE);
         }
 
-        if (password.toLowerCase().contains(firstname.toLowerCase())
-                || password.toLowerCase().contains(lastname.toLowerCase())
-                || password.toLowerCase().contains(username.toLowerCase())
-                || password.toLowerCase().contains(email.split("@")[0])) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_USERNAME);
+        if (password.toLowerCase().contains(firstname.toLowerCase())) {
+            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME);
+        }
 
+        if (password.toLowerCase().contains(username.toLowerCase())) {
+            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_USERNAME);
+        }
+
+        if (password.toLowerCase().contains(lastname.toLowerCase())) {
+            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME);
+        }
+
+        if (password.toLowerCase().contains(email.split("@")[0].toLowerCase())) {
+            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
         }
 
         final StringBuilder patternBuilder = new StringBuilder("((?=.*[a-z])");
@@ -416,6 +424,8 @@ public class SecurityUtils {
 
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
 
+        validateEmail(user.getEmail());
+        
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
 
             validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
@@ -437,6 +447,8 @@ public class SecurityUtils {
 
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
 
+        validateEmail(user.getEmail());
+
         validateUserExists(user.getUsername());
 
         validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
@@ -448,11 +460,23 @@ public class SecurityUtils {
 
     }
 
+    public boolean validateEmail(final String email) throws Exception {
+        boolean isValid = false;
+        try {
+            InternetAddress internetAddress = new InternetAddress(email);
+            internetAddress.validate();
+            isValid = true;
+        } catch (AddressException e) {
+            throw new Exception(MessageConstants.EMAIL_ERROR);
+        }
+        return isValid;
+    }
+
     private void validateUserExists(final String username) throws Exception {
 
         final Optional<UserDetails> userDetails = userRepository.findByUsername(username);
 
-        if (userDetails.isPresent() && userDetails != null) {
+        if (userDetails.isPresent()) {
             throw new Exception(MessageConstants.ERROR_USERNAME_ALREADY_EXISTS);
         }
 
