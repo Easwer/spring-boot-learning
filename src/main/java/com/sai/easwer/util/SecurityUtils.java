@@ -31,12 +31,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityUtils {
 
-    // @Autowired
-    // private AuditLogger auditLogger;
-
-    // @Autowired
-    // private UserSessionRepository userSessionRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -304,15 +298,21 @@ public class SecurityUtils {
     public void validatePassword(final String password, final String username, final String firstname,
             final String lastname, final String email) throws Exception {
 
+        final int minLength = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MIN_LENGTH,
+                SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
+
+        final int maxLength = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MAX_LENGTH,
+                SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
+
         if (password == null || password.equals("")) {
             throw new Exception(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
         }
 
-        if (password.length() < SecurityConstants.PASSWORD_MIN_LENGTH) {
+        if (password.length() < minLength) {
             throw new Exception(MessageConstants.PASSWORD_MIN_LENGTH_ERROR);
         }
 
-        if (password.length() > SecurityConstants.PASSWORD_MAX_LENGTH) {
+        if (password.length() > maxLength) {
             throw new Exception(MessageConstants.PASSWORD_MAX_LENGTH_ERROR);
         }
 
@@ -336,25 +336,26 @@ public class SecurityUtils {
             throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
         }
 
-        final StringBuilder patternBuilder = new StringBuilder("((?=.*[a-z])");
+        final StringBuilder patternBuilder = new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
 
-        // TODO: Need to change the following values from database.
-        final boolean forceSpecialChar = true;
-        final boolean forceCapitalLetter = true;
-        final boolean forceNumber = true;
-        final int minLength = SecurityConstants.PASSWORD_MIN_LENGTH;
-        final int maxLength = SecurityConstants.PASSWORD_MAX_LENGTH;
+        final boolean forceSpecialChar = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR,
+                true);
+
+        final boolean forceCapitalLetter = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR,
+                true);
+
+        final boolean forceNumber = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
         if (forceSpecialChar) {
-            patternBuilder.append("(?=.*[@#$%])");
+            patternBuilder.append(SecurityConstants.SYMBOLS_REGEX);
         }
 
         if (forceCapitalLetter) {
-            patternBuilder.append("(?=.*[A-Z])");
+            patternBuilder.append(SecurityConstants.CAPTIAL_LETTER_REGEX);
         }
 
         if (forceNumber) {
-            patternBuilder.append("(?=.*d)");
+            patternBuilder.append(SecurityConstants.NUMBER_REGEX);
         }
 
         patternBuilder.append(".{" + minLength + "," + maxLength + "})");
@@ -425,7 +426,7 @@ public class SecurityUtils {
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
 
         validateEmail(user.getEmail());
-        
+
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
 
             validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
@@ -463,10 +464,10 @@ public class SecurityUtils {
     public boolean validateEmail(final String email) throws Exception {
         boolean isValid = false;
         try {
-            InternetAddress internetAddress = new InternetAddress(email);
+            final InternetAddress internetAddress = new InternetAddress(email);
             internetAddress.validate();
             isValid = true;
-        } catch (AddressException e) {
+        } catch (final AddressException e) {
             throw new Exception(MessageConstants.EMAIL_ERROR);
         }
         return isValid;

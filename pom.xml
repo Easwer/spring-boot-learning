@@ -14,6 +14,18 @@
 	<name>Spring Boot Application</name>
 	<description>Spring Boot Application with React Material GUI</description>
 
+	<developers>
+		<developer>
+			<name>Easwer</name>
+			<roles>
+				<role>Software Developer</role>
+			</roles>
+			<email>easwerms@gmail.com</email>
+			<organization>Easwer</organization>
+			<timezone>India/Chennai</timezone>
+		</developer>
+	</developers>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<frontend-src-dir>${project.basedir}/src/main/react-gui</frontend-src-dir>
@@ -25,9 +37,16 @@
 		<h2-version>1.4.200</h2-version>
 		<lombok.version>1.18.12</lombok.version>
 		<javax.mail.version>1.5.0-b01</javax.mail.version>
+		<findbugs.version>3.0.5</findbugs.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-scala_2.13</artifactId>
+			<version>2.10.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -105,6 +124,19 @@
 		</dependency>
 
 	</dependencies>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs.version}</version>
+				<configuration>
+					<onlyAnalyze>com.sai.easwer.*</onlyAnalyze>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<build>
 		<plugins>
