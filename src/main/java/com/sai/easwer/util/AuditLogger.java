@@ -1,11 +1,5 @@
 package com.sai.easwer.util;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
@@ -14,13 +8,18 @@ import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
 import com.sai.easwer.repository.AuditLogRepository;
 import com.sai.easwer.repository.UserRepository;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
+ * Util to add audit logger.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
  * @modify date 2020-02-17 20:16:44
- * @desc [description]
  */
 @Component
 public class AuditLogger {
@@ -120,7 +119,8 @@ public class AuditLogger {
      * @param type
      * @param userId
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type, final UUID userId) {
+    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+            final UUID userId) {
         final Optional<UserDetails> user = userRepository.findById(userId);
 
         auditLog(description, modules, type, user.get());
@@ -136,7 +136,8 @@ public class AuditLogger {
      * @param userSession
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
-            final ResponseStatus responseStatus, final UserDetails user, final UserSession userSession) {
+            final ResponseStatus responseStatus, final UserDetails user,
+            final UserSession userSession) {
         final AuditLog auditLog = new AuditLog();
 
         auditLog.setId(UUID.randomUUID());

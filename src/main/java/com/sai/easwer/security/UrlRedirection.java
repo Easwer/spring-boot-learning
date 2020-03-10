@@ -10,14 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
+ * This class is used for URL redirection from http:8080 to https:8083.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-17 12:50:42
- * @desc This class is used for URL redirection from http:8080 to https:8083
+ * @modify date 2020-03-10 18:07:08
  */
 @Component
-public class URLRedirection {
+public class UrlRedirection {
 
     @Bean
     public ServletWebServerFactory servletContainer() {

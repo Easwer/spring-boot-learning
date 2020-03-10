@@ -1,15 +1,15 @@
 package com.sai.easwer.model;
 
+import com.sai.easwer.entity.UserDetails;
 import java.util.UUID;
 
-import com.sai.easwer.entity.UserDetails;
-
 /**
+ * Login REST API Response model.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-14 15:12:49
- * @desc [description]
+ * @modify date 2020-03-10 18:06:13
  */
 public class LoginResponse {
 

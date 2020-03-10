@@ -1,21 +1,20 @@
 package com.sai.easwer.entity;
 
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 /**
+ * Entity used to store active user sessions.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-28 11:55:59
+ * @modify date 2020-03-10 18:05:49
  * @Table user_session
- * @Description Entity used to store active user sessions.
  */
 @Data
 @Entity

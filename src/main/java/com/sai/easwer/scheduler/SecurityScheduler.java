@@ -1,19 +1,18 @@
 package com.sai.easwer.scheduler;
 
 import java.util.Calendar;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
+ * Schedulers for security actions.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-27 10:56:16
- * @desc [description]
+ * @modify date 2020-03-10 18:06:55
  */
 @Slf4j
 @EnableScheduling

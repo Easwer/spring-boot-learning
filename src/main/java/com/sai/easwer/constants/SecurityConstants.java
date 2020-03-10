@@ -1,13 +1,18 @@
 package com.sai.easwer.constants;
 
 /**
+ * Security constants.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-03-09 18:08:22
- * @modify date 2020-03-09 18:08:40
- * @desc Security constants
+ * @modify date 2020-03-10 18:04:14
  */
 public class SecurityConstants {
+
+    private SecurityConstants() {
+
+    }
 
     public static final int IDLE_TIMEOUT_MIN = 15;
 
@@ -33,7 +38,8 @@ public class SecurityConstants {
 
     public static final String NAME_PATTERN = "[^a-zA-Z]";
 
-    public static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\[\\]()!@#$%^&*])(?=\\S+$).{8,}";
+    public static final String PASSWORD_PATTERN =
+            "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\[\\]()!@#$%^&*])(?=\\S+$).{8,}";
 
     public static final String FORCE_SPECIAL_CHAR = "forceSpecialChar";
 

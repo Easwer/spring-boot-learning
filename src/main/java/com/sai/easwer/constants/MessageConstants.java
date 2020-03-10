@@ -3,13 +3,18 @@ package com.sai.easwer.constants;
 import com.sai.easwer.util.GlobalSettingsUtil;
 
 /**
+ * Constants file to keep the error messeges.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-28 14:24:18
- * @modify date 2020-03-09 18:06:41
- * @Description Constants file to keep the error messeges.
+ * @modify date 2020-03-10 18:03:50
  */
 public class MessageConstants {
+
+        private MessageConstants() {
+
+        }
 
         public static final String EMPTY = "";
 
@@ -31,7 +36,9 @@ public class MessageConstants {
 
         public static final String PASSWORD_CANNOT_BE_EMPTY = "Password cannot be empty";
 
-        public static final String PASSWORD_PATTERN_ERROR = "Password should contain one uppercase character, one lowercase character, one special character and one number";
+        public static final String PASSWORD_PATTERN_ERROR =
+                        "Password should contain " + "one uppercase character, " + "one lowercase "
+                                        + "character, one special character and one number";
 
         public static final String USERNAME_PATTERN_ERROR = "Username can only have alphanumeric.";
 
@@ -39,21 +46,27 @@ public class MessageConstants {
 
         public static final String LAST_NAME_ERROR = "Last name can only have alpha charachters.";
 
-        public static final String PASSWORD_SHOULD_NOT_HAVE_SPACE = "Password should not have space";
+        public static final String PASSWORD_SHOULD_NOT_HAVE_SPACE =
+                        "Password should not have space";
 
-        public static final String PASSWORD_SHOULD_NOT_CONTAIN_USERNAME = "Password should not contain username.";
+        public static final String PASSWORD_SHOULD_NOT_CONTAIN_USERNAME =
+                        "Password should not contain username.";
 
-        public static final String PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME = "Password should not contain user's firstname.";
+        public static final String PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME =
+                        "Password should not contain user's firstname.";
 
-        public static final String PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME = "Password should not contain user's lastname.";
+        public static final String PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME =
+                        "Password should not contain user's lastname.";
 
-        public static final String PASSWORD_SHOULD_NOT_CONTAIN_EMAIL = "Password should not contain user's email address.";
+        public static final String PASSWORD_SHOULD_NOT_CONTAIN_EMAIL =
+                        "Password should not contain user's email address.";
 
         public static final String EMAIL_CANNOT_BE_EMPTY = "Email address cannot be empty";
 
         public static final String EMAIL_ERROR = "Invalid Email address.";
 
-        public static final String GLOBAL_SETTINGS_RETRIVED_SUCCESSFULLY = "Global Settings retrived Successfully.";
+        public static final String GLOBAL_SETTINGS_RETRIVED_SUCCESSFULLY =
+                        "Global Settings retrived Successfully.";
 
         public static final String GLOBAL_SETTINGS_NO_CONTENT = "No Global settings found.";
 
@@ -73,22 +86,28 @@ public class MessageConstants {
 
         public static final String USER_DELETED_SUCCESSFULLY = "User deleted successfully.";
 
-        public static final String IDLE_TIMOUT_ERROR = "Idle timeout value should be between "
-                        + SecurityConstants.IDLE_TIMEOUT_MIN + " and " + SecurityConstants.IDLE_TIMEOUT_MAX;
+        public static final String IDLE_TIMOUT_ERROR =
+                        "Idle timeout value should be between " + SecurityConstants.IDLE_TIMEOUT_MIN
+                                        + " and " + SecurityConstants.IDLE_TIMEOUT_MAX;
 
         public static final String ACCOUNT_EXPIRY_ERROR = "Account expiry value should be between "
-                        + SecurityConstants.ACCOUNT_EXPIRY_MIN + " and " + SecurityConstants.ACCOUNT_EXPIRY_MAX;
+                        + SecurityConstants.ACCOUNT_EXPIRY_MIN + " and "
+                        + SecurityConstants.ACCOUNT_EXPIRY_MAX;
 
-        public static final String PASSWORD_EXPIRY_ERROR = "Password expiry value should be between "
-                        + SecurityConstants.PASSWORD_EXPIRY_MIN + " and " + SecurityConstants.PASSWORD_EXPIRY_MAX;
+        public static final String PASSWORD_EXPIRY_ERROR =
+                        "Password expiry value should be between "
+                                        + SecurityConstants.PASSWORD_EXPIRY_MIN + " and "
+                                        + SecurityConstants.PASSWORD_EXPIRY_MAX;
 
         public static final String PASSWORD_MIN_LENGTH_ERROR = "Password should have minimum "
-                        + GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MIN_LENGTH,
+                        + GlobalSettingsUtil.getGlobalSettings(
+                                        SecurityConstants.PASSWORD_MIN_LENGTH,
                                         SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH)
                         + " characters.";
 
         public static final String PASSWORD_MAX_LENGTH_ERROR = "Password should have maximum "
-                        + GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MAX_LENGTH,
+                        + GlobalSettingsUtil.getGlobalSettings(
+                                        SecurityConstants.PASSWORD_MAX_LENGTH,
                                         SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH)
                         + " characters.";
 

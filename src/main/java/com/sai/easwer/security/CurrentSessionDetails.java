@@ -1,13 +1,18 @@
 package com.sai.easwer.security;
 
 /**
+ * Manage Current Session Details.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 14:57:17
- * @modify date 2020-02-14 14:58:03
- * @desc [description]
+ * @modify date 2020-03-10 18:07:00
  */
 public class CurrentSessionDetails {
+
+    private CurrentSessionDetails() {
+
+    }
 
     private static final ThreadLocal<String> userHolder = new ThreadLocal<>();
 

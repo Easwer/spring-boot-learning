@@ -1,32 +1,30 @@
 package com.sai.easwer.util;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.constants.UserAccountStatus;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserGroup;
 import com.sai.easwer.repository.UserRepository;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
+ * Util file to handle Security operations.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-28 15:43:56
  * @modify date 2020-02-28 15:43:56
- * @Description Util file to handle Security operations.
  */
 @Component
 public class SecurityUtils {
@@ -183,7 +181,8 @@ public class SecurityUtils {
     // accountStatus.equalsIgnoreCase(UserAccountStatus.BLOCKED.getAccountStatus())
 
     // ||
-    // accountStatus.equalsIgnoreCase(UserAccountStatus.DORMANCY_PERIOD_EXCEEDED.getAccountStatus()))
+    // accountStatus.equalsIgnoreCase(UserAccountStatus.D
+    // ORMANCY_PERIOD_EXCEEDED.getAccountStatus()))
     // {
 
     // throw new Exception(SecurityConstants.ERROR_AUTHENTICATION);
@@ -260,8 +259,8 @@ public class SecurityUtils {
 
     }
 
-    public void validateUserName(final String username, final String firstName, final String lastName)
-            throws Exception {
+    public void validateUserName(final String username, final String firstName,
+            final String lastName) throws Exception {
 
         if (username == null || username.equals("")) {
             throw new Exception(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
@@ -295,14 +294,16 @@ public class SecurityUtils {
 
     }
 
-    public void validatePassword(final String password, final String username, final String firstname,
-            final String lastname, final String email) throws Exception {
+    public void validatePassword(final String password, final String username,
+            final String firstname, final String lastname, final String email) throws Exception {
 
-        final int minLength = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MIN_LENGTH,
-                SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
+        final int minLength =
+                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MIN_LENGTH,
+                        SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
 
-        final int maxLength = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MAX_LENGTH,
-                SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
+        final int maxLength =
+                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MAX_LENGTH,
+                        SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
 
         if (password == null || password.equals("")) {
             throw new Exception(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
@@ -336,15 +337,17 @@ public class SecurityUtils {
             throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
         }
 
-        final StringBuilder patternBuilder = new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
+        final StringBuilder patternBuilder =
+                new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
 
-        final boolean forceSpecialChar = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR,
-                true);
+        final boolean forceSpecialChar =
+                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
-        final boolean forceCapitalLetter = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR,
-                true);
+        final boolean forceCapitalLetter =
+                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
-        final boolean forceNumber = GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceNumber =
+                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
         if (forceSpecialChar) {
             patternBuilder.append(SecurityConstants.SYMBOLS_REGEX);
@@ -429,8 +432,8 @@ public class SecurityUtils {
 
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
 
-            validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
-                    user.getEmail());
+            validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
+                    user.getLastName(), user.getEmail());
 
             // checkPasswordHistory(user.getPassword(), user.getId());
 
@@ -452,8 +455,8 @@ public class SecurityUtils {
 
         validateUserExists(user.getUsername());
 
-        validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
-                user.getEmail());
+        validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
+                user.getLastName(), user.getEmail());
 
         // validateGroupInfo(user.getGroups());
 

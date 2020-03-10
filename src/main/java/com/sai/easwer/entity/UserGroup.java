@@ -3,16 +3,17 @@ package com.sai.easwer.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 /**
+ * Entity class used to store group details.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-17 15:18:25
- * @modify date 2020-02-28 11:55:17
+ * @modify date 2020-03-10 18:05:35
  * @Table user_group
- * @Description Entity class used to store group details.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -30,5 +31,5 @@ public class UserGroup extends BaseEntity {
 
     @Column(name = "is_default")
     private boolean isDefault = false;
-    
+
 }

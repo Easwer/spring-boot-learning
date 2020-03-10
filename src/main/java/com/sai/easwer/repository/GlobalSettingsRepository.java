@@ -1,27 +1,26 @@
 package com.sai.easwer.repository;
 
+import com.sai.easwer.entity.GlobalSettings;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.sai.easwer.entity.GlobalSettings;
-
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Global settings repository.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-03-09 11:27:59
- * @desc Global settings repository
+ * @modify date 2020-03-10 18:06:34
  */
 @Repository
 public interface GlobalSettingsRepository extends PagingAndSortingRepository<GlobalSettings, UUID> {
 
-    public Optional<GlobalSettings> findByKey(String key);
+    Optional<GlobalSettings> findByKey(String key);
 
-    public List<GlobalSettings> findAll();
+    List<GlobalSettings> findAll();
 
-    public List<GlobalSettings> findByModule(String module);
+    List<GlobalSettings> findByModule(String module);
 }

@@ -3,16 +3,16 @@ package com.sai.easwer.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * Entity class used to store user details.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-28 11:55:21
- * @Description Entity class used to store user details.
+ * @modify date 2020-03-10 18:05:31
  */
 @Entity
 @Table(name = "user_details")

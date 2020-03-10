@@ -1,19 +1,18 @@
 package com.sai.easwer.listener;
 
+import com.sai.easwer.entity.BaseEntity;
+import com.sai.easwer.security.CurrentSessionDetails;
 import java.util.Calendar;
-
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import com.sai.easwer.entity.BaseEntity;
-import com.sai.easwer.security.CurrentSessionDetails;
-
 /**
+ * This class will listen all entity updates and persist.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-17 12:51:29
- * @desc This class will listen all entity updates and persist.
+ * @modify date 2020-03-10 18:06:05
  */
 public class EntityChangeListener {
 

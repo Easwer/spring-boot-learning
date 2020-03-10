@@ -1,21 +1,31 @@
 package com.sai.easwer.util;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.sai.easwer.entity.UserSession;
 import com.sai.easwer.repository.UserSessionRepository;
-
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * User session utils.
+ * 
+ * @author Easwer AP
+ * @email easwerms@gmail.com
+ * @create date 2020-03-10 17:40:54
+ * @modify date 2020-03-10 18:09:04
+ */
 public class SessionUtils {
+
+    private SessionUtils() {
+
+    }
 
     @Autowired
     private static UserSessionRepository userSessionRepository;
 
-    public static boolean isSessionActive(UUID authToken) {
+    public static boolean isSessionActive(final UUID authToken) {
         boolean result = false;
-        Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+        final Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
         if (userSession.isPresent()) {
             result = true;
         }

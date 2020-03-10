@@ -1,23 +1,21 @@
 package com.sai.easwer.entity;
 
+import com.sai.easwer.listener.EntityChangeListener;
 import java.io.Serializable;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import com.sai.easwer.listener.EntityChangeListener;
-
 import lombok.Data;
 
 /**
+ * Base entity used to hold common variables like Id, Version, Created date, Last updated date etc.
+ * 
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-02-28 11:55:26
- * @Description Base entity used to hold common variables like Id, Version, Created date, Last updated date etc.
+ * @modify date 2020-03-10 18:05:13
  */
 @Data
 @MappedSuperclass
