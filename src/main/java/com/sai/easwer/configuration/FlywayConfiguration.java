@@ -17,10 +17,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FlywayConfiguration {
 
+    private static final String BASE_VERSION = "0";
+
     @Autowired
     public FlywayConfiguration(final DataSource dataSource) {
-        Flyway.configure().baselineOnMigrate(true)
-                .baselineVersion(MigrationVersion.fromVersion("0")).dataSource(dataSource).load()
-                .migrate();
+        Flyway.configure().baselineOnMigrate(true).baselineVersion(MigrationVersion.fromVersion(BASE_VERSION))
+                .dataSource(dataSource).load().migrate();
     }
 }
