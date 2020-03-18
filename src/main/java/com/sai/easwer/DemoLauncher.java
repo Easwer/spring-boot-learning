@@ -23,8 +23,4 @@ public class DemoLauncher {
 		SpringApplication.run(DemoLauncher.class, args);
 	}
 
-	private DemoLauncher() {
-
-	}
-
 }

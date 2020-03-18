@@ -21,7 +21,7 @@ public interface AuditLogController {
      * @param auditLogId {@link UUID}
      * @return {@link ResponseEntity}
      */
-    @GetMapping(name = "/auditlog")
+    @GetMapping(value = "/auditlog")
     ResponseEntity<Response> getAllAuditLog(
             @RequestParam(required = false, name = "id") UUID auditLogId);
 
@@ -31,6 +31,6 @@ public interface AuditLogController {
      * @param username {@link String}
      * @return {@link ResponseEntity}
      */
-    @GetMapping(name = "/auditlog")
+    @GetMapping(value = "/auditlog")
     ResponseEntity<Response> getAllAuditLogByUser(@RequestParam(name = "user") String username);
 }

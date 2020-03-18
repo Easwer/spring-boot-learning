@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public interface SystemController {
 
-    @GetMapping(name = "/status")
+    @GetMapping(value = "/status")
     ResponseEntity<Response> getServerStatus();
 
-    @GetMapping(name = "/isValid")
+    @GetMapping(value = "/isValid")
     ResponseEntity<Response> isValidToken(UUID authToken);
 }

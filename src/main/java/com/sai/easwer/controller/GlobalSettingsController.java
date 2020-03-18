@@ -24,7 +24,7 @@ public interface GlobalSettingsController {
      * @param module
      * @return
      */
-    @GetMapping(name = "/settings")
+    @GetMapping(value = "/settings")
     ResponseEntity<Response> getGlobalSettings(
             @RequestParam(name = "key", required = false) String key,
             @RequestParam(name = "module", required = false) String module);
