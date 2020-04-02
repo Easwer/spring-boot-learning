@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class SecurityScheduler {
 
     /**
-     * 
+     * Security scheduler which runs every 30 minutes.
      */
     @Scheduled(cron = "0 0/30 * * * *")
     public void printLog() {

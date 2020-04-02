@@ -23,6 +23,12 @@ public class SessionUtils {
     @Autowired
     private static UserSessionRepository userSessionRepository;
 
+    /**
+     * Checks whether the session is active for the provided auth Token.
+     * 
+     * @param authToken {@link UUID}
+     * @return true is valid session else false. {@link Boolean}
+     */
     public static boolean isSessionActive(final UUID authToken) {
         boolean result = false;
         final Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);

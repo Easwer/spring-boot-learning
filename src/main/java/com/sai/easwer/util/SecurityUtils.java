@@ -237,6 +237,12 @@ public class SecurityUtils {
 
     // }
 
+    /**
+     * Validates email address format.
+     * 
+     * @param email {@link String}
+     * @throws Exception if not a valid email.
+     */
     public void validateEmailAddress(final String email) throws Exception {
 
         if (email == null || email.equals("")) {
@@ -259,6 +265,14 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * Validates the username, first name and last name.
+     * 
+     * @param username {@link String}
+     * @param firstName {@link String}
+     * @param lastName {@link String}
+     * @throws Exception if not valid.
+     */
     public void validateUserName(final String username, final String firstName,
             final String lastName) throws Exception {
 
@@ -275,25 +289,40 @@ public class SecurityUtils {
         if (firstName == null || firstName.equals("")) {
             throw new Exception(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
         }
-
-        p = Pattern.compile(SecurityConstants.NAME_PATTERN);
-
-        if (!p.matcher(firstName).find()) {
-            throw new Exception(MessageConstants.FIRST_NAME_ERROR);
-        }
-
+        
         if (lastName == null || lastName.equals("")) {
             throw new Exception(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
         }
 
         p = Pattern.compile(SecurityConstants.NAME_PATTERN);
 
+        if (!p.matcher(firstName).find()) {
+            throw new Exception(MessageConstants.FIRST_NAME_ERROR);
+        }    
+        
         if (!p.matcher(lastName).find()) {
             throw new Exception(MessageConstants.LAST_NAME_ERROR);
         }
 
     }
 
+    
+    /**
+     * Validates the password.<pre>
+     * Valid password should satisfy the following criteria's
+     *  - Should not contains username.
+     *  - Should not contains user's first name.
+     *  - Should not contains user's last name.
+     *  - Should not contains user's email without domain.
+     *  - Should satisfy minimum and maximum length criteria.
+     *  - Should satisfy password pattern criteria based on global settings.</pre>
+     * @param password {@link String}
+     * @param username {@link String}
+     * @param firstname {@link String}
+     * @param lastname {@link String}
+     * @param email {@link String}
+     * @throws Exception if not valid
+     */
     public void validatePassword(final String password, final String username,
             final String firstname, final String lastname, final String email) throws Exception {
 
@@ -424,11 +453,17 @@ public class SecurityUtils {
 
     // }
 
+    /**
+     *  Validates user resquest while updating the existing user.
+     * 
+     * @param user {@link UserDetails}
+     * @throws Exception if not valid.
+     */
     public void validateUpdateUserRequest(final UserDetails user) throws Exception {
 
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
 
-        validateEmail(user.getEmail());
+        validateEmailAddress(user.getEmail());
 
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
 
@@ -447,11 +482,18 @@ public class SecurityUtils {
 
     }
 
+
+    /**
+     *  Validates user resquest while creating the new user.
+     * 
+     * @param user {@link UserDetails}
+     * @throws Exception if not valid.
+     */
     public void validateCreateUserRequest(final UserDetails user) throws Exception {
 
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
 
-        validateEmail(user.getEmail());
+        validateEmailAddress(user.getEmail());
 
         validateUserExists(user.getUsername());
 
@@ -464,19 +506,13 @@ public class SecurityUtils {
 
     }
 
-    public boolean validateEmail(final String email) throws Exception {
-        boolean isValid = false;
-        try {
-            final InternetAddress internetAddress = new InternetAddress(email);
-            internetAddress.validate();
-            isValid = true;
-        } catch (final AddressException e) {
-            throw new Exception(MessageConstants.EMAIL_ERROR);
-        }
-        return isValid;
-    }
-
-    private void validateUserExists(final String username) throws Exception {
+    /**
+     * Validates whether the user exists or not by username.
+     * 
+     * @param username {@link String}
+     * @throws Exception - if not valid
+     */
+    public void validateUserExists(final String username) throws Exception {
 
         final Optional<UserDetails> userDetails = userRepository.findByUsername(username);
 
@@ -486,6 +522,11 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * Checks wether User Account Status string is a valid user account status.
+     * @param user {@link UserDetails}
+     * @throws Exception if not valid
+     */
     public void validateUserAccountStatus(final UserDetails user) throws Exception {
 
         if (!UserAccountStatus.contains(user.getUserAccountStatus())) {
@@ -494,6 +535,17 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * <pre>
+     * Validates user password expiry, account expiry and idle timeout values int the user request.
+     * - Password Expiry: Minimum = 30 days and Maximum = 120 days.
+     * - Account Expiry: Minimum = 0 days and Maximum = 120 days.
+     * - Idle Timeout: Minimum = 15 minutes and Maximum = 120 minutes.
+     * </pre>
+     * 
+     * @param user {@link UserDetails}
+     * @throws Exception if not valid
+     */
     public void validateTimeouts(final UserDetails user) throws Exception {
 
         if (user.getPasswordExpiry() < SecurityConstants.PASSWORD_EXPIRY_MIN
@@ -513,6 +565,12 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * Validates group list.
+     * 
+     * @param groupList {@link List} of {@link UserGroup}
+     * @throws Exception if not valid
+     */
     public void validateGroupInfo(final List<UserGroup> groupList) throws Exception {
 
         if (groupList.isEmpty()) {
@@ -521,6 +579,12 @@ public class SecurityUtils {
 
     }
 
+    /**
+     * Converts milliseconds to date format.
+     * 
+     * @param milliSecond {@link Long}
+     * @return Date format {@link String}
+     */
     public String milliSecondsToDateString(final long milliSecond) {
 
         final DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS");

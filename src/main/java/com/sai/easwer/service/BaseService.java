@@ -16,6 +16,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public abstract class BaseService {
+
+    /**
+     * This method is used to create {@link ResponseEntity}<{@link Response}> for all REST API's.
+     * 
+     * @param message {@link String}
+     * @param status {@link ResponseStatus}
+     * @param object {@link Object}
+     * @param httpStatus {@link HttpStatus}
+     * @return REST API Response as {@link ResponseEntity}<{@link Response}>
+     */
     public ResponseEntity<Response> createResponse(final String message,
             final ResponseStatus status, final Object object, final HttpStatus httpStatus) {
         final Response response = new Response();

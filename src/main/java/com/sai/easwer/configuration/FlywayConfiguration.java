@@ -19,9 +19,14 @@ public class FlywayConfiguration {
 
     private static final String BASE_VERSION = "0";
 
+    /**
+     * Set flyway configuration for Database migration.
+     * @param dataSource {@link DataSource}
+     */
     @Autowired
     public FlywayConfiguration(final DataSource dataSource) {
-        Flyway.configure().baselineOnMigrate(true).baselineVersion(MigrationVersion.fromVersion(BASE_VERSION))
-                .dataSource(dataSource).load().migrate();
+        Flyway.configure().baselineOnMigrate(true)
+                .baselineVersion(MigrationVersion.fromVersion(BASE_VERSION)).dataSource(dataSource)
+                .load().migrate();
     }
 }

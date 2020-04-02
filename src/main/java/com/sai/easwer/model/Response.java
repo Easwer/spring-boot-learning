@@ -18,42 +18,48 @@ public class Response {
     private ResponseStatus status;
 
     /**
-     * @return the message
+     * Get the message.
+     * @return the message. {@link String}
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * @param message the message to set
+     * Set the message.
+     * @param message the message to set. {@link String}
      */
     public void setMessage(final String message) {
         this.message = message;
     }
 
     /**
-     * @return the object
+     * Get the response object.
+     * @return the object. {@link String}
      */
     public Object getObject() {
         return object;
     }
 
     /**
-     * @param object the object to set
+     * Set the response object.
+     * @param object the object to set. {@link String}
      */
     public void setObject(final Object object) {
         this.object = object;
     }
 
     /**
-     * @return the status
+     * Get the response status.
+     * @return the status. {@link String}
      */
     public ResponseStatus getStatus() {
         return status;
     }
 
     /**
-     * @param status the status to set
+     * Set the response status.
+     * @param status the status to set. {@link String}
      */
     public void setStatus(final ResponseStatus status) {
         this.status = status;

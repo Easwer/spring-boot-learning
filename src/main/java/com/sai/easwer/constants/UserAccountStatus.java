@@ -18,14 +18,30 @@ public enum UserAccountStatus {
 
     private String accountStatus;
 
+    /**
+     * Constructor for {@link UserAccountStatus}.
+     * 
+     * @param accountStatus {@link String}
+     */
     UserAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
     }
 
+    /**
+     * Set account status {@link String} for {@link Enum}.
+     * 
+     * @return account status {@link String}
+     */
     public String getAccountStatus() {
         return accountStatus;
     }
 
+    /**
+     * Check whether the provided string is a valid user account status.
+     * 
+     * @param accountStatus {@link String}
+     * @return {@link Boolean}
+     */
     public static boolean contains(String accountStatus) {
         return Stream.of(UserAccountStatus.values())
                 .anyMatch(v -> v.getAccountStatus().equals(accountStatus));

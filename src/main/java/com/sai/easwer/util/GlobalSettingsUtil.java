@@ -28,9 +28,9 @@ public class GlobalSettingsUtil {
     /**
      * Get Global Settings.
      * 
-     * @param <T>
-     * @param key
-     * @param defaultValue
+     * @param <T> Generic Object.
+     * @param key {@link String}
+     * @param defaultValue default value.
      * @return
      */
     public static <T extends Object> T getGlobalSettings(final String key, final T defaultValue) {

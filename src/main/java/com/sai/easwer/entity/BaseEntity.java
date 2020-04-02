@@ -10,7 +10,8 @@ import javax.persistence.MappedSuperclass;
 import lombok.Data;
 
 /**
- * Base entity used to hold common variables like Id, Version, Created date, Last updated date etc.
+ * Base entity used to hold common variables like Id, Version, Created date,
+ * Last updated date etc.
  * 
  * @author Easwer AP
  * @email easwerms@gmail.com

@@ -18,14 +18,27 @@ public class CurrentSessionDetails {
 
     private static final String DEFAULT_USER = "System";
 
+    /**
+     * Stores the current username in cache during login.
+     * 
+     * @param user {@link String}
+     */
     public static void login(String user) {
         userHolder.set(user);
     }
 
+    /**
+     * Clears the cache during logout.
+     */
     public static void logout() {
         userHolder.remove();
     }
 
+    /**
+     * Gets current login username.
+     * 
+     * @return username {@link String}
+     */
     public static String getUsername() {
         if (null == userHolder.get() || userHolder.get().isEmpty()) {
             return DEFAULT_USER;

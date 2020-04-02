@@ -20,6 +20,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UrlRedirection {
 
+    /**
+     * Configuration to redirect HTTP URL's in port 8080 to HTTPS in 8083.
+     * 
+     * @return ServletWebServerFactory {@link ServletWebServerFactory}
+     */
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -37,6 +42,11 @@ public class UrlRedirection {
         return tomcat;
     }
 
+    /**
+     * Create HTTP to HTTPS connector.
+     * 
+     * @return Connector {@link Connector}
+     */
     private Connector redirectConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");

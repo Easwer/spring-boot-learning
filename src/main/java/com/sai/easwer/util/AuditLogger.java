@@ -30,30 +30,33 @@ public class AuditLogger {
     private UserRepository userRepository;
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
+     * @param description {@link String}
+     * @param modules     {@link Modules}
      */
     public void auditLog(final String description, final Modules modules) {
         auditLog(description, modules, AuditLogType.SYSTEM, null, null, null);
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
+     * @param description {@link String}
+     * @param modules     {@link Modules}
+     * @param type        {@link AuditLogType}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type) {
         auditLog(description, modules, type, null, null, null);
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param responseStatus
+     * @param description    {@link String}
+     * @param modules        {@link Modules}
+     * @param type           {@link AuditLogType}
+     * @param responseStatus {@link ResponseStatus}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus) {
@@ -61,12 +64,13 @@ public class AuditLogger {
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param responseStatus
-     * @param userSession
+     * @param description    {@link String}
+     * @param modules        {@link Modules}
+     * @param type           {@link AuditLogType}
+     * @param responseStatus {@link ResponseStatus}
+     * @param userSession    {@link UserSession}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserSession userSession) {
@@ -75,11 +79,12 @@ public class AuditLogger {
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param userSession
+     * @param description {@link String}
+     * @param modules     {@link Modules}
+     * @param type        {@link AuditLogType}
+     * @param userSession {@link UserSession}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final UserSession userSession) {
@@ -88,12 +93,13 @@ public class AuditLogger {
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param responseStatus
-     * @param user
+     * @param description    {@link String}
+     * @param modules        {@link Modules}
+     * @param type           {@link AuditLogType}
+     * @param responseStatus {@link ResponseStatus}
+     * @param user           {@link UserDetails}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserDetails user) {
@@ -101,11 +107,12 @@ public class AuditLogger {
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param user
+     * @param description {@link String}
+     * @param modules     {@link Modules}
+     * @param type        {@link AuditLogType}
+     * @param user        {@link UserDetails}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
             final UserDetails user) {
@@ -113,31 +120,31 @@ public class AuditLogger {
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param userId
+     * @param description {@link String}
+     * @param modules     {@link Modules}
+     * @param type        {@link AuditLogType}
+     * @param userId      {@link UUID}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
-            final UUID userId) {
+    public void auditLog(final String description, final Modules modules, final AuditLogType type, final UUID userId) {
         final Optional<UserDetails> user = userRepository.findById(userId);
 
         auditLog(description, modules, type, user.get());
     }
 
     /**
+     * Add new audit log entry.
      * 
-     * @param description
-     * @param modules
-     * @param type
-     * @param responseStatus
-     * @param user
-     * @param userSession
+     * @param description    {@link String}
+     * @param modules        {@link Modules}
+     * @param type           {@link AuditLogType}
+     * @param responseStatus {@link ResponseStatus}
+     * @param user           {@link UserDetails}
+     * @param userSession    {@link UserSession}
      */
     public void auditLog(final String description, final Modules modules, final AuditLogType type,
-            final ResponseStatus responseStatus, final UserDetails user,
-            final UserSession userSession) {
+            final ResponseStatus responseStatus, final UserDetails user, final UserSession userSession) {
         final AuditLog auditLog = new AuditLog();
 
         auditLog.setId(UUID.randomUUID());

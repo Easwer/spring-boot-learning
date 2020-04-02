@@ -24,51 +24,59 @@ import org.springframework.web.bind.annotation.RestController;
 public interface UserContoller {
 
     /**
+     * API to login into the application. It will create new user session and
+     * returns the auth token.
      * 
-     * @param name
-     * @param password
-     * @return
+     * @param name     {@link String}
+     * @param password {@link String}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/login")
     ResponseEntity<Response> login(@RequestParam(name = "username") String name,
             @RequestParam(name = "password") String password);
 
     /**
+     * API to logout of the application. It will remove the user session.
      * 
-     * @param authToken
-     * @return
+     * @param authToken {@link UUID}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/logout")
     ResponseEntity<Response> logout(@RequestParam(name = "authToken") UUID authToken);
 
     /**
+     * API to retrive the user. It will retrive the particular user if id is
+     * provided else retives all the users.
      * 
-     * @param userId
-     * @return
+     * @param userId {@link UUID}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/user")
     ResponseEntity<Response> getUser(@RequestParam(required = false, name = "id") UUID userId);
 
     /**
+     * API to create new user.
      * 
-     * @param user
-     * @return
+     * @param user {@link UserDetails}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @PostMapping(value = "/user")
     ResponseEntity<Response> createUser(@RequestBody UserDetails user);
 
     /**
+     * API to update the existing user.
      * 
-     * @param user
-     * @return
+     * @param user {@link UserDetails}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @PutMapping(value = "/user")
     ResponseEntity<Response> updateUser(@RequestBody UserDetails user);
 
     /**
+     * API to delete the existing user.
      * 
-     * @param userId
-     * @return
+     * @param userId {@link UUID}
+     * @return {@link ResponseEntity}<{@link Response}>
      */
     @DeleteMapping(value = "/user")
     ResponseEntity<Response> deleteUser(@RequestParam(name = "id") UUID userId);

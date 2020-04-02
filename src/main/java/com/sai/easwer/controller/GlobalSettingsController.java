@@ -20,9 +20,9 @@ public interface GlobalSettingsController {
     /**
      * Get Global setiings.
      * 
-     * @param key
-     * @param module
-     * @return
+     * @param key {@link String}
+     * @param module {@link String}
+     * @return REST API response. {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/settings")
     ResponseEntity<Response> getGlobalSettings(

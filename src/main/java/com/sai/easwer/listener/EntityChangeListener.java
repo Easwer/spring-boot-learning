@@ -17,8 +17,11 @@ import javax.persistence.PreUpdate;
 public class EntityChangeListener {
 
     /**
+     * Fills created_time and updated_time with current time,
+     * create_by and updated_by with current login user and
+     * generate random {@link java.util.UUID} if id is null.
      * 
-     * @param entity
+     * @param entity Instance of the entity. {@link BaseEntity}
      */
     @PrePersist
     public void prePersist(BaseEntity entity) {
@@ -30,8 +33,9 @@ public class EntityChangeListener {
     }
 
     /**
+     * Fills updated_time with current time and updated_by with current login user.
      * 
-     * @param entity
+     * @param entity Instance of the entity. {@link BaseEntity}
      */
     @PreUpdate
     public void preUpdate(BaseEntity entity) {

@@ -62,16 +62,16 @@ public class UserService extends BaseService implements UserContoller {
                         HttpStatus.NO_CONTENT);
             }
 
-            return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS,
-                    users, HttpStatus.OK);
+            return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, users,
+                    HttpStatus.OK);
         } else {
             final Optional<UserDetails> user = userRepository.findById(userId);
             if (user == null) {
-                return createResponse(MessageConstants.INVALID_USER_ID, ResponseStatus.FAILURE,
-                        null, HttpStatus.BAD_REQUEST);
+                return createResponse(MessageConstants.INVALID_USER_ID, ResponseStatus.FAILURE, null,
+                        HttpStatus.BAD_REQUEST);
             } else {
-                return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY,
-                        ResponseStatus.SUCCESS, user, HttpStatus.OK);
+                return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, user,
+                        HttpStatus.OK);
             }
         }
     }
@@ -81,22 +81,18 @@ public class UserService extends BaseService implements UserContoller {
         try {
             securityUtils.validateCreateUserRequest(user);
 
-            user.setUserAccountStatus(
-                    UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN.getAccountStatus());
+            user.setUserAccountStatus(UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN.getAccountStatus());
 
             user.setId(UUID.randomUUID());
 
             userRepository.save(user);
         } catch (final IllegalArgumentException e) {
-            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null,
-                    HttpStatus.BAD_REQUEST);
+            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         } catch (final Exception e) {
-            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null,
-                    HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
         log.info(MessageConstants.USERS_CREATED_SUCCESSFULLY);
-        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS,
-                user, HttpStatus.OK);
+        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
@@ -114,14 +110,11 @@ public class UserService extends BaseService implements UserContoller {
                 throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
             }
         } catch (final IllegalArgumentException e) {
-            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null,
-                    HttpStatus.BAD_REQUEST);
+            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         } catch (final Exception e) {
-            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null,
-                    HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
-        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS,
-                user, HttpStatus.OK);
+        return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
@@ -133,31 +126,30 @@ public class UserService extends BaseService implements UserContoller {
             return createResponse(MessageConstants.USER_NOT_FOUND, ResponseStatus.FAILURE, null,
                     HttpStatus.BAD_REQUEST);
         }
-        return createResponse(MessageConstants.USER_DELETED_SUCCESSFULLY, ResponseStatus.SUCCESS,
-                null, HttpStatus.OK);
+        return createResponse(MessageConstants.USER_DELETED_SUCCESSFULLY, ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Response> login(final String username, final String password) {
         if (null == username) {
-            return createResponse(MessageConstants.USERNAME_CANNOT_BE_EMPTY, ResponseStatus.FAILURE,
-                    null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.USERNAME_CANNOT_BE_EMPTY, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         if (null == password) {
-            return createResponse(MessageConstants.PASSWORD_CANNOT_BE_EMPTY, ResponseStatus.FAILURE,
-                    null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.PASSWORD_CANNOT_BE_EMPTY, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         final Optional<UserDetails> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             if (!user.get().getPassword().equals(password)) {
-                return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE,
-                        null, HttpStatus.FORBIDDEN);
+                return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE, null,
+                        HttpStatus.FORBIDDEN);
             }
         } else {
-            return createResponse(MessageConstants.INVALID_USER_DETAILS, ResponseStatus.FAILURE,
-                    null, HttpStatus.BAD_REQUEST);
+            return createResponse(MessageConstants.INVALID_USER_DETAILS, ResponseStatus.FAILURE, null,
+                    HttpStatus.BAD_REQUEST);
         }
 
         final UserSession userSession = createUserSession(user.get());
@@ -166,11 +158,10 @@ public class UserService extends BaseService implements UserContoller {
         loginResponse.setUser(user.get());
         loginResponse.setAuthToken(userSession.getAuthToken());
 
-        auditLogger.auditLog(MessageConstants.LOGIN_SUCCESSFUL_FOR_USER + username + "'.",
-                Modules.SECURITY, AuditLogType.LOGIN, userSession);
+        auditLogger.auditLog(MessageConstants.LOGIN_SUCCESSFUL_FOR_USER + username + "'.", Modules.SECURITY,
+                AuditLogType.LOGIN, userSession);
 
-        return createResponse(MessageConstants.LOGIN_SUCCESSFUL, ResponseStatus.SUCCESS,
-                loginResponse, HttpStatus.OK);
+        return createResponse(MessageConstants.LOGIN_SUCCESSFUL, ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 
     private UserSession createUserSession(final UserDetails userDetails) {
@@ -198,25 +189,20 @@ public class UserService extends BaseService implements UserContoller {
             if (userSession.isPresent()) {
                 userSessionRepository.delete(userSession.get());
             } else {
-                return createResponse(MessageConstants.INVALID_SESSION_DETAILS,
-                        ResponseStatus.FAILURE, null, HttpStatus.INTERNAL_SERVER_ERROR);
+                return createResponse(MessageConstants.INVALID_SESSION_DETAILS, ResponseStatus.FAILURE, null,
+                        HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (final Exception e) {
             if (loginUser != null && loginUser.isPresent()) {
-                auditLogger
-                        .auditLog(
-                                MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER
-                                        + loginUser.get().getUsername() + "'.",
-                                Modules.SECURITY, AuditLogType.LOGOUT);
+                auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
+                        Modules.SECURITY, AuditLogType.LOGOUT);
             }
             return createResponse(MessageConstants.LOGOUT_FAILURE, ResponseStatus.FAILURE, null,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        auditLogger.auditLog(
-                MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
+        auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
                 Modules.SECURITY, AuditLogType.LOGOUT);
-        return createResponse(MessageConstants.LOGOUT_SUCCESSFUL, ResponseStatus.SUCCESS, null,
-                HttpStatus.OK);
+        return createResponse(MessageConstants.LOGOUT_SUCCESSFUL, ResponseStatus.SUCCESS, null, HttpStatus.OK);
     }
 
 }
