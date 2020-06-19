@@ -1,29 +1,38 @@
 package com.sai.easwer.service;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.sai.easwer.annotation.RoleAccess;
 import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.ResponseStatus;
 import com.sai.easwer.constants.UserAccountStatus;
+import com.sai.easwer.constants.UserRoleEnum;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;
+import com.sai.easwer.entity.UserPasswordHistory;
 import com.sai.easwer.entity.UserSession;
+import com.sai.easwer.model.LoginRequest;
 import com.sai.easwer.model.LoginResponse;
 import com.sai.easwer.model.Response;
+import com.sai.easwer.repository.UserPasswordHistoryRepository;
 import com.sai.easwer.repository.UserRepository;
 import com.sai.easwer.repository.UserSessionRepository;
 import com.sai.easwer.util.AuditLogger;
 import com.sai.easwer.util.SecurityUtils;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementation class for user service.
@@ -44,6 +53,9 @@ public class UserService extends BaseService implements UserContoller {
     private UserSessionRepository userSessionRepository;
 
     @Autowired
+    private UserPasswordHistoryRepository userPasswordHistoryRepository;
+
+    @Autowired
     private HttpServletRequest request;
 
     @Autowired
@@ -53,7 +65,8 @@ public class UserService extends BaseService implements UserContoller {
     private SecurityUtils securityUtils;
 
     @Override
-    public ResponseEntity<Response> getUser(final UUID userId) {
+    public ResponseEntity<Response> getUser(@RoleAccess(role = UserRoleEnum.USER_READ) final UUID authToken,
+            final UUID userId) {
         if (userId == null) {
             final List<UserDetails> users = userRepository.findAll();
 
@@ -77,26 +90,29 @@ public class UserService extends BaseService implements UserContoller {
     }
 
     @Override
-    public ResponseEntity<Response> createUser(final UserDetails user) {
+    public ResponseEntity<Response> createUser(@RoleAccess(role = UserRoleEnum.USER_CREATE) final UUID authToken,
+            final UserDetails user) {
         try {
             securityUtils.validateCreateUserRequest(user);
 
             user.setUserAccountStatus(UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN.getAccountStatus());
-
             user.setId(UUID.randomUUID());
-
             userRepository.save(user);
-        } catch (final IllegalArgumentException e) {
-            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            UserPasswordHistory history = new UserPasswordHistory();
+            history.setId(UUID.randomUUID());
+            history.setUserId(user.getId());
+            history.setPassword(user.getPassword());
+            userPasswordHistoryRepository.save(history);
         } catch (final Exception e) {
-            return createResponse(MessageConstants.INVALID_INPUT, ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
+            return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.BAD_REQUEST);
         }
         log.info(MessageConstants.USERS_CREATED_SUCCESSFULLY);
         return createResponse(MessageConstants.USERS_CREATED_SUCCESSFULLY, ResponseStatus.SUCCESS, user, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Response> updateUser(final UserDetails user) {
+    public ResponseEntity<Response> updateUser(@RoleAccess(role = UserRoleEnum.USER_EDIT) final UUID authToken,
+            final UserDetails user) {
         try {
             securityUtils.validateUpdateUserRequest(user);
             if (user.getId() != null) {
@@ -118,9 +134,14 @@ public class UserService extends BaseService implements UserContoller {
     }
 
     @Override
-    public ResponseEntity<Response> deleteUser(final UUID userId) {
+    public ResponseEntity<Response> deleteUser(@RoleAccess(role = UserRoleEnum.USER_DELETE) final UUID authToken,
+            final UUID userId) {
         final Optional<UserDetails> userDetails = userRepository.findById(userId);
         if (userDetails.isPresent()) {
+            if (userDetails.get().getUsername().equalsIgnoreCase("admin")) {
+                return createResponse(MessageConstants.CANNOT_DELETE_ADMIN, ResponseStatus.FAILURE, null,
+                        HttpStatus.BAD_REQUEST);
+            }
             userRepository.delete(userDetails.get());
         } else {
             return createResponse(MessageConstants.USER_NOT_FOUND, ResponseStatus.FAILURE, null,
@@ -130,7 +151,9 @@ public class UserService extends BaseService implements UserContoller {
     }
 
     @Override
-    public ResponseEntity<Response> login(final String username, final String password) {
+    public ResponseEntity<Response> login(final LoginRequest request) {
+        String username = request.getUsername();
+        String password = request.getPassword();
         if (null == username) {
             return createResponse(MessageConstants.USERNAME_CANNOT_BE_EMPTY, ResponseStatus.FAILURE, null,
                     HttpStatus.BAD_REQUEST);
@@ -164,21 +187,6 @@ public class UserService extends BaseService implements UserContoller {
         return createResponse(MessageConstants.LOGIN_SUCCESSFUL, ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
     }
 
-    private UserSession createUserSession(final UserDetails userDetails) {
-        final UserSession userSession = new UserSession();
-
-        userSession.setId(UUID.randomUUID());
-        userSession.setUserId(userDetails.getId());
-        userSession.setAuthToken(UUID.randomUUID());
-        userSession.setIpAddress(request.getRemoteAddr());
-        userSession.setStartedTime(Calendar.getInstance().getTimeInMillis());
-        userSession.setLastAccsessTime(Calendar.getInstance().getTimeInMillis());
-
-        userSessionRepository.save(userSession);
-
-        return userSession;
-    }
-
     @Override
     public ResponseEntity<Response> logout(final UUID authToken) {
         Optional<UserDetails> loginUser = null;
@@ -203,6 +211,21 @@ public class UserService extends BaseService implements UserContoller {
         auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
                 Modules.SECURITY, AuditLogType.LOGOUT);
         return createResponse(MessageConstants.LOGOUT_SUCCESSFUL, ResponseStatus.SUCCESS, null, HttpStatus.OK);
+    }
+
+    private UserSession createUserSession(final UserDetails userDetails) {
+        final UserSession userSession = new UserSession();
+
+        userSession.setId(UUID.randomUUID());
+        userSession.setUserId(userDetails.getId());
+        userSession.setAuthToken(UUID.randomUUID());
+        userSession.setIpAddress(request.getRemoteAddr());
+        userSession.setStartedTime(Calendar.getInstance().getTimeInMillis());
+        userSession.setLastAccessTime(Calendar.getInstance().getTimeInMillis());
+
+        userSessionRepository.save(userSession);
+
+        return userSession;
     }
 
 }

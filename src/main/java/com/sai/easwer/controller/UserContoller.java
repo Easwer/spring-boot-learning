@@ -1,6 +1,8 @@
 package com.sai.easwer.controller;
 
+import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.entity.UserDetails;
+import com.sai.easwer.model.LoginRequest;
 import com.sai.easwer.model.Response;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,13 +30,11 @@ public interface UserContoller {
      * API to login into the application. It will create new user session and
      * returns the auth token.
      * 
-     * @param name     {@link String}
-     * @param password {@link String}
+     * @param loginRequest {@link LoginRequest}
      * @return {@link ResponseEntity}<{@link Response}>
      */
-    @GetMapping(value = "/login")
-    ResponseEntity<Response> login(@RequestParam(name = "username") String name,
-            @RequestParam(name = "password") String password);
+    @PostMapping(value = "/login")
+    ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest);
 
     /**
      * API to logout of the application. It will remove the user session.
@@ -42,7 +43,7 @@ public interface UserContoller {
      * @return {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/logout")
-    ResponseEntity<Response> logout(@RequestParam(name = "authToken") UUID authToken);
+    ResponseEntity<Response> logout(@RequestHeader(name = SecurityConstants.AUTH_TOKEN) UUID authToken);
 
     /**
      * API to retrive the user. It will retrive the particular user if id is
@@ -52,7 +53,8 @@ public interface UserContoller {
      * @return {@link ResponseEntity}<{@link Response}>
      */
     @GetMapping(value = "/user")
-    ResponseEntity<Response> getUser(@RequestParam(required = false, name = "id") UUID userId);
+    ResponseEntity<Response> getUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
+            @RequestParam(required = false, name = "id") UUID userId);
 
     /**
      * API to create new user.
@@ -61,7 +63,8 @@ public interface UserContoller {
      * @return {@link ResponseEntity}<{@link Response}>
      */
     @PostMapping(value = "/user")
-    ResponseEntity<Response> createUser(@RequestBody UserDetails user);
+    ResponseEntity<Response> createUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
+            @RequestBody UserDetails user);
 
     /**
      * API to update the existing user.
@@ -70,7 +73,8 @@ public interface UserContoller {
      * @return {@link ResponseEntity}<{@link Response}>
      */
     @PutMapping(value = "/user")
-    ResponseEntity<Response> updateUser(@RequestBody UserDetails user);
+    ResponseEntity<Response> updateUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
+            @RequestBody UserDetails user);
 
     /**
      * API to delete the existing user.
@@ -79,6 +83,7 @@ public interface UserContoller {
      * @return {@link ResponseEntity}<{@link Response}>
      */
     @DeleteMapping(value = "/user")
-    ResponseEntity<Response> deleteUser(@RequestParam(name = "id") UUID userId);
+    ResponseEntity<Response> deleteUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
+            @RequestParam(name = "id") UUID userId);
 
 }

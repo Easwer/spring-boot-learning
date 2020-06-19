@@ -14,6 +14,8 @@ public class SecurityConstants {
 
     }
 
+    public static final String AUTH_TOKEN = "authToken";
+
     public static final int IDLE_TIMEOUT_MIN = 15;
 
     public static final int IDLE_TIMEOUT_MAX = 120;
@@ -38,8 +40,7 @@ public class SecurityConstants {
 
     public static final String NAME_PATTERN = "[^a-zA-Z]";
 
-    public static final String PASSWORD_PATTERN =
-            "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\[\\]()!@#$%^&*])(?=\\S+$).{8,}";
+    public static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\[\\]()!@#$%^&*])(?=\\S+$).{8,}";
 
     public static final String FORCE_SPECIAL_CHAR = "forceSpecialChar";
 
@@ -49,10 +50,10 @@ public class SecurityConstants {
 
     public static final String CAPTIAL_LETTER_REGEX = "(?=.*[A-Z])";
 
-    public static final String SYMBOLS_REGEX = "(?=.*[@#$%])";
+    public static final String SYMBOLS_REGEX = "(?=.*[@#!$%])";
 
     public static final String SMALLL_LETTER_REGEX = "((?=.*[a-z])";
 
-    public static final String NUMBER_REGEX = "(?=.*d)";
+    public static final String NUMBER_REGEX = "(?=.*[0-9])";
 
 }

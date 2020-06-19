@@ -20,15 +20,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "group_role")
+@Table(name = "group_role_mapping")
 public class GroupRoleMapping extends BaseEntity {
 
     private static final long serialVersionUID = 7014761524510174058L;
 
-    @Column(name = "user_group")
-    private UUID group;
+    @Column(name = "group_id", nullable = false)
+    private UUID groupId;
 
-    @Column(name = "user_role")
-    private UUID role;
+    @Column(name = "role_id", nullable = false)
+    private UUID roleId;
 
 }

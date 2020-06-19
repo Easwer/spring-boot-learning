@@ -33,8 +33,8 @@ public class UserSession {
     @Column(name = "started_time")
     private Long startedTime;
 
-    @Column(name = "last_accsess_time")
-    private Long lastAccsessTime;
+    @Column(name = "last_access_time")
+    private Long lastAccessTime;
 
     @Column(name = "ip")
     private String ipAddress;

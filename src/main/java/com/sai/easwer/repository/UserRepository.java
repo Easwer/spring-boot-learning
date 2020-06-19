@@ -22,7 +22,7 @@ public interface UserRepository extends PagingAndSortingRepository<UserDetails, 
 
     List<UserDetails> findAll();
 
-    Optional<UserDetails> findByUsername(String id);
+    Optional<UserDetails> findByUsername(String username);
 
-    Optional<UserDetails> findByFiirstnameAndLastnameOrderByUsernameDescTop1(String username, String ln);
+    Optional<UserDetails> findByEmail(String email);
 }

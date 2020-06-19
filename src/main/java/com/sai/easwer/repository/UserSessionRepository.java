@@ -4,6 +4,9 @@ import com.sai.easwer.entity.UserSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +27,10 @@ public interface UserSessionRepository extends PagingAndSortingRepository<UserSe
     Optional<UserSession> findByAuthToken(UUID authToken);
 
     Optional<UserSession> findByUserId(UUID userId);
+
+    @Transactional
+    long deleteByUserId(UUID userId);
+
+    @Transactional
+    long deleteByAuthToken(UUID authToken);
 }

@@ -1,21 +1,33 @@
 package com.sai.easwer.util;
 
+import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
+import com.sai.easwer.constants.Modules;
 import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.constants.UserAccountStatus;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserGroup;
+import com.sai.easwer.entity.UserRole;
+import com.sai.easwer.entity.UserSession;
+import com.sai.easwer.entity.mapping.GroupRoleMapping;
+import com.sai.easwer.entity.mapping.UserGroupMapping;
 import com.sai.easwer.repository.UserRepository;
+import com.sai.easwer.repository.UserRoleRepository;
+import com.sai.easwer.repository.UserSessionRepository;
+import com.sai.easwer.repository.mapping.GroupRoleMappingRepository;
+import com.sai.easwer.repository.mapping.UserGroupMappingRepository;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,212 +42,104 @@ import org.springframework.stereotype.Component;
 public class SecurityUtils {
 
     @Autowired
+    private AuditLogger auditLogger;
+
+    @Autowired
     private UserRepository userRepository;
 
-    // public boolean validToken(UUID authKey) {
-
-    // boolean isValid = false;
-    // UserSession userSessionDetails =
-    // userSessionRepository.findByAuthToken(authKey);
-    // if (userSessionDetails != null && userSessionDetails.getLastAccessTime() !=
-    // null) {
-    // isValid = true;
-    // }
-    // return isValid;
-    // }
-
-    // public boolean checkAuthorization(RoleOperation roleKey, UUID authKey) throws
-    // Exception {
-
-    // boolean isAuthorized = false;
-
-    // UserSessionDetails userSessionDetails =
-    // userSessionRepository.findByAuthToken(authKey);
-
-    // if (userSessionDetails != null && userSessionDetails.getLastAccessTime() !=
-    // null) {
-
-    // UserDetails userDetails =
-    // userRepository.findById(userSessionDetails.getUserId());
-
-    // if (null != userDetails) {
-
-    // isAuthorized = checkRole(userDetails, roleKey)
-
-    // && checkIdleTimeout(userDetails, userSessionDetails, authKey);
-
-    // } else {
-
-    // userSessionRepository.deleteByUserId(userSessionDetails.getUserId());
-
-    // throw new ServiceException("User is deleted.");
-
-    // }
-
-    // } else {
-
-    // throw new ServiceException("Given token is not valid");
-
-    // }
-
-    // return isAuthorized;
-
-    // }
-
-    // private boolean checkIdleTimeout(UserDetails userDetails, UserSessionDetails
-    // userSessionDetails,
-    // UUID authKey) throws Exception {
-
-    // boolean result = false;
-
-    // Long limit = Long.sum(((long) userDetails.getIdleTimeout() * 60 * 1000),
-    // userSessionDetails.getLastAccessTime());
-
-    // Long currentMilliseconds = Calendar.getInstance().getTimeInMillis();
-
-    // if (limit.compareTo(currentMilliseconds) <= 0) {
-
-    // userSessionRepository.deleteByAuthToken(authKey);
-
-    // WebSocketHandler.terminateUserSession(authKey);
-
-    // auditLogger.addLog(userDetails, CommonConstants.LOGOUT,
-    // SecurityConstants.ERROR_SESSION_TERMINATED_BY_INACTIVITY,
-
-    // userSessionDetails.getIp());
-
-    // } else {
-
-    // userSessionDetails.setLastAccessTime(currentMilliseconds);
-
-    // userSessionRepository.save(userSessionDetails);
-
-    // result = true;
-
-    // }
-
-    // return result;
-
-    // }
-
-    // private boolean checkRole(UserDetails userDetails, RoleOperation roleKey) {
-
-    // for (GroupDetails groupDetails : userDetails.getGroups()) {
-
-    // groupDetails.getRoles().contains(roleKey);
-
-    // for (RoleDetail role : groupDetails.getRoles()) {
-
-    // if (role.getName().equals(roleKey.toString())) {
-
-    // return true;
-
-    // }
-
-    // }
-
-    // }
-
-    // return false;
-
-    // }
-
-    // public void userStatusCheck(UserDetails userDetails) throws ServiceException
-    // {
-
-    // checkUserAccountStatus(userDetails);
-
-    // checkDeptEntStatus(userDetails);
-
-    // }
-
-    // public void checkDeptEntStatus(UserDetails userDetails) throws
-    // ServiceException {
-
-    // if (enterpriseRepository.findOne(userDetails.getEntId()).getStatus()) {
-
-    // if
-    // (!departmentRepository.findOne(userDetails.getDepartmentDetails().getId()).isStatus())
-    // {
-
-    // throw new ServiceException(SecurityConstants.ERROR_DEPARTMENT_DISABLED);
-
-    // }
-
-    // } else {
-
-    // throw new ServiceException(SecurityConstants.ERROR_ENTERPRISE_DISABLED);
-
-    // }
-
-    // }
-
-    // public void checkUserAccountStatus(UserDetails user) throws Exception {
-
-    // String accountStatus = user.getUserAccountStatus();
-
-    // if (
-    // accountStatus.equalsIgnoreCase(UserAccountStatus.LOCKED.getAccountStatus())
-
-    // ||
-    // accountStatus.equalsIgnoreCase(UserAccountStatus.BLOCKED.getAccountStatus())
-
-    // ||
-    // accountStatus.equalsIgnoreCase(UserAccountStatus.D
-    // ORMANCY_PERIOD_EXCEEDED.getAccountStatus()))
-    // {
-
-    // throw new Exception(SecurityConstants.ERROR_AUTHENTICATION);
-
-    // } else if (user.getAccountExpiry() != 0) {
-
-    // if (accountStatus.equalsIgnoreCase(SecurityConstants.ACCOUNT_EXPIRED)) {
-
-    // throw new Exception(SecurityConstants.ERROR_AUTHENTICATION);
-
-    // } else if (user.getAccountExpiryTime() != null
-
-    // &&
-    // user.getAccountExpiryTime().compareTo(Calendar.getInstance().getTimeInMillis())
-    // < 0) {
-
-    // user.setAccountStatus(
-    // userAccountStatusRepository.findByName(SecurityConstants.ACCOUNT_EXPIRED));
-
-    // String description = "User account for user " + user.getUsername() + " has
-    // been expired.";
-
-    // auditLogger.addLog(user, CommonConstants.UPDATE, description);
-
-    // userSessionRepository.deleteByUserId(user.getId());
-
-    // userRepository.save(user);
-
-    // throw new ServiceException(SecurityConstants.ERROR_AUTHENTICATION);
-
-    // }
-
-    // } else if (user.getPasswordExpiry() != 0) {
-
-    // if (user.getPasswordExpiryTime() != null
-
-    // && user.getPasswordExpiryTime().compareTo((new Date()).getTime()) < 0) {
-
-    // user.setAccountStatus(
-    // userAccountStatusRepository.findByName(SecurityConstants.PASSWORD_EXPIRED));
-
-    // String description = "Password for user " + user.getUsername() + " has been
-    // expired.";
-
-    // auditLogger.addLog(user, CommonConstants.UPDATE, description);
-
-    // userRepository.save(user);
-
-    // }
-
-    // }
-
-    // }
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private UserSessionRepository userSessionRepository;
+
+    @Autowired
+    private GroupRoleMappingRepository groupRoleMappingRepository;
+
+    @Autowired
+    private UserGroupMappingRepository userGroupMappingRepository;
+
+    private static final String GIVEN_TOKEN_IS_NOT_VALID = "Given token is not valid";
+    private static final String USER_IS_DELETED = "User is deleted.";
+
+    /**
+     * Checks whether provided role is available for the current user and user
+     * session is active.
+     * 
+     * @param role      {@link String}
+     * @param authToken {@link UUID}
+     * @return {@link boolean}
+     * @throws Exception Exception
+     */
+    public boolean checkAuthorization(final String role, final UUID authToken) throws Exception {
+        boolean isAuthorized = false;
+        Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+        if (userSession.isPresent()) {
+            if (userSession.get().getLastAccessTime() != null) {
+                Optional<UserDetails> userDetails = userRepository.findById(userSession.get().getUserId());
+                if (userDetails.isPresent()) {
+                    isAuthorized = checkRole(userDetails.get(), role)
+                            && checkIdleTimeout(userDetails.get(), userSession.get(), authToken);
+                } else {
+                    userSessionRepository.deleteByUserId(userSession.get().getUserId());
+                    throw new Exception(USER_IS_DELETED);
+                }
+            }
+        } else {
+            throw new Exception(GIVEN_TOKEN_IS_NOT_VALID);
+        }
+        return isAuthorized;
+    }
+
+    /**
+     * Checks whether provided user session is active.
+     * 
+     * @param userDetails {@link UserDetails}
+     * @param userSession {@link UserSession}
+     * @param authToken   {@link UUID}
+     * @return {@link boolean}
+     */
+    private boolean checkIdleTimeout(final UserDetails userDetails, final UserSession userSession,
+            final UUID authToken) {
+        Long limit = Long.sum(((long) userDetails.getIdleTimeout() * 60 * 1000), userSession.getLastAccessTime());
+        Long currentMilliseconds = Calendar.getInstance().getTimeInMillis();
+
+        if (limit.compareTo(currentMilliseconds) <= 0) {
+            userSessionRepository.deleteByAuthToken(authToken);
+            // WebSocketHandler.terminateUserSession(authToken);
+            auditLogger.auditLog(MessageConstants.ERROR_SESSION_TERMINATED_BY_INACTIVITY, Modules.SECURITY,
+                    AuditLogType.LOGOUT);
+            return false;
+        } else {
+            userSession.setLastAccessTime(currentMilliseconds);
+            userSessionRepository.save(userSession);
+            return true;
+        }
+    }
+
+    /**
+     * Checks whether provided role is available for the current user.
+     * 
+     * @param userDetails {@link UserDetails}
+     * @param role        {@link String}
+     * @return {@link boolean}
+     */
+    private boolean checkRole(final UserDetails userDetails, final String role) {
+        List<UserGroupMapping> userGroupMappingList = userGroupMappingRepository.findByUserId(userDetails.getId());
+        for (UserGroupMapping userGroupMapping : userGroupMappingList) {
+            List<GroupRoleMapping> groupRoleMappingList = groupRoleMappingRepository
+                    .findByGroupId(userGroupMapping.getGroupId());
+            for (GroupRoleMapping groupRoleMapping : groupRoleMappingList) {
+                Optional<UserRole> userRole = userRoleRepository.findById(groupRoleMapping.getRoleId());
+                if (userRole.isPresent()) {
+                    if (userRole.get().getName().equalsIgnoreCase(role)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Validates email address format.
@@ -244,95 +148,91 @@ public class SecurityUtils {
      * @throws Exception if not a valid email.
      */
     public void validateEmailAddress(final String email) throws Exception {
-
         if (email == null || email.equals("")) {
-
             throw new Exception(MessageConstants.EMAIL_CANNOT_BE_EMPTY);
-
         }
 
         try {
-
             final InternetAddress emailAddr = new InternetAddress(email);
-
             emailAddr.validate();
-
+            final Optional<UserDetails> userDetails = userRepository.findByEmail(email);
+            if (userDetails.isPresent()) {
+                throw new Exception(MessageConstants.EMAIL_SHOULD_BE_UNIQUE);
+            }
         } catch (final AddressException e) {
-
             throw new Exception(MessageConstants.INVALID_EMAIL);
-
         }
-
     }
 
     /**
      * Validates the username, first name and last name.
      * 
-     * @param username {@link String}
+     * @param username  {@link String}
      * @param firstName {@link String}
-     * @param lastName {@link String}
+     * @param lastName  {@link String}
      * @throws Exception if not valid.
      */
-    public void validateUserName(final String username, final String firstName,
-            final String lastName) throws Exception {
+    public void validateUserName(final String username, final String firstName, final String lastName)
+            throws Exception {
 
         if (username == null || username.equals("")) {
             throw new Exception(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
         }
 
-        Pattern p = Pattern.compile(SecurityConstants.USERNAME_PATTERN);
+        Pattern pattern = Pattern.compile(SecurityConstants.USERNAME_PATTERN);
 
-        if (!p.matcher(username).find()) {
+        if (pattern.matcher(username).find()) {
             throw new Exception(MessageConstants.USERNAME_PATTERN_ERROR);
         }
 
         if (firstName == null || firstName.equals("")) {
             throw new Exception(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
         }
-        
+
         if (lastName == null || lastName.equals("")) {
             throw new Exception(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
         }
 
-        p = Pattern.compile(SecurityConstants.NAME_PATTERN);
+        pattern = Pattern.compile(SecurityConstants.NAME_PATTERN);
 
-        if (!p.matcher(firstName).find()) {
+        if (pattern.matcher(firstName).find()) {
             throw new Exception(MessageConstants.FIRST_NAME_ERROR);
-        }    
-        
-        if (!p.matcher(lastName).find()) {
+        }
+
+        if (pattern.matcher(lastName).find()) {
             throw new Exception(MessageConstants.LAST_NAME_ERROR);
         }
 
     }
 
-    
     /**
-     * Validates the password.<pre>
+     * Validates the password.
+     * 
+     * <pre>
      * Valid password should satisfy the following criteria's
      *  - Should not contains username.
      *  - Should not contains user's first name.
      *  - Should not contains user's last name.
      *  - Should not contains user's email without domain.
      *  - Should satisfy minimum and maximum length criteria.
-     *  - Should satisfy password pattern criteria based on global settings.</pre>
-     * @param password {@link String}
-     * @param username {@link String}
+     *  - Should satisfy password pattern criteria based on global settings.
+     * </pre>
+     * 
+     * @param password  {@link String}
+     * @param username  {@link String}
      * @param firstname {@link String}
-     * @param lastname {@link String}
-     * @param email {@link String}
+     * @param lastname  {@link String}
+     * @param email     {@link String}
      * @throws Exception if not valid
      */
-    public void validatePassword(final String password, final String username,
-            final String firstname, final String lastname, final String email) throws Exception {
+    public void validatePassword(final String password, final String username, final String firstname,
+            final String lastname, final String email) throws Exception {
 
-        final int minLength =
-                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MIN_LENGTH,
-                        SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
+        final int minLength = GlobalSettingsUtil.getInt(SecurityConstants.PASSWORD_MIN_LENGTH,
+                SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
 
-        final int maxLength =
-                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.PASSWORD_MAX_LENGTH,
-                        SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
+        final int maxLength = GlobalSettingsUtil.getInt(SecurityConstants.PASSWORD_MAX_LENGTH,
+                SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
 
         if (password == null || password.equals("")) {
             throw new Exception(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
@@ -366,17 +266,13 @@ public class SecurityUtils {
             throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
         }
 
-        final StringBuilder patternBuilder =
-                new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
+        final StringBuilder patternBuilder = new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
 
-        final boolean forceSpecialChar =
-                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceSpecialChar = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
-        final boolean forceCapitalLetter =
-                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceCapitalLetter = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
-        final boolean forceNumber =
-                GlobalSettingsUtil.getGlobalSettings(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceNumber = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
 
         if (forceSpecialChar) {
             patternBuilder.append(SecurityConstants.SYMBOLS_REGEX);
@@ -400,110 +296,36 @@ public class SecurityUtils {
 
     }
 
-    // public void checkPasswordHistory(String password, UUID userId) throws
-    // Exception {
-
-    // List<UserPasswordHistory> userPasswordDetails = userPasswordRepository
-    // .findByUserIdOrderByUpdatedTimeAsc(userId);
-    // for (UserPasswordHistory userPasswordDetail : userPasswordDetails) {
-
-    // if (new BCryptPasswordEncoder().matches(password,
-    // userPasswordDetail.getPassword())) {
-    // throw new
-    // Exception(SecurityConstants.ERROR_PASSWORD_CANNOT_REUSE_OLD_PASSWORD);
-    // }
-
-    // }
-
-    // updateUserPasswordDetails(password, userId, userPasswordDetails);
-
-    // }
-
-    // public void saveUserPasswordDetails(String passwordHash, UUID userId) {
-
-    // UserPasswordHistoryDetails userPasswordDetail = new
-    // UserPasswordHistoryDetails();
-
-    // userPasswordDetail.setId(UUID.randomUUID());
-
-    // userPasswordDetail.setUserId(userId);
-
-    // userPasswordDetail.setPassword(passwordHash);
-
-    // userPasswordDetail.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
-
-    // userPasswordRepository.save(userPasswordDetail);
-
-    // }
-
-    // public void updateUserPasswordDetails(String password, UUID userId,
-    // List<UserPasswordHistoryDetails> userPasswordDetails) {
-
-    // SystemSettings systemSettings = systemSettingsRepository.findAll().get(0);
-
-    // if (userPasswordDetails != null && userPasswordDetails.size() >=
-    // systemSettings.getUserPasswordHistoryLimit()) {
-
-    // userPasswordRepository.delete(userPasswordDetails.get(0));
-
-    // }
-
-    // saveUserPasswordDetails(new BCryptPasswordEncoder().encode(password),
-    // userId);
-
-    // }
-
     /**
-     *  Validates user resquest while updating the existing user.
+     * Validates user request while updating the existing user.
      * 
      * @param user {@link UserDetails}
      * @throws Exception if not valid.
      */
     public void validateUpdateUserRequest(final UserDetails user) throws Exception {
-
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
-
         validateEmailAddress(user.getEmail());
-
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
-
-            validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
-                    user.getLastName(), user.getEmail());
-
-            // checkPasswordHistory(user.getPassword(), user.getId());
-
+            validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
+                    user.getEmail());
         }
-
-        // validateGroupInfo(user.getGroups());
-
         validateTimeouts(user);
-
         validateUserAccountStatus(user);
-
     }
 
-
     /**
-     *  Validates user resquest while creating the new user.
+     * Validates user request while creating the new user.
      * 
      * @param user {@link UserDetails}
      * @throws Exception if not valid.
      */
     public void validateCreateUserRequest(final UserDetails user) throws Exception {
-
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
-
-        validateEmailAddress(user.getEmail());
-
         validateUserExists(user.getUsername());
-
-        validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
-                user.getLastName(), user.getEmail());
-
-        // validateGroupInfo(user.getGroups());
-
+        validateEmailAddress(user.getEmail());
+        validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
+                user.getEmail());
         validateTimeouts(user);
-
     }
 
     /**
@@ -513,26 +335,22 @@ public class SecurityUtils {
      * @throws Exception - if not valid
      */
     public void validateUserExists(final String username) throws Exception {
-
         final Optional<UserDetails> userDetails = userRepository.findByUsername(username);
-
         if (userDetails.isPresent()) {
             throw new Exception(MessageConstants.ERROR_USERNAME_ALREADY_EXISTS);
         }
-
     }
 
     /**
      * Checks wether User Account Status string is a valid user account status.
+     * 
      * @param user {@link UserDetails}
      * @throws Exception if not valid
      */
     public void validateUserAccountStatus(final UserDetails user) throws Exception {
-
         if (!UserAccountStatus.contains(user.getUserAccountStatus())) {
             throw new Exception(MessageConstants.USER_ACCOUNT_STATUS_ERROR);
         }
-
     }
 
     /**
@@ -547,22 +365,18 @@ public class SecurityUtils {
      * @throws Exception if not valid
      */
     public void validateTimeouts(final UserDetails user) throws Exception {
-
         if (user.getPasswordExpiry() < SecurityConstants.PASSWORD_EXPIRY_MIN
                 || user.getPasswordExpiry() > SecurityConstants.PASSWORD_EXPIRY_MAX) {
             throw new Exception(MessageConstants.PASSWORD_EXPIRY_ERROR);
         }
-
         if (user.getAccountExpiry() < SecurityConstants.ACCOUNT_EXPIRY_MIN
                 || user.getAccountExpiry() > SecurityConstants.ACCOUNT_EXPIRY_MAX) {
             throw new Exception(MessageConstants.ACCOUNT_EXPIRY_ERROR);
         }
-
         if (user.getIdleTimeout() < SecurityConstants.IDLE_TIMEOUT_MIN
                 || user.getIdleTimeout() > SecurityConstants.IDLE_TIMEOUT_MAX) {
             throw new Exception(MessageConstants.IDLE_TIMOUT_ERROR);
         }
-
     }
 
     /**
@@ -572,11 +386,9 @@ public class SecurityUtils {
      * @throws Exception if not valid
      */
     public void validateGroupInfo(final List<UserGroup> groupList) throws Exception {
-
         if (groupList.isEmpty()) {
             throw new Exception(MessageConstants.GROUPS_CANNOT_BE_EMPTY);
         }
-
     }
 
     /**
@@ -586,11 +398,9 @@ public class SecurityUtils {
      * @return Date format {@link String}
      */
     public String milliSecondsToDateString(final long milliSecond) {
-
         final DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS");
         final Date result = new Date(milliSecond);
         return simple.format(result);
-
     }
 
 }
