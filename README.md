@@ -20,5 +20,5 @@ java -agentlib:jdwp=transport=dt_socket,address=7777,server=y,suspend=n -jar spr
 
 # Run Static code analysis tools (checkstyle, pmd, firebug)
 
-cd springBoot
+cd springBoot    
 mvn site
