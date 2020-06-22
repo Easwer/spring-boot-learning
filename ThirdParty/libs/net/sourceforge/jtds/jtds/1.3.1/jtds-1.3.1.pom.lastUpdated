@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Jun 22 21:26:20 IST 2020
+http\://www.terracotta.org/download/reflector/snapshots/.error=
+http\://www.terracotta.org/download/reflector/releases/.error=Could not transfer artifact net.sourceforge.jtds\:jtds\:pom\:1.3.1 from/to terracotta-releases (http\://www.terracotta.org/download/reflector/releases)\: Access denied to\: http\://www.terracotta.org/download/reflector/releases/net/sourceforge/jtds/jtds/1.3.1/jtds-1.3.1.pom , ReasonPhrase\:Forbidden.
+https\://repo.maven.apache.org/maven2/.lastUpdated=1592841380514
+@default-terracotta-releases-http\://www.terracotta.org/download/reflector/releases/.lastUpdated=1592841380138
+http\://www.terracotta.org/download/reflector/snapshots/.lastUpdated=1592841379423

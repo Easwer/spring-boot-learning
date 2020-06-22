@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.projectreactor.kotlin</groupId>
+  <artifactId>reactor-kotlin-extensions</artifactId>
+  <version>1.0.2.RELEASE</version>
+  <name>Kotlin extensions for Project Reactor</name>
+  <description>Kotlin extensions for Project Reactor</description>
+  <url>https://github.com/reactor/reactor-kotlin-extensions</url>
+  <organization>
+    <name>reactor</name>
+    <url>https://github.com/reactor</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>smaldini</id>
+      <name>Stephane Maldini</name>
+      <email>smaldini@pivotal.io</email>
+    </developer>
+    <developer>
+      <id>akarnokd</id>
+      <name>David Karnok</name>
+      <email>akarnokd@gmail.com</email>
+    </developer>
+    <developer>
+      <id>simonbasle</id>
+      <name>Simon Baslé</name>
+      <email>sbasle@pivotal.io</email>
+    </developer>
+    <developer>
+      <id>sdeleuze</id>
+      <name>Sébastien Deleuze</name>
+      <email>sdeleuze@pivotal.io</email>
+    </developer>
+    <developer>
+      <id>bsideup</id>
+      <name>Sergei Egorov</name>
+      <email>segorov@pivotal.io</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/reactor/reactor-kotlin-extensions</connection>
+    <developerConnection>scm:git:git://github.com/reactor/reactor-kotlin-extensions</developerConnection>
+    <url>https://github.com/reactor/reactor-kotlin-extensions</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/reactor/reactor-kotlin-extensions/issues</url>
+  </issueManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.3.2.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor.addons</groupId>
+      <artifactId>reactor-adapter</artifactId>
+      <version>3.3.2.RELEASE</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor.addons</groupId>
+      <artifactId>reactor-extra</artifactId>
+      <version>3.3.2.RELEASE</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.2.RELEASE</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.reactivex.rxjava2</groupId>
+      <artifactId>rxjava</artifactId>
+      <version>2.2.8</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt</groupId>
+      <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+      <version>4.5.2</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.3.50</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+</project>

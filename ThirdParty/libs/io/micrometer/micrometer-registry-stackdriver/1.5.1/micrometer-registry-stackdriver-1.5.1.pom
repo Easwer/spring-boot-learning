@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-registry-stackdriver</artifactId>
+  <version>1.5.1</version>
+  <dependencies>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>1.5.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-monitoring</artifactId>
+      <version>1.100.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.30</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+  <name>micrometer-registry-stackdriver</name>
+  <description>Application monitoring instrumentation facade</description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <properties>
+    <nebula_Manifest_Version>1.0</nebula_Manifest_Version>
+    <nebula_Implementation_Title>io.micrometer#micrometer-registry-stackdriver;1.5.1</nebula_Implementation_Title>
+    <nebula_Implementation_Version>1.5.1</nebula_Implementation_Version>
+    <nebula_Built_Status>integration</nebula_Built_Status>
+    <nebula_Built_By>circleci</nebula_Built_By>
+    <nebula_Built_OS>Linux</nebula_Built_OS>
+    <nebula_Build_Date>2020-05-08_17:17:17</nebula_Build_Date>
+    <nebula_Gradle_Version>6.4</nebula_Gradle_Version>
+    <nebula_Module_Source>/implementations/micrometer-registry-stackdriver</nebula_Module_Source>
+    <nebula_Module_Origin>git@github.com:micrometer-metrics/micrometer.git</nebula_Module_Origin>
+    <nebula_Change>5984c10</nebula_Change>
+    <nebula_Branch>5984c10fc12b781652e27a9ea95c439f96e73cf8</nebula_Branch>
+    <nebula_Build_Host>86ddeb77edcf</nebula_Build_Host>
+    <nebula_Build_Job>LOCAL</nebula_Build_Job>
+    <nebula_Build_Number>LOCAL</nebula_Build_Number>
+    <nebula_Build_Id>LOCAL</nebula_Build_Id>
+    <nebula_Created_By>14.0.1+7 (Oracle Corporation)</nebula_Created_By>
+    <nebula_Build_Java_Version>14.0.1</nebula_Build_Java_Version>
+    <nebula_Module_Owner>tludwig@vmware.com</nebula_Module_Owner>
+    <nebula_Module_Email>tludwig@vmware.com</nebula_Module_Email>
+    <nebula_X_Compile_Target_JDK>14</nebula_X_Compile_Target_JDK>
+    <nebula_X_Compile_Source_JDK>14</nebula_X_Compile_Source_JDK>
+  </properties>
+  <url>https://github.com/micrometer-metrics/micrometer</url>
+  <scm>
+    <url>git@github.com:micrometer-metrics/micrometer.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>shakuzen</id>
+      <name>Tommy Ludwig</name>
+      <email>tludwig@vmware.com</email>
+    </developer>
+  </developers>
+</project>

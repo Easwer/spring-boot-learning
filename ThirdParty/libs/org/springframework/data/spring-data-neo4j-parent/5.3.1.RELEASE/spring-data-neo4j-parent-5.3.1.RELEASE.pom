@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ | Copyright 2011-2020 the original author or authors.
+ |
+ | Licensed under the Apache License, Version 2.0 (the "License");
+ | you may not use this file except in compliance with the License.
+ | You may obtain a copy of the License at
+ |
+ |      https://www.apache.org/licenses/LICENSE-2.0
+ |
+ | Unless required by applicable law or agreed to in writing, software
+ | distributed under the License is distributed on an "AS IS" BASIS,
+ | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ | See the License for the specific language governing permissions and
+ | limitations under the License.
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.springframework.data</groupId>
+	<artifactId>spring-data-neo4j-parent</artifactId>
+	<version>5.3.1.RELEASE</version>
+	<packaging>pom</packaging>
+
+	<name>Spring Data Neo4j</name>
+	<description>Neo4j support for Spring Data</description>
+	<url>https://projects.spring.io/spring-data-neo4j</url>
+
+	<parent>
+		<groupId>org.springframework.data.build</groupId>
+		<artifactId>spring-data-parent</artifactId>
+		<version>2.3.1.RELEASE</version>
+	</parent>
+
+	<modules>
+		<module>spring-data-neo4j</module>
+		<module>spring-data-neo4j-distribution</module>
+	</modules>
+
+	<properties>
+		<dist.id>spring-data-neo4j</dist.id>
+
+		<project.type>multi</project.type>
+
+		<neo4j.ogm.version>3.2.11</neo4j.ogm.version>
+		<springdata.commons>2.3.1.RELEASE</springdata.commons>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>vbickers</id>
+			<name>Vince Bickers</name>
+			<email>vince at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>atg</id>
+			<name>Adam George</name>
+			<email>adam at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>bachmanm</id>
+			<name>Michal Bachman</name>
+			<email>michal at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>lmisquitta</id>
+			<name>Luanne Misquitta</name>
+			<email>luanne at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+5:30</timezone>
+		</developer>
+		<developer>
+			<id>mangrish</id>
+			<name>Mark Angrish</name>
+			<email>mark at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+11</timezone>
+		</developer>
+		<developer>
+			<id>jasperblues</id>
+			<name>Jasper Blues</name>
+			<email>jasper at graphaware.com</email>
+			<organization>GraphAware</organization>
+			<organizationUrl>https://www.graphaware.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+		<developer>
+			<id>mhunger</id>
+			<name>Michael Hunger</name>
+			<email>michael.hunger at neotechnology.com</email>
+			<organization>Neo Technology</organization>
+			<organizationUrl>https://www.neotechnology.com</organizationUrl>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>ogierke</id>
+			<name>Oliver Gierke</name>
+			<email>ogierke at gopivotal.com</email>
+			<organization>Pivotal</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>trisberg</id>
+			<name>Thomas Risberg</name>
+			<email>trisberg at gopivotal.com</email>
+			<organization>Pivotal</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>mpollack</id>
+			<name>Mark Pollack</name>
+			<email>mpollack at gopivotal.com</email>
+			<organization>Pivotal</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>gmeier</id>
+			<name>Gerrit Meier</name>
+			<email>gerrit.meier at neo4j.com</email>
+			<organization>Neo Technology</organization>
+			<organizationUrl>https://www.neotechnology.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>msimons</id>
+			<name>Michael Simons</name>
+			<email>michael.simons at neo4j.com</email>
+			<organization>Neo Technology</organization>
+			<organizationUrl>https://www.neotechnology.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jfrog.buildinfo</groupId>
+						<artifactId>artifactory-maven-plugin</artifactId>
+						<inherited>false</inherited>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	
+
+	
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration combine.self="override">
+					<configLocation>checkstyle/config.xml</configLocation>
+					<suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
+					<headerLocation>checkstyle/java-header.txt</headerLocation>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
