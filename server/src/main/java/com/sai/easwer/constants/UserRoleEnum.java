@@ -1,0 +1,8 @@
+package com.sai.easwer.constants;
+
+public enum UserRoleEnum {
+
+  DEFAULT, USER_READ, USER_CREATE, USER_EDIT, USER_DELETE, AUDITLOG_READ, PURGE_AUDITLOG, GLOBAL_SETTINGS_READ,
+  GLOBAL_SETTINGS_EDIT
+
+}

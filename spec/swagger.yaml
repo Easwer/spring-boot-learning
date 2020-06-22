@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  description: Spring Boot Application APIs Creation
+  version: "1.0"
+  title: Spring Boot Application APIs
+  contact:
+    name: Easwer AP
+    email: easwerms@gmail.com
+  license:
+    name: Apache 2.0
+tags:
+  - name: SecurityUser
+    description: Security User APIs
+paths:
+  /user:
+    get:
+      tags:
+        - SecurityUser
+      summary: View security users.
+      description: View an Security User
+      operationId: getUsers
+      parameters:
+        - in: header
+          name: authToken
+          example: 824ae010-4502-b281-3231-122e3a54c198
+          description: Authentication Key for Authentication and Authorization. this
+            Authentication key obtained using Login API
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: userId
+          example: 824ae010-4502-b281-3231-122e3a54c198
+          description: Id of the user to fetch.
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "201":
+          description: User created Successfully
+          content:
+            application./json:
+              schema:
+                $ref: "#/components/schemas/Response"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Response"
+        "400":
+          description: Request Failed
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        object:
+          type: object
+          description: Model object as a response
+        message:
+          type: string
+          description: Response message
+        status:
+          type: object
+          $ref: "#/components/schemas/ResponseStatus"
+    ResponseStatus:
+      type: string
+      enum:
+        - SUCCESS
+        - FAILURE
+    UserDto:
+      type: object
+      required:
+        - username
+        - groups
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3c4ad220-f260-3988-b569-e0629e290599
+          description: This is auto generated value. Should be used only during update,
+            should not be used during create.
+        username:
+          type: string
+          format: email
+          example: sysadmin@abc.com
+          description: Email Id is used as user name.
+        password:
+          type: string
+          example: sysadmin
+          description: Password of an User.
+        firstName:
+          type: string
+          example: system
+          description: Firstname of an User
+        lastName:
+          type: string
+          example: user
+          description: Lastname of an User
+        accountStatus:
+          type: string
+          format: uuid
+          example: ce4b57ca-b727-cc27-2bd9-70f59ce687a6
+          description: User account status id.
+        accountExpiry:
+          type: integer
+          format: int32
+          example: 60
+          minimum: 0
+          maximum: 120
+          description: Account Expiry date
+        passwordExpiry:
+          type: integer
+          format: int32
+          example: 60
+          minimum: 0
+          maximum: 120
+          description: Password Expiry date
+        idleTimeout:
+          type: integer
+          format: int32
+          example: 15
+          minimum: 15
+          maximum: 120
+          description: GUI Idle timeout.
