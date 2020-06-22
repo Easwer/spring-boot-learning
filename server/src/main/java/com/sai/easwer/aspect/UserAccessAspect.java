@@ -38,11 +38,11 @@ public class UserAccessAspect {
   @Autowired
   private SecurityUtils securityUtils;
 
-  private static final String LAST_PARAMETER = "execution(public * com.sai.easwer.service.*Service.*(.., @com.sai.easwer.annotation.RoleAccess (*)))";
+  private static final String FIRST_PARAMETER = "execution(public * com.sai.easwer.service.*Service.*(@com.sai.easwer.annotation.RoleAccess (*), ..)) || ";
 
   private static final String MIDDLE_PARAMETER = "execution(public * com.sai.easwer.service.*Service.*(.., @com.sai.easwer.annotation.RoleAccess (*), ..)) || ";
 
-  private static final String FIRST_PARAMETER = "execution(public * com.sai.easwer.service.*Service.*(@com.sai.easwer.annotation.RoleAccess (*), ..)) || ";
+  private static final String LAST_PARAMETER = "execution(public * com.sai.easwer.service.*Service.*(.., @com.sai.easwer.annotation.RoleAccess (*)))";
 
   private static final String ASPECT_CONDITION = FIRST_PARAMETER + MIDDLE_PARAMETER + LAST_PARAMETER;
 
@@ -60,27 +60,27 @@ public class UserAccessAspect {
   @Around(ASPECT_CONDITION)
   public Object before(final ProceedingJoinPoint joinPoint) throws Throwable {
     try {
-      Object[] args = joinPoint.getArgs();
-      MethodSignature methodSignature = (MethodSignature) joinPoint.getStaticPart().getSignature();
-      Method method = methodSignature.getMethod();
-      Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+      final Object[] args = joinPoint.getArgs();
+      final MethodSignature methodSignature = (MethodSignature) joinPoint.getStaticPart().getSignature();
+      final Method method = methodSignature.getMethod();
+      final Annotation[][] parameterAnnotations = method.getParameterAnnotations();
       assert args.length == parameterAnnotations.length;
       for (int argIndex = 0; argIndex < args.length; argIndex++) {
-        for (Annotation annotation : parameterAnnotations[argIndex]) {
+        for (final Annotation annotation : parameterAnnotations[argIndex]) {
           if (annotation != null && annotation instanceof RoleAccess) {
-            RoleAccess requestParam = (RoleAccess) annotation;
+            final RoleAccess requestParam = (RoleAccess) annotation;
             try {
               if (!securityUtils.checkAuthorization(requestParam.role().toString(), (UUID) args[argIndex])) {
                 return createResponse(DON_T_HAVE_ACCESS_TO_THIS_API, ResponseStatus.FAILURE, null,
                     HttpStatus.UNAUTHORIZED);
               }
-            } catch (Exception e) {
+            } catch (final Exception e) {
               return createResponse(e.getMessage(), ResponseStatus.FAILURE, null, HttpStatus.UNAUTHORIZED);
             }
           }
         }
       }
-    } catch (Exception e) {
+    } catch (final Exception e) {
       log.error(EXCEPTION_WHILE_CHECKING_AUTHORIZATION_DUE_TO, e.getMessage());
     }
     return joinPoint.proceed();

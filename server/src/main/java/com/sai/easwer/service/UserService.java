@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.sai.easwer.annotation.RoleAccess;
-import com.sai.easwer.api.UserApi;
-// import com.sai.easwer.api.SecurityUserApiDelegate;
+import com.sai.easwer.api.SecurityUserApi;
 import com.sai.easwer.constants.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.Modules;
@@ -35,6 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -47,7 +47,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-public class UserService extends BaseService implements UserContoller, UserApi {
+@Tag(name = "User", description = "Security User API's")
+public class UserService extends BaseService implements UserContoller, SecurityUserApi {
 
     @Autowired
     private UserRepository userRepository;
@@ -69,7 +70,7 @@ public class UserService extends BaseService implements UserContoller, UserApi {
 
     @Override
     public ResponseEntity<Response> getUsers(@RoleAccess(role = UserRoleEnum.USER_READ) final UUID authToken,
-            @Valid UUID userId) {
+            final UUID userId) {
         if (userId == null) {
             final List<UserDetails> users = userRepository.findAll();
 

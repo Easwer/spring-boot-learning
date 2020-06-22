@@ -8,6 +8,9 @@ info:
     email: easwerms@gmail.com
   license:
     name: Apache 2.0
+servers:
+  - url: https://localhost:8083
+    description: The production API server
 tags:
   - name: SecurityUser
     description: Security User APIs
@@ -41,7 +44,7 @@ paths:
         "201":
           description: User created Successfully
           content:
-            application./json:
+            application/json:
               schema:
                 $ref: "#/components/schemas/Response"
             application/xml:

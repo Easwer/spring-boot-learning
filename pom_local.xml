@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<groupId>com.sai.easwer</groupId>
+	<artifactId>SpringBootDemo</artifactId>
+	<version>1.0</version>
+	<name>Spring Boot Application</name>
+	<description>Spring Boot Application with React Material GUI</description>
+
+	<developers>
+		<developer>
+			<name>Easwer</name>
+			<roles>
+				<role>Software Developer</role>
+			</roles>
+			<email>easwerms@gmail.com</email>
+			<organization>Easwer</organization>
+			<timezone>India/Chennai</timezone>
+		</developer>
+	</developers>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.1.RELEASE</version>
+		<relativePath />
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<maven-project-info-reports-plugin.version>3.1.0</maven-project-info-reports-plugin.version>
+		<maven-site-plugin.version>3.9.0</maven-site-plugin.version>
+		<swagger-codegen-maven-plugin.version>3.0.20</swagger-codegen-maven-plugin.version>
+		<swagger.yaml.path>${project.basedir}/../spec/swagger.yaml</swagger.yaml.path>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>localRepository</id>
+			<url>file://${project.basedir}/ThirdParty/libs</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>pluginRepository</id>
+			<url>file://${project.basedir}/ThirdParty/libs</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>model</module>
+		<module>server</module>
+	</modules>
+
+</project>

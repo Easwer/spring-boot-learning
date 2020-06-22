@@ -1,15 +1,15 @@
 package com.sai.easwer.controller;
 
+import java.util.UUID;
+
 import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.entity.UserDetails;
-import com.sai.easwer.servermodel.LoginRequest;
 import com.sai.easwer.model.Response;
-import java.util.UUID;
+import com.sai.easwer.servermodel.LoginRequest;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +52,7 @@ public interface UserContoller {
          * @param userId {@link UUID}
          * @return {@link ResponseEntity}<{@link Response}>
          */
+        @GetMapping(value = "/user1")
         ResponseEntity<Response> getUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
                         @RequestParam(required = false, name = "id") UUID userId);
 
@@ -61,7 +62,6 @@ public interface UserContoller {
          * @param user {@link UserDetails}
          * @return {@link ResponseEntity}<{@link Response}>
          */
-        @PostMapping(value = "/user")
         ResponseEntity<Response> createUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
                         @RequestBody UserDetails user);
 
@@ -71,7 +71,6 @@ public interface UserContoller {
          * @param user {@link UserDetails}
          * @return {@link ResponseEntity}<{@link Response}>
          */
-        @PutMapping(value = "/user")
         ResponseEntity<Response> updateUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
                         @RequestBody UserDetails user);
 
@@ -81,7 +80,6 @@ public interface UserContoller {
          * @param userId {@link UUID}
          * @return {@link ResponseEntity}<{@link Response}>
          */
-        @DeleteMapping(value = "/user")
         ResponseEntity<Response> deleteUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
                         @RequestParam(name = "id") UUID userId);
 
