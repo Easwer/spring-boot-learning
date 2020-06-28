@@ -1,7 +1,7 @@
 package com.sai.easwer.util;
 
-import com.sai.easwer.constants.AuditLogType;
-import com.sai.easwer.constants.Modules;
+import com.sai.easwer.model.AuditLogType;
+import com.sai.easwer.model.Modules;
 import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.entity.AuditLog;
 import com.sai.easwer.entity.UserDetails;
@@ -157,6 +157,7 @@ public class AuditLogger {
 
         if (null != user) {
             auditLog.setUsername(user.getUsername());
+            auditLog.setUserId(user.getId());
         }
 
         if (null != responseStatus) {

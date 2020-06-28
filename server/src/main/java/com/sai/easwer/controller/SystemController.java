@@ -1,39 +1,21 @@
 package com.sai.easwer.controller;
 
-import com.sai.easwer.model.Response;
-import com.sai.easwer.constants.SecurityConstants;
-import java.util.UUID;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import com.sai.easwer.api.SystemApi;
+
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Rest controller for system management.
+ * This controller is used to extend the auto generated interface because, the
+ * auto generated interface doesn't support OpenAPI 3.0 annotations. Once that
+ * bug is fixed. Need to remove these niteraces and use auto generated
+ * interfaces directly in service class.
  * 
  * @author Easwer AP
  * @email easwerms@gmail.com
- * @create date 2020-03-10 17:55:36
- * @modify date 2020-03-10 18:04:49
+ * @create date 2020-06-25 13:26:02
+ * @modify date 2020-06-25 13:26:02
  */
 @RestController
-public interface SystemController {
+public interface SystemController extends SystemApi {
 
-    /**
-     * API to get server running status.
-     * 
-     * @param authToken
-     * @return
-     */
-    @GetMapping(value = "/status")
-    ResponseEntity<Response> getServerStatus(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken);
-
-    /**
-     * API to check whether the given authentication token is valid or not.
-     * 
-     * @param authToken
-     * @return
-     */
-    @GetMapping(value = "/isValid")
-    ResponseEntity<Response> isValidToken(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken);
 }

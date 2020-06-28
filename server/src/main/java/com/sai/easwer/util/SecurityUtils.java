@@ -1,22 +1,6 @@
 package com.sai.easwer.util;
 
-import com.sai.easwer.constants.AuditLogType;
-import com.sai.easwer.constants.MessageConstants;
-import com.sai.easwer.constants.Modules;
-import com.sai.easwer.constants.SecurityConstants;
-import com.sai.easwer.constants.UserAccountStatus;
-import com.sai.easwer.entity.UserDetails;
-import com.sai.easwer.entity.UserGroup;
-import com.sai.easwer.entity.UserRole;
-import com.sai.easwer.entity.UserSession;
-import com.sai.easwer.entity.mapping.GroupRoleMapping;
-import com.sai.easwer.entity.mapping.UserGroupMapping;
-import com.sai.easwer.repository.UserRepository;
-import com.sai.easwer.repository.UserRoleRepository;
-import com.sai.easwer.repository.UserSessionRepository;
-import com.sai.easwer.repository.mapping.GroupRoleMappingRepository;
-import com.sai.easwer.repository.mapping.UserGroupMappingRepository;
-
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,8 +9,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+
+import com.sai.easwer.constants.MessageConstants;
+import com.sai.easwer.constants.SecurityConstants;
+import com.sai.easwer.entity.UserDetails;
+import com.sai.easwer.entity.UserGroup;
+import com.sai.easwer.entity.UserRole;
+import com.sai.easwer.entity.UserSession;
+import com.sai.easwer.entity.mapping.GroupRoleMapping;
+import com.sai.easwer.entity.mapping.UserGroupMapping;
+import com.sai.easwer.model.AuditLogType;
+import com.sai.easwer.model.Modules;
+import com.sai.easwer.model.UserAccountStatus;
+import com.sai.easwer.model.UserDto;
+import com.sai.easwer.repository.UserRepository;
+import com.sai.easwer.repository.UserRoleRepository;
+import com.sai.easwer.repository.UserSessionRepository;
+import com.sai.easwer.repository.mapping.GroupRoleMappingRepository;
+import com.sai.easwer.repository.mapping.UserGroupMappingRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,10 +74,10 @@ public class SecurityUtils {
      */
     public boolean checkAuthorization(final String role, final UUID authToken) throws Exception {
         boolean isAuthorized = false;
-        Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
+        final Optional<UserSession> userSession = userSessionRepository.findByAuthToken(authToken);
         if (userSession.isPresent()) {
             if (userSession.get().getLastAccessTime() != null) {
-                Optional<UserDetails> userDetails = userRepository.findById(userSession.get().getUserId());
+                final Optional<UserDetails> userDetails = userRepository.findById(userSession.get().getUserId());
                 if (userDetails.isPresent()) {
                     isAuthorized = checkRole(userDetails.get(), role)
                             && checkIdleTimeout(userDetails.get(), userSession.get(), authToken);
@@ -101,8 +102,8 @@ public class SecurityUtils {
      */
     private boolean checkIdleTimeout(final UserDetails userDetails, final UserSession userSession,
             final UUID authToken) {
-        Long limit = Long.sum((long) userDetails.getIdleTimeout() * 60 * 1000, userSession.getLastAccessTime());
-        Long currentMilliseconds = Calendar.getInstance().getTimeInMillis();
+        final Long limit = Long.sum((long) userDetails.getIdleTimeout() * 60 * 1000, userSession.getLastAccessTime());
+        final Long currentMilliseconds = Calendar.getInstance().getTimeInMillis();
 
         if (limit.compareTo(currentMilliseconds) <= 0) {
             userSessionRepository.deleteByAuthToken(authToken);
@@ -125,12 +126,13 @@ public class SecurityUtils {
      * @return {@link boolean}
      */
     private boolean checkRole(final UserDetails userDetails, final String role) {
-        List<UserGroupMapping> userGroupMappingList = userGroupMappingRepository.findByUserId(userDetails.getId());
-        for (UserGroupMapping userGroupMapping : userGroupMappingList) {
-            List<GroupRoleMapping> groupRoleMappingList = groupRoleMappingRepository
+        final List<UserGroupMapping> userGroupMappingList = userGroupMappingRepository
+                .findByUserId(userDetails.getId());
+        for (final UserGroupMapping userGroupMapping : userGroupMappingList) {
+            final List<GroupRoleMapping> groupRoleMappingList = groupRoleMappingRepository
                     .findByGroupId(userGroupMapping.getGroupId());
-            for (GroupRoleMapping groupRoleMapping : groupRoleMappingList) {
-                Optional<UserRole> userRole = userRoleRepository.findById(groupRoleMapping.getRoleId());
+            for (final GroupRoleMapping groupRoleMapping : groupRoleMappingList) {
+                final Optional<UserRole> userRole = userRoleRepository.findById(groupRoleMapping.getRoleId());
                 if (userRole.isPresent() && userRole.get().getName().equalsIgnoreCase(role)) {
                     return true;
                 }
@@ -142,24 +144,26 @@ public class SecurityUtils {
     /**
      * Validates email address format.
      * 
-     * @param email {@link String}
-     * @throws Exception if not a valid email.
+     * @param email    {@link String}
+     * @param username {@link String}
+     * @throws IllegalArgumentException if not a valid email.
      */
-    public void validateEmailAddress(final String email) throws Exception {
+    public void validateEmailAddress(final String email, final String username) throws IllegalArgumentException {
         if (email == null || email.equals("")) {
-            throw new Exception(MessageConstants.EMAIL_CANNOT_BE_EMPTY);
+            throw new IllegalArgumentException(MessageConstants.EMAIL_CANNOT_BE_EMPTY);
         }
 
-        try {
-            final InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
-            final Optional<UserDetails> userDetails = userRepository.findByEmail(email);
-            if (userDetails.isPresent()) {
-                throw new Exception(MessageConstants.EMAIL_SHOULD_BE_UNIQUE);
-            }
-        } catch (final AddressException e) {
-            throw new Exception(MessageConstants.INVALID_EMAIL);
-        }
+        // try {
+        // final InternetAddress emailAddr = new InternetAddress(email);
+        // emailAddr.validate();
+        // final Optional<UserDetails> userDetails =
+        // userRepository.findByEmailAndUsernameNot(email, username);
+        // if (userDetails.isPresent()) {
+        // throw new IllegalArgumentException(MessageConstants.EMAIL_SHOULD_BE_UNIQUE);
+        // }
+        // } catch (final AddressException e) {
+        // throw new IllegalArgumentException(MessageConstants.INVALID_EMAIL);
+        // }
     }
 
     /**
@@ -168,37 +172,37 @@ public class SecurityUtils {
      * @param username  {@link String}
      * @param firstName {@link String}
      * @param lastName  {@link String}
-     * @throws Exception if not valid.
+     * @throws IllegalArgumentException if not valid.
      */
     public void validateUserName(final String username, final String firstName, final String lastName)
-            throws Exception {
+            throws IllegalArgumentException {
 
         if (username == null || username.equals("")) {
-            throw new Exception(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
+            throw new IllegalArgumentException(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
         }
 
         Pattern pattern = Pattern.compile(SecurityConstants.USERNAME_PATTERN);
 
         if (pattern.matcher(username).find()) {
-            throw new Exception(MessageConstants.USERNAME_PATTERN_ERROR);
+            throw new IllegalArgumentException(MessageConstants.USERNAME_PATTERN_ERROR);
         }
 
         if (firstName == null || firstName.equals("")) {
-            throw new Exception(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
+            throw new IllegalArgumentException(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
         }
 
         if (lastName == null || lastName.equals("")) {
-            throw new Exception(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
+            throw new IllegalArgumentException(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
         }
 
         pattern = Pattern.compile(SecurityConstants.NAME_PATTERN);
 
         if (pattern.matcher(firstName).find()) {
-            throw new Exception(MessageConstants.FIRST_NAME_ERROR);
+            throw new IllegalArgumentException(MessageConstants.FIRST_NAME_ERROR);
         }
 
         if (pattern.matcher(lastName).find()) {
-            throw new Exception(MessageConstants.LAST_NAME_ERROR);
+            throw new IllegalArgumentException(MessageConstants.LAST_NAME_ERROR);
         }
 
     }
@@ -221,10 +225,10 @@ public class SecurityUtils {
      * @param firstname {@link String}
      * @param lastname  {@link String}
      * @param email     {@link String}
-     * @throws Exception if not valid
+     * @throws IllegalArgumentException if not valid
      */
     public void validatePassword(final String password, final String username, final String firstname,
-            final String lastname, final String email) throws Exception {
+            final String lastname, final String email) throws IllegalArgumentException {
 
         final int minLength = GlobalSettingsUtil.getInt(SecurityConstants.PASSWORD_MIN_LENGTH,
                 SecurityConstants.DEFAULT_PASSWORD_MIN_LENGTH);
@@ -233,35 +237,35 @@ public class SecurityUtils {
                 SecurityConstants.DEFAULT_PASSWORD_MAX_LENGTH);
 
         if (password == null || password.equals("")) {
-            throw new Exception(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_CANNOT_BE_EMPTY);
         }
 
         if (password.length() < minLength) {
-            throw new Exception(MessageConstants.PASSWORD_MIN_LENGTH_ERROR);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_MIN_LENGTH_ERROR);
         }
 
         if (password.length() > maxLength) {
-            throw new Exception(MessageConstants.PASSWORD_MAX_LENGTH_ERROR);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_MAX_LENGTH_ERROR);
         }
 
         if (password.contains(" ")) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_HAVE_SPACE);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_SHOULD_NOT_HAVE_SPACE);
         }
 
         if (password.toLowerCase().contains(firstname.toLowerCase())) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_FIRSTNAME);
         }
 
         if (password.toLowerCase().contains(username.toLowerCase())) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_USERNAME);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_USERNAME);
         }
 
         if (password.toLowerCase().contains(lastname.toLowerCase())) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_LASTNAME);
         }
 
         if (password.toLowerCase().contains(email.split("@")[0].toLowerCase())) {
-            throw new Exception(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_SHOULD_NOT_CONTAIN_EMAIL);
         }
 
         final StringBuilder patternBuilder = new StringBuilder(SecurityConstants.SMALLL_LETTER_REGEX);
@@ -289,7 +293,7 @@ public class SecurityUtils {
         final Pattern p = Pattern.compile(patternBuilder.toString());
 
         if (!p.matcher(password).find()) {
-            throw new Exception(MessageConstants.PASSWORD_PATTERN_ERROR);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_PATTERN_ERROR);
         }
 
     }
@@ -297,12 +301,12 @@ public class SecurityUtils {
     /**
      * Validates user request while updating the existing user.
      * 
-     * @param user {@link UserDetails}
-     * @throws Exception if not valid.
+     * @param user {@link UserDto}
+     * @throws IllegalArgumentException if not valid.
      */
-    public void validateUpdateUserRequest(final UserDetails user) throws Exception {
+    public void validateUpdateUserRequest(final UserDto user) throws IllegalArgumentException {
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
-        validateEmailAddress(user.getEmail());
+        validateEmailAddress(user.getEmail(), user.getUsername());
         if (user.getPassword() != null && !user.getPassword().trim().equals("")) {
             validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
                     user.getEmail());
@@ -314,15 +318,16 @@ public class SecurityUtils {
     /**
      * Validates user request while creating the new user.
      * 
-     * @param user {@link UserDetails}
-     * @throws Exception if not valid.
+     * @param user {@link UserDto}
+     * @throws IllegalArgumentException if not valid.
      */
-    public void validateCreateUserRequest(final UserDetails user) throws Exception {
+    public void validateCreateUserRequest(final UserDto user) throws IllegalArgumentException {
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
         validateUserExists(user.getUsername());
-        validateEmailAddress(user.getEmail());
-        validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
-                user.getEmail());
+        validateEmailAddress(user.getEmail(), user.getUsername());
+        // validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
+        // user.getLastName(),
+        // user.getEmail());
         validateTimeouts(user);
     }
 
@@ -330,24 +335,25 @@ public class SecurityUtils {
      * Validates whether the user exists or not by username.
      * 
      * @param username {@link String}
-     * @throws Exception - if not valid
+     * @throws IllegalArgumentException - if not valid
      */
-    public void validateUserExists(final String username) throws Exception {
+    public void validateUserExists(final String username) throws IllegalArgumentException {
         final Optional<UserDetails> userDetails = userRepository.findByUsername(username);
         if (userDetails.isPresent()) {
-            throw new Exception(MessageConstants.ERROR_USERNAME_ALREADY_EXISTS);
+            throw new IllegalArgumentException(MessageConstants.ERROR_USERNAME_ALREADY_EXISTS);
         }
     }
 
     /**
      * Checks wether User Account Status string is a valid user account status.
      * 
-     * @param user {@link UserDetails}
-     * @throws Exception if not valid
+     * @param user {@link UserDto}
+     * @throws IllegalArgumentException if not valid
      */
-    public void validateUserAccountStatus(final UserDetails user) throws Exception {
-        if (!UserAccountStatus.contains(user.getUserAccountStatus())) {
-            throw new Exception(MessageConstants.USER_ACCOUNT_STATUS_ERROR);
+    public void validateUserAccountStatus(final UserDto user) throws IllegalArgumentException {
+        if (null != user.getAccountStatus()
+                && null == UserAccountStatus.fromValue(user.getAccountStatus().getValue())) {
+            throw new IllegalArgumentException(MessageConstants.USER_ACCOUNT_STATUS_ERROR);
         }
     }
 
@@ -359,21 +365,21 @@ public class SecurityUtils {
      * - Idle Timeout: Minimum = 15 minutes and Maximum = 120 minutes.
      * </pre>
      * 
-     * @param user {@link UserDetails}
-     * @throws Exception if not valid
+     * @param user {@link UserDto}
+     * @throws IllegalArgumentException if not valid
      */
-    public void validateTimeouts(final UserDetails user) throws Exception {
+    public void validateTimeouts(final UserDto user) throws IllegalArgumentException {
         if (user.getPasswordExpiry() < SecurityConstants.PASSWORD_EXPIRY_MIN
                 || user.getPasswordExpiry() > SecurityConstants.PASSWORD_EXPIRY_MAX) {
-            throw new Exception(MessageConstants.PASSWORD_EXPIRY_ERROR);
+            throw new IllegalArgumentException(MessageConstants.PASSWORD_EXPIRY_ERROR);
         }
         if (user.getAccountExpiry() < SecurityConstants.ACCOUNT_EXPIRY_MIN
                 || user.getAccountExpiry() > SecurityConstants.ACCOUNT_EXPIRY_MAX) {
-            throw new Exception(MessageConstants.ACCOUNT_EXPIRY_ERROR);
+            throw new IllegalArgumentException(MessageConstants.ACCOUNT_EXPIRY_ERROR);
         }
         if (user.getIdleTimeout() < SecurityConstants.IDLE_TIMEOUT_MIN
                 || user.getIdleTimeout() > SecurityConstants.IDLE_TIMEOUT_MAX) {
-            throw new Exception(MessageConstants.IDLE_TIMOUT_ERROR);
+            throw new IllegalArgumentException(MessageConstants.IDLE_TIMOUT_ERROR);
         }
     }
 
@@ -401,4 +407,40 @@ public class SecurityUtils {
         return simple.format(result);
     }
 
+    public String createNewPassword(final String username) {
+        final String password = generatingRandomAlphanumericString();
+        return password;
+    }
+
+    public String generatingRandomAlphanumericString() {
+        final String lowerCharacters = "abcdefghijklmnopqrstuvwxyz";
+        final String upperCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String specialCharacters = "@#!$%";
+        final boolean forceSpecialChar = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceCapitalLetter = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+        final boolean forceNumber = GlobalSettingsUtil.getBoolean(SecurityConstants.FORCE_SPECIAL_CHAR, true);
+
+        StringBuilder sb = new StringBuilder();
+        final SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < 8; i++) {
+            sb.append(lowerCharacters.charAt(random.nextInt(lowerCharacters.length())));
+        }
+
+        if (forceSpecialChar) {
+            sb.append(specialCharacters.charAt(random.nextInt(specialCharacters.length())));
+        }
+
+        if (forceNumber) {
+            sb.append(random.nextInt(99));
+        }
+        if (forceCapitalLetter) {
+            for (int i = 0; i < 4; i++) {
+                sb.append(upperCharacters.charAt(random.nextInt(upperCharacters.length())));
+            }
+        }
+
+        return sb.toString();
+
+    }
 }

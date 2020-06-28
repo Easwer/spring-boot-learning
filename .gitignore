@@ -30,8 +30,8 @@ build/
 ### VS Code ###
 .vscode/
 ./node_modules
-src/main/react-gui/node_modules/
-src/main/react-gui/yarn.lock
+server/src/main/react-gui/node_modules/*
+server/src/main/react-gui/yarn.lock
 nohup.out
 .attach_pid*
-src/main/react-gui/yarn-error.log
+server/src/main/react-gui/yarn-error.log

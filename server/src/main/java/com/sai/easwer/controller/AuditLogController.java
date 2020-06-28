@@ -1,44 +1,21 @@
 package com.sai.easwer.controller;
 
-import java.util.UUID;
+import com.sai.easwer.api.AuditlogApi;
 
-import com.sai.easwer.constants.SecurityConstants;
-import com.sai.easwer.model.Response;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Rest controller for auditlog management.
+ * This controller is used to extend the auto generated interface because, the
+ * auto generated interface doesn't support OpenAPI 3.0 annotations. Once that
+ * bug is fixed. Need to remove these niteraces and use auto generated
+ * interfaces directly in service class.
  * 
  * @author Easwer AP
  * @email easwerms@gmail.com
- * @create date 2020-02-14 15:11:45
- * @modify date 2020-03-10 18:04:32
+ * @create date 2020-06-25 13:26:02
+ * @modify date 2020-06-25 13:26:02
  */
 @RestController
-public interface AuditLogController {
-    /**
-     * Get all audit log.
-     * 
-     * @param authToken  {@link UUID}
-     * @param auditLogId {@link UUID}
-     * @return {@link ResponseEntity}
-     */
-    // @GetMapping(value = "/auditlog")
-    ResponseEntity<Response> getAllAuditLog(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
-            @RequestParam(required = false, name = "id") UUID auditLogId);
+public interface AuditLogController extends AuditlogApi {
 
-    /**
-     * Get all audit log by user.
-     * 
-     * @param authToken {@link UUID}
-     * @param username  {@link String}
-     * @return {@link ResponseEntity}
-     */
-    // @GetMapping(value = "/auditlog")
-    ResponseEntity<Response> getAllAuditLogByUser(@RequestHeader(SecurityConstants.AUTH_TOKEN) UUID authToken,
-            @RequestParam(name = "user") String username);
 }

@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 
 import com.sai.easwer.annotation.RoleAccess;
-import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.model.Response;
+import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.util.SecurityUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -27,12 +27,12 @@ import lombok.extern.slf4j.Slf4j;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-14 15:12:28
- * @modify date 2020-06-19 22:21:09
+ * @modify date 2020-06-23 15:33:51
  */
+@Slf4j
 @Aspect
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@Slf4j
 public class UserAccessAspect {
 
   @Autowired

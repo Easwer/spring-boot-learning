@@ -1,8 +1,11 @@
 package com.sai.easwer.entity;
 
-import com.sai.easwer.constants.AuditLogType;
-import com.sai.easwer.constants.Modules;
+import com.sai.easwer.model.AuditLogType;
+import com.sai.easwer.model.Modules;
 import com.sai.easwer.model.ResponseStatus;
+
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -30,6 +33,9 @@ public class AuditLog extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "userId")
+    private UUID userId;
 
     @Column(name = "username")
     private String username;

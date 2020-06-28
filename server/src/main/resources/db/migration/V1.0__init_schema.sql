@@ -89,9 +89,9 @@ INSERT INTO group_role_mapping (id, version, created_time, last_updated_time, cr
 	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'admin', 'admin', (SELECT id FROM user_group where name = 'Viewers'), (SELECT id FROM user_role where name = 'USER_READ'));
 
 -- User details
-INSERT INTO user_details (id, version, created_time, last_updated_time, created_by, last_updated_by, username, first_name, last_name, password, email, failed_login_attempt_count, idle_timeout, user_account_status, account_expiry, password_expiry)
+INSERT INTO user_details (id, version, created_time, last_updated_time, created_by, last_updated_by, username, first_name, last_name, password, email, idle_timeout, user_account_status, account_expiry, password_expiry)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'admin', 'Administrator', 'User', 'admin', 'admin@easwer.com', 0, 15, 'ACTIVE', 0, 30);
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'admin', 'Administrator', 'User', 'admin', 'admin@easwer.com', 15, 'ACTIVE', 0, 30);
 
 -- User Group Mapping
 INSERT INTO user_group_mapping (id, version, created_time, last_updated_time, created_by, last_updated_by, user_id, group_id)

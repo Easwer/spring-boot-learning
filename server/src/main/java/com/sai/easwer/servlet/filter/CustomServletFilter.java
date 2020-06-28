@@ -22,15 +22,15 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class LoggedUserFilter implements Filter {
+public class CustomServletFilter implements Filter {
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
 
     @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response,
-            final FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain filterChain)
+            throws IOException, ServletException {
 
         try {
             final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -39,7 +39,7 @@ public class LoggedUserFilter implements Filter {
 
             filterChain.doFilter(request, response);
         } catch (final Exception e) {
-            log.error("");
+            e.printStackTrace();
         } finally {
             CurrentSessionDetails.logout();
         }

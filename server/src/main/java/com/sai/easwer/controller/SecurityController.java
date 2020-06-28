@@ -1,13 +1,7 @@
 package com.sai.easwer.controller;
 
-import java.util.UUID;
+import com.sai.easwer.api.SecurityApi;
 
-import com.sai.easwer.api.UserApi;
-import com.sai.easwer.model.Response;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,9 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @modify date 2020-06-25 13:26:02
  */
 @RestController
-public interface UserContoller extends UserApi {
-
-  @GetMapping(name = "mail", path = "/mail", produces = { "application/json", "application/xml" })
-  public ResponseEntity<Response> sendMail();
+public interface SecurityController extends SecurityApi {
 
 }

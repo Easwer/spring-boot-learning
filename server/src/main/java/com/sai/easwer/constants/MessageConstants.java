@@ -106,6 +106,8 @@ public class MessageConstants {
 
         public static final String INVALID_USER_ID = "Invalid user id.";
 
+        public static final String INVALID_AUDTILOG_ID = "Invalid user id.";
+
         public static final String NO_USERS_FOUND = "No users found.";
 
         public static final String USERS_FOUND_SUCCESSFULLY = "Users found successfully.";
@@ -114,13 +116,15 @@ public class MessageConstants {
 
         public static final String INVALID_INPUT = "Invalid Input.";
 
+        public static final String CANNOT_CHANGE_USERNAME_FOR_AN_USER = "Cannot change username for an user";
+
         public static final String USERS_CREATED_SUCCESSFULLY = "Users created successfully.";
 
         public static final String NO_AUDIT_LOG_FOUND = "No audit log found.";
 
         public static final String USER_FOUND_SUCCESSFULLY = "User found successfully.";
 
-        public static final String AUDIT_LOGS_FOUND_SUCCESSFULLY = "Audit Logs found successfully.";
+        public static final String AUDIT_LOGS_FOUND_SUCCESSFULLY = "Auditlog(s) found successfully.";
 
         public static final String NO_AUDIT_LOGS_FOUND = "No audit logs found.";
 

@@ -24,5 +24,5 @@ public interface UserRepository extends PagingAndSortingRepository<UserDetails, 
 
     Optional<UserDetails> findByUsername(String username);
 
-    Optional<UserDetails> findByEmail(String email);
+    Optional<UserDetails> findByEmailAndUsernameNot(String email, String username);
 }

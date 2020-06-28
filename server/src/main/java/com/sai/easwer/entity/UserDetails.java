@@ -37,9 +37,6 @@ public class UserDetails extends BaseEntity {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "failed_login_attempt_count")
-	private int failedLoginAttemptCount = 0;
-
 	@Column(name = "idle_timeout", nullable = false)
 	private int idleTimeout = 15;
 

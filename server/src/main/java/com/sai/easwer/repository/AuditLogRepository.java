@@ -20,6 +20,10 @@ public interface AuditLogRepository extends PagingAndSortingRepository<AuditLog,
 
     Optional<AuditLog> findById(UUID id);
 
+    Optional<AuditLog> findByIdAndUserId(UUID id, UUID userId);
+
+    List<AuditLog> findByUserId(UUID userId);
+
     List<AuditLog> findAll();
 
     List<AuditLog> findByUsername(String username);

@@ -1,6 +1,6 @@
 package com.sai.easwer.annotation;
 
-import com.sai.easwer.constants.UserRoleEnum;
+import com.sai.easwer.model.UserRoleEnum;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
