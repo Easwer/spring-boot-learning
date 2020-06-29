@@ -2,8 +2,9 @@ package com.sai.easwer.util;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import com.sai.easwer.constants.MessageConstants;
+import com.sai.easwer.constants.SecurityConstants;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -12,22 +13,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailUtils {
 
-  @Autowired
-  private JavaMailSender javaMailSender;
-
-  @Bean
   public JavaMailSender getJavaMailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    mailSender.setHost("smtp.gmail.com");
-    mailSender.setPort(587);
-
-    mailSender.setUsername("easwer.spring.boot@gmail.com");
-    mailSender.setPassword("easSpringBoot");
+    mailSender.setHost(GlobalSettingsUtil.getString(SecurityConstants.SMTP_HOST, ""));
+    mailSender.setPort(GlobalSettingsUtil.getInt(SecurityConstants.SMTP_PORT, 587));
+    mailSender.setUsername(GlobalSettingsUtil.getString(SecurityConstants.SMTP_USERNAME, null));
+    mailSender.setPassword(GlobalSettingsUtil.getString(SecurityConstants.SMTP_PASSWORD, null));
 
     Properties props = mailSender.getJavaMailProperties();
-    props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.debug", "true");
+    props.put(MessageConstants.MAIL_SMTP_AUTH,
+        GlobalSettingsUtil.getString(SecurityConstants.SMTP_AUTH, MessageConstants.TRUE));
+    props.put(MessageConstants.MAIL_SMTP_STARTTLS_ENABLE,
+        GlobalSettingsUtil.getString(SecurityConstants.SMTP_TLS, MessageConstants.TRUE));
+    props.put(MessageConstants.MAIL_DEBUG,
+        GlobalSettingsUtil.getString(SecurityConstants.SMTP_DEBUG, MessageConstants.TRUE));
 
     return mailSender;
   }
@@ -42,7 +41,7 @@ public class MailUtils {
       msg.setTo(mails);
       msg.setSubject(subject);
       msg.setText(content);
-      javaMailSender.send(msg);
+      getJavaMailSender().send(msg);
     } catch (final Exception e) {
       e.printStackTrace();
     }
@@ -51,12 +50,10 @@ public class MailUtils {
   public void sendEmail(final String mail, final String subject, final String content) throws Exception {
     try {
       final SimpleMailMessage msg = new SimpleMailMessage();
-      // msg.setFrom("easwer.spring.boot@gmail.com");
-      // msg.setReplyTo("easwer.spring.boot@gmail.com");
       msg.setTo(mail);
       msg.setSubject(subject);
       msg.setText(content);
-      javaMailSender.send(msg);
+      getJavaMailSender().send(msg);
     } catch (final Exception e) {
       e.printStackTrace();
     }

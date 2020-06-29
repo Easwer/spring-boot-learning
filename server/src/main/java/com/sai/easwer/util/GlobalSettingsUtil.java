@@ -2,6 +2,7 @@ package com.sai.easwer.util;
 
 import java.util.Optional;
 
+import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.entity.GlobalSettings;
 import com.sai.easwer.repository.GlobalSettingsRepository;
 
@@ -37,7 +38,7 @@ public class GlobalSettingsUtil {
      * @param defaultValue default value {@link String}.
      * @return {@link String}
      */
-    public static String getString(final String key) {
+    public static String getString(final String key, final String defaultValue) {
         Optional<GlobalSettings> settings = null;
         try {
             settings = globalSettingsRepository.findByKey(key);
@@ -45,9 +46,9 @@ public class GlobalSettingsUtil {
                 return settings.get().getValue();
             }
         } catch (final Exception e) {
-            log.error("Error in getGlobalSettings due to ", e);
+            log.error(MessageConstants.ERROR_IN_GET_GLOBAL_SETTINGS_DUE_TO, e);
         }
-        return null;
+        return defaultValue;
     }
 
     /**
@@ -65,7 +66,7 @@ public class GlobalSettingsUtil {
                 return Boolean.parseBoolean(settings.get().getValue());
             }
         } catch (final Exception e) {
-            log.error("Error in getGlobalSettings due to ", e);
+            log.error(MessageConstants.ERROR_IN_GET_GLOBAL_SETTINGS_DUE_TO, e);
         }
         return defaultValue;
     }
@@ -85,7 +86,7 @@ public class GlobalSettingsUtil {
                 return Integer.parseInt(settings.get().getValue());
             }
         } catch (final Exception e) {
-            log.error("Error in getGlobalSettings due to ", e);
+            log.error(MessageConstants.ERROR_IN_GET_GLOBAL_SETTINGS_DUE_TO, e);
         }
         return defaultValue;
     }

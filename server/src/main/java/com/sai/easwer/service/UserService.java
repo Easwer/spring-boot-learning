@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.sai.easwer.annotation.RoleAccess;
 import com.sai.easwer.constants.MessageConstants;
+import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.controller.UserContoller;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserPasswordHistory;
@@ -18,11 +19,13 @@ import com.sai.easwer.model.UserDto;
 import com.sai.easwer.model.UserRoleEnum;
 import com.sai.easwer.repository.UserPasswordHistoryRepository;
 import com.sai.easwer.repository.UserRepository;
+import com.sai.easwer.util.GlobalSettingsUtil;
 import com.sai.easwer.util.MailUtils;
 import com.sai.easwer.util.SecurityUtils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -55,19 +58,8 @@ public class UserService extends BaseService implements UserContoller {
     @Autowired
     private MailUtils mailUtils;
 
-    @Override
-    public ResponseEntity<Response> sendMail() {
-        try {
-            String password = securityUtils.createNewPassword("easwer");
-            mailUtils.sendEmail("rameas100@gmail.com", "Account created successfully.",
-                    "Hi Sai rajeswari,\nYour new account has been created.\nYour account details as follows.\n\nUsername: sai\nPassword: "
-                            + password + "\n\nThanks,\nAdmin");
-        } catch (Exception e) {
-            return createResponse("Mail send error due to: " + e.getMessage(), ResponseStatus.FAILURE, null,
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return createResponse("Mail send successfully", ResponseStatus.SUCCESS, null, HttpStatus.OK);
-    }
+    @Value("${server.name}")
+    private String serverName;
 
     @Override
     public ResponseEntity<Response> _getUsers(@RoleAccess(role = UserRoleEnum.USER_READ) final UUID authToken,
@@ -100,19 +92,28 @@ public class UserService extends BaseService implements UserContoller {
             securityUtils.validateCreateUserRequest(user);
             user.setAccountStatus(UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN);
             user.setId(UUID.randomUUID());
-            String password = securityUtils.createNewPassword(user.getUsername());
+            final boolean configureSmtp = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
+            final boolean passwordAutoGenerate = GlobalSettingsUtil.getBoolean(SecurityConstants.PASSWORD_AUTO_GENERATE,
+                    true);
+            if (passwordAutoGenerate && configureSmtp) {
+                user.setPassword(securityUtils.createNewPassword(user.getUsername()));
+            }
             final ModelMapper modelMapper = new ModelMapper();
             final UserDetails userDetails = modelMapper.map(user, UserDetails.class);
-            userDetails.setPassword(password);
+            userDetails.setPassword(user.getPassword());
             userRepository.save(userDetails);
             final UserPasswordHistory history = new UserPasswordHistory();
             history.setId(UUID.randomUUID());
             history.setUserId(user.getId());
-            history.setPassword(password);
-            mailUtils.sendEmail(user.getEmail(), "Account created successfully.",
-                    "Hi " + user.getFirstName() + " " + user.getLastName()
-                            + ",\nYour new account has been created.\nYour account details as follows.\n\nUsername: "
-                            + user.getUsername() + "\nPassword: " + user.getPassword() + "\n\nThanks,\nAdmin");
+            history.setPassword(user.getPassword());
+            if (passwordAutoGenerate && configureSmtp) {
+                mailUtils.sendEmail(user.getEmail(), serverName + " account created successfully.", "Hi "
+                        + user.getFirstName() + " " + user.getLastName() + ",\n\n Your new account with " + serverName
+                        + " has been created successfully. Please use the following credentials to login into the "
+                        + serverName + ".\n\n Username: " + user.getUsername() + "\n Password: " + user.getPassword()
+                        + "\n\n NOTE: This is an auto generated email. Please do not reply.\n\n Thanks,\n Administrator\n("
+                        + serverName + ")");
+            }
             userPasswordHistoryRepository.save(history);
         } catch (final Exception e) {
             return createResponse(e.getMessage(), FAILURE, null, HttpStatus.BAD_REQUEST);

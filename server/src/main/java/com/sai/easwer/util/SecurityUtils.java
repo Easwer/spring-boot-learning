@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import com.sai.easwer.constants.MessageConstants;
 import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.entity.UserDetails;
@@ -153,17 +156,16 @@ public class SecurityUtils {
             throw new IllegalArgumentException(MessageConstants.EMAIL_CANNOT_BE_EMPTY);
         }
 
-        // try {
-        // final InternetAddress emailAddr = new InternetAddress(email);
-        // emailAddr.validate();
-        // final Optional<UserDetails> userDetails =
-        // userRepository.findByEmailAndUsernameNot(email, username);
-        // if (userDetails.isPresent()) {
-        // throw new IllegalArgumentException(MessageConstants.EMAIL_SHOULD_BE_UNIQUE);
-        // }
-        // } catch (final AddressException e) {
-        // throw new IllegalArgumentException(MessageConstants.INVALID_EMAIL);
-        // }
+        try {
+            final InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+            final Optional<UserDetails> userDetails = userRepository.findByEmailAndUsernameNot(email, username);
+            if (userDetails.isPresent()) {
+                throw new IllegalArgumentException(MessageConstants.EMAIL_SHOULD_BE_UNIQUE);
+            }
+        } catch (final AddressException e) {
+            throw new IllegalArgumentException(MessageConstants.INVALID_EMAIL);
+        }
     }
 
     /**
@@ -325,9 +327,13 @@ public class SecurityUtils {
         validateUserName(user.getUsername(), user.getFirstName(), user.getLastName());
         validateUserExists(user.getUsername());
         validateEmailAddress(user.getEmail(), user.getUsername());
-        // validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(),
-        // user.getLastName(),
-        // user.getEmail());
+        final boolean configureSmtp = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
+        final boolean passwordAutoGenerate = GlobalSettingsUtil.getBoolean(SecurityConstants.PASSWORD_AUTO_GENERATE,
+                true);
+        if (passwordAutoGenerate && configureSmtp) {
+            validatePassword(user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(),
+                    user.getEmail());
+        }
         validateTimeouts(user);
     }
 

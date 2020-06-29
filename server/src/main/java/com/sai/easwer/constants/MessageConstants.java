@@ -131,4 +131,14 @@ public class MessageConstants {
         public static final String NO_AUDIT_LOGS_FOUND = "No audit logs found.";
 
         public static final String ERROR_SESSION_TERMINATED_BY_INACTIVITY = "User session terminated due to inactivity.";
+
+        public static final String ERROR_IN_GET_GLOBAL_SETTINGS_DUE_TO = "Error in getGlobalSettings due to ";
+
+        public static final String MAIL_DEBUG = "mail.debug";
+
+        public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
+
+        public static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
+
+        public static final String TRUE = "true";
 }

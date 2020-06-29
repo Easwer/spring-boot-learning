@@ -32,21 +32,11 @@ public class SecurityConstants {
 
     public static final int DEFAULT_PASSWORD_MAX_LENGTH = 120;
 
-    public static final String PASSWORD_MIN_LENGTH = "passwordMinLength";
-
-    public static final String PASSWORD_MAX_LENGTH = "passwordMaxLength";
-
     public static final String USERNAME_PATTERN = "[^a-zA-Z0-9]";
 
     public static final String NAME_PATTERN = "[^a-zA-Z]";
 
     public static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\[\\]()!@#$%^&*])(?=\\S+$).{8,}";
-
-    public static final String FORCE_SPECIAL_CHAR = "forceSpecialChar";
-
-    public static final String FORCE_CAPITAL_LETTER = "forceCapitalLetter";
-
-    public static final String FORCE_NUMBER = "forceNumber";
 
     public static final String CAPTIAL_LETTER_REGEX = "(?=.*[A-Z])";
 
@@ -55,5 +45,37 @@ public class SecurityConstants {
     public static final String SMALLL_LETTER_REGEX = "((?=.*[a-z])";
 
     public static final String NUMBER_REGEX = "(?=.*[0-9])";
+
+    // Global Settings Names
+
+    public static final String FORCE_SPECIAL_CHAR = "forceSpecialChar";
+
+    public static final String FORCE_NUMBER = "forceNumber";
+
+    public static final String FORCE_CAPITAL_LETTER = "forceCapitalLetter";
+
+    public static final String PASSWORD_MIN_LENGTH = "passwordMinLength";
+
+    public static final String PASSWORD_MAX_LENGTH = "passwordMaxLength";
+
+    public static final String PASSWORD_AUTO_GENERATE = "passwordAutoGenerate";
+
+    public static final String CHANGE_PASSWORD_ON_LOGIN = "changePasswordOnLogin";
+
+    public static final String CONFIGURE_SMTP = "configureSmtp";
+
+    public static final String SMTP_HOST = "smtpHost";
+
+    public static final String SMTP_PORT = "smtpPort";
+
+    public static final String SMTP_USERNAME = "smtpUsername";
+
+    public static final String SMTP_PASSWORD = "smtpPassword";
+
+    public static final String SMTP_AUTH = "smtpAuth";
+
+    public static final String SMTP_TLS = "smtpTls";
+
+    public static final String SMTP_DEBUG = "smtpDebug";
 
 }

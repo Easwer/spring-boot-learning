@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sai.easwer.annotation.RoleAccess;
 import com.sai.easwer.constants.MessageConstants;
+import com.sai.easwer.constants.SecurityConstants;
 import com.sai.easwer.controller.SecurityController;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
@@ -22,9 +23,12 @@ import com.sai.easwer.model.UserRoleEnum;
 import com.sai.easwer.repository.UserRepository;
 import com.sai.easwer.repository.UserSessionRepository;
 import com.sai.easwer.util.AuditLogger;
+import com.sai.easwer.util.GlobalSettingsUtil;
+import com.sai.easwer.util.MailUtils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -50,6 +54,12 @@ public class SecurityService extends BaseService implements SecurityController {
   @Autowired
   private HttpServletRequest httpServletRequest;
 
+  @Autowired
+  private MailUtils mailUtils;
+
+  @Value("${server.name}")
+  private String serverName;
+
   @Override
   public ResponseEntity<Response> login(final LoginRequest loginRequest) {
     final String username = loginRequest.getUsername();
@@ -67,9 +77,35 @@ public class SecurityService extends BaseService implements SecurityController {
     final Optional<UserDetails> user = userRepository.findByUsername(username);
     if (user.isPresent()) {
       if (!user.get().getPassword().equals(password)) {
-        auditLogger.auditLog(
-            "Failed login attempt for user: " + username + " from IP: " + httpServletRequest.getRemoteAddr(),
-            Modules.SECURITY, AuditLogType.LOGIN, ResponseStatus.FAILURE);
+        final boolean configureSmtp = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
+        final boolean passwordAutoGenerate = GlobalSettingsUtil.getBoolean(SecurityConstants.PASSWORD_AUTO_GENERATE,
+            true);
+        boolean isMailSendSuccessfully = false;
+        if (passwordAutoGenerate && configureSmtp) {
+          try {
+            mailUtils.sendEmail(user.get().getEmail(), "SECURITY ALERT: Failure login attempt in " + serverName,
+                "Hi " + user.get().getFirstName() + " " + user.get().getLastName() + ","
+                    + "\n\nThere is an failed login attempt for the user linked to this email in the " + serverName
+                    + " from IP:" + httpServletRequest.getRemoteAddr()
+                    + ". If this is not you, please reset your password immediately in " + serverName
+                    + "\n\n NOTE: This is an auto generated email. Please do not reply.\n\n Thanks,\n Administrator\n("
+                    + serverName + ")");
+            isMailSendSuccessfully = true;
+          } catch (Exception e) {
+            isMailSendSuccessfully = false;
+          }
+        }
+        String failMessage = "Failed login attempt for user: " + username + " from IP: "
+            + httpServletRequest.getRemoteAddr() + ".";
+        if (passwordAutoGenerate && configureSmtp) {
+          failMessage += " Warning mail send to user ";
+          if (isMailSendSuccessfully) {
+            failMessage += "successful.";
+          } else {
+            failMessage += "un-successful.";
+          }
+        }
+        auditLogger.auditLog(failMessage, Modules.SECURITY, AuditLogType.LOGIN, ResponseStatus.FAILURE);
         return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE, null,
             HttpStatus.FORBIDDEN);
       }

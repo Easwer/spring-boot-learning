@@ -99,22 +99,62 @@ INSERT INTO user_group_mapping (id, version, created_time, last_updated_time, cr
 	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', (SELECT id from user_details where username='admin'), (SELECT id FROM user_group where name = 'Administrator'));
 
 -- Global Settings
-INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value)
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'forceSpecialChar', 'true');
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'forceSpecialChar', 'true', 'Is special character required in user password.');
 
-INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value)
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'forceNumber', 'true');
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'forceNumber', 'true', 'Is special number required in user password.');
 
-INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value)
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'forceCapitalLetter', 'true');
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'forceCapitalLetter', 'true', 'Is upper case character required in user password.');
 
-INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value)
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'passwordMinLength', '8');
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'passwordMinLength', '8', 'Minimum length allowed for the user password.');
 
-INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value)
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
 	VALUES
-	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'passwordMaxLength', '120');
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'passwordMaxLength', '120', 'Maximum length allowed for the user password.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'PASSWORD', 'passwordAutoGenerate', 'true', 'Password will be generated during user creation and mailed to the user. This configuration will work only if the smtp server is configured properly.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'USER', 'USER', 'changePasswordOnLogin', 'true', 'Does user needs to change password on first login.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'configureSmtp', 'false', 'Configure SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpHost', 'smtp.host', 'Host name of the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpPort', '587', 'Port name of the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpUsername', 'example@domail.com', 'Username of the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpPassword', 'testPassword', 'Password of the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpAuth', 'true', 'Enable authentication for the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpTls', 'true', 'Enable TLS for the SMTP server.');
+
+INSERT INTO global_settings (id, version, created_time, last_updated_time, created_by, last_updated_by, module, sub_module, key, value, description)
+	VALUES
+	 (RANDOM_UUID(), 1, (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), (DATEDIFF('SECOND', DATE '1970-01-01', CURRENT_TIMESTAMP()) * 1000 - 19800000), 'SYSTEM', 'SYSTEM', 'MAIL_SERVER', 'SMTP', 'smtpDebug', 'true', 'Enable debug log for the SMTP communication.');

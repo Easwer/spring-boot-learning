@@ -22,15 +22,18 @@ public class GlobalSettings extends BaseEntity {
 
     private static final long serialVersionUID = -4858888297085591802L;
 
-    @Column(name = "module")
+    @Column(name = "module", nullable = false)
     private String module;
 
-    @Column(name = "sub_module")
+    @Column(name = "sub_module", nullable = false)
     private String subModule;
 
-    @Column(name = "key")
+    @Column(name = "key", nullable = false)
     private String key;
 
-    @Column(name = "value")
+    @Column(name = "value", nullable = false)
     private String value;
+
+    @Column(name = "description", nullable = true)
+    private String description;
 }
