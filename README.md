@@ -50,3 +50,7 @@ Log directory: springBoot/log
 Log files: server.log, security.log    
 Configuration file:    springBoot/spec/logback.xml    
 Default Configuration: 25 files, each file 100MB of maximum size
+
+# Mail Support
+1, Create user.    
+2, Failed login attempt.    
