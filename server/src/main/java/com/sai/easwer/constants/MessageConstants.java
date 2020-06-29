@@ -8,7 +8,7 @@ import com.sai.easwer.util.GlobalSettingsUtil;
  * @author Easwer AP
  * @email easwerms@gmail.com
  * @create date 2020-02-28 14:24:18
- * @modify date 2020-03-10 18:03:50
+ * @modify date 2020-06-29 20:00:57
  */
 public class MessageConstants {
 
@@ -141,4 +141,6 @@ public class MessageConstants {
         public static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
 
         public static final String TRUE = "true";
+
+        public static final String FAILED_TO_SEND_EMAIL_DUE_TO = "Failed to send email due to ";
 }
