@@ -47,7 +47,7 @@ Database path: springBoot/database/springBoot.mv.db
 # Logger
 Lombok Slf4j    
 Log directory: springBoot/log     
-Log files: server.log, security.log    
+Log files: server.log, security.log, audit.log    
 Configuration file:    springBoot/spec/logback.xml    
 Default Configuration: 25 files, each file 100MB of maximum size
 
