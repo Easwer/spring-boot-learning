@@ -1,13 +1,10 @@
 package com.sai.easwer.controller;
 
-import java.util.UUID;
-
 import com.sai.easwer.api.UserApi;
 import com.sai.easwer.model.Response;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

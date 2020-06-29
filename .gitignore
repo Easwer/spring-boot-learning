@@ -35,3 +35,5 @@ server/src/main/react-gui/yarn.lock
 nohup.out
 .attach_pid*
 server/src/main/react-gui/yarn-error.log
+log/*
+springBoot.mv.db

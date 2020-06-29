@@ -7,18 +7,18 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sai.easwer.annotation.RoleAccess;
-import com.sai.easwer.model.AuditLogType;
 import com.sai.easwer.constants.MessageConstants;
-import com.sai.easwer.model.Modules;
-import com.sai.easwer.model.UserRoleEnum;
 import com.sai.easwer.controller.SecurityController;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
+import com.sai.easwer.model.AuditLogType;
 import com.sai.easwer.model.LoginRequest;
 import com.sai.easwer.model.LoginResponse;
+import com.sai.easwer.model.Modules;
 import com.sai.easwer.model.Response;
 import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.model.UserDto;
+import com.sai.easwer.model.UserRoleEnum;
 import com.sai.easwer.repository.UserRepository;
 import com.sai.easwer.repository.UserSessionRepository;
 import com.sai.easwer.util.AuditLogger;
@@ -47,6 +47,9 @@ public class SecurityService extends BaseService implements SecurityController {
   @Autowired
   private AuditLogger auditLogger;
 
+  @Autowired
+  private HttpServletRequest httpServletRequest;
+
   @Override
   public ResponseEntity<Response> login(final LoginRequest loginRequest) {
     final String username = loginRequest.getUsername();
@@ -64,6 +67,9 @@ public class SecurityService extends BaseService implements SecurityController {
     final Optional<UserDetails> user = userRepository.findByUsername(username);
     if (user.isPresent()) {
       if (!user.get().getPassword().equals(password)) {
+        auditLogger.auditLog(
+            "Failed login attempt for user: " + username + " from IP: " + httpServletRequest.getRemoteAddr(),
+            Modules.SECURITY, AuditLogType.LOGIN, ResponseStatus.FAILURE);
         return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE, null,
             HttpStatus.FORBIDDEN);
       }

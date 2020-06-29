@@ -16,6 +16,8 @@ public class MessageConstants {
 
         }
 
+        public static final String SYSTEM_USER = "System";
+
         public static final String EMPTY = "";
 
         public static final String LOGIN_SUCCESSFUL = "Login successful.";

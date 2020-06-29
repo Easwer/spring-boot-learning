@@ -9,8 +9,8 @@ Maven Version : 3.3.1
 # Linux Build Process
 cd springBoot    
 mvn clean    
-mvn install (Dev)    
-mvn build    
+mvn install (Development)    
+mvn build (Production)    
 
 # Run Application
 java -jar springBoot/server/target/service-1.0.jar    
@@ -40,4 +40,13 @@ URL: https://localhost:8083/api-docs.html
 # Database Tools
 H2 Database    
 H2 URL: https://localhost:8083/h2    
-Flyway database migration
+Flyway database migration    
+Database name: springBoot    
+Database path: springBoot/database/springBoot.mv.db    
+
+# Logger
+Lombok Slf4j    
+Log directory: springBoot/log     
+Log files: server.log, security.log    
+Configuration file:    springBoot/spec/logback.xml    
+Default Configuration: 25 files, each file 100MB of maximum size

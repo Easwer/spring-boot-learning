@@ -18,11 +18,11 @@ public class MailUtils {
   @Bean
   public JavaMailSender getJavaMailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    mailSender.setHost("<smpt_server>");
-    mailSender.setPort(587); // <smtp_port>
+    mailSender.setHost("smtp.gmail.com");
+    mailSender.setPort(587);
 
-    mailSender.setUsername("<email_username>");
-    mailSender.setPassword("<email_password>");
+    mailSender.setUsername("easwer.spring.boot@gmail.com");
+    mailSender.setPassword("easSpringBoot");
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.smtp.auth", "true");
