@@ -3,6 +3,9 @@ package com.sai.easwer.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,13 +43,19 @@ public class UserDetails extends BaseEntity {
 	@Column(name = "idle_timeout", nullable = false)
 	private int idleTimeout = 15;
 
-	@Column(name = "user_account_status", nullable = false)
-	private String userAccountStatus;
+	@Column(name = "account_status", nullable = false)
+	private String accountStatus;
 
 	@Column(name = "account_expiry", nullable = false)
 	private int accountExpiry;
 
 	@Column(name = "password_expiry", nullable = false)
 	private int passwordExpiry;
+
+	public String setPassword() {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y,
+				31);
+		return bCryptPasswordEncoder.encode(this.password);
+	}
 
 }

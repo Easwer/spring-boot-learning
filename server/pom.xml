@@ -37,14 +37,10 @@
 		<jackson-dataformat-xml.version>2.11.0</jackson-dataformat-xml.version>
 		<swagger-parser.version>2.0.20</swagger-parser.version>
 		<modelmapper.version>2.3.8</modelmapper.version>
+		<spring-security-crypto.version>5.3.3.RELEASE</spring-security-crypto.version>
 	</properties>
 
 	<dependencies>
-		<!-- <dependency>
-			<groupId>com.sai.easwer</groupId>
-			<artifactId>model</artifactId>
-			<version>${model.version}</version>
-		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -172,6 +168,11 @@
 					<artifactId>jakarta.mail</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>${spring-security-crypto.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -66,21 +66,19 @@ public class UserService extends BaseService implements UserContoller {
             final UUID userId) {
         if (userId == null) {
             final List<UserDetails> users = userRepository.findAll();
-
-            if (users.isEmpty()) {
+            if (null == users || users.isEmpty()) {
                 return createResponse(MessageConstants.NO_USERS_FOUND, ResponseStatus.SUCCESS, null,
                         HttpStatus.NO_CONTENT);
             }
-
             return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, users,
                     HttpStatus.OK);
         } else {
             final Optional<UserDetails> user = userRepository.findById(userId);
-            if (user == null) {
-                return createResponse(MessageConstants.INVALID_USER_ID, FAILURE, null, HttpStatus.BAD_REQUEST);
-            } else {
+            if (user.isPresent()) {
                 return createResponse(MessageConstants.USERS_FOUND_SUCCESSFULLY, ResponseStatus.SUCCESS, user,
                         HttpStatus.OK);
+            } else {
+                return createResponse(MessageConstants.INVALID_USER_ID, FAILURE, null, HttpStatus.BAD_REQUEST);
             }
         }
     }
@@ -92,10 +90,10 @@ public class UserService extends BaseService implements UserContoller {
             securityUtils.validateCreateUserRequest(user);
             user.setAccountStatus(UserAccountStatus.CHANGE_PASSWORD_ON_LOGIN);
             user.setId(UUID.randomUUID());
-            final boolean configureSmtp = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
+            final boolean isSmtpConfigured = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
             final boolean passwordAutoGenerate = GlobalSettingsUtil.getBoolean(SecurityConstants.PASSWORD_AUTO_GENERATE,
                     true);
-            if (passwordAutoGenerate && configureSmtp) {
+            if (passwordAutoGenerate && isSmtpConfigured) {
                 user.setPassword(securityUtils.createNewPassword(user.getUsername()));
             }
             final ModelMapper modelMapper = new ModelMapper();
@@ -106,13 +104,13 @@ public class UserService extends BaseService implements UserContoller {
             history.setId(UUID.randomUUID());
             history.setUserId(user.getId());
             history.setPassword(user.getPassword());
-            if (passwordAutoGenerate && configureSmtp) {
+            if (passwordAutoGenerate && isSmtpConfigured) {
                 mailUtils.sendEmail(user.getEmail(), serverName + " account created successfully.", "Hi "
-                        + user.getFirstName() + " " + user.getLastName() + ",\n\n Your new account with " + serverName
+                        + user.getFirstName() + " " + user.getLastName() + ",\n\nYour new account with " + serverName
                         + " has been created successfully. Please use the following credentials to login into the "
                         + serverName + ".\n\n Username: " + user.getUsername() + "\n Password: " + user.getPassword()
-                        + "\n\n NOTE: This is an auto generated email. Please do not reply.\n\n Thanks,\n Administrator\n("
-                        + serverName + ")");
+                        + "\n\nNOTE: This is an auto generated email. Please do not reply.\n\nThanks,\nAdministrator,\n"
+                        + serverName);
             }
             userPasswordHistoryRepository.save(history);
         } catch (final Exception e) {
@@ -128,18 +126,48 @@ public class UserService extends BaseService implements UserContoller {
         try {
             final Optional<UserDetails> dbUserDetails = userRepository.findById(user.getId());
             if (dbUserDetails.isPresent()) {
-                securityUtils.validateUpdateUserRequest(user);
                 final ModelMapper modelMapper = new ModelMapper();
                 final UserDetails providedUserDetails = modelMapper.map(user, UserDetails.class);
-
                 if (!dbUserDetails.get().getUsername().equals(providedUserDetails.getUsername())) {
                     throw new IllegalArgumentException(MessageConstants.CANNOT_CHANGE_USERNAME_FOR_AN_USER);
                 }
-
+                securityUtils.validateUpdateUserRequest(user);
+                boolean isPasswordChanged = false;
+                boolean isAccountStatusChanged = false;
                 if (null == providedUserDetails.getPassword()) {
                     providedUserDetails.setPassword(dbUserDetails.get().getPassword());
+                } else {
+                    isPasswordChanged = true;
+                }
+
+                if (null == providedUserDetails.getAccountStatus()) {
+                    providedUserDetails.setAccountStatus(dbUserDetails.get().getAccountStatus());
+                } else {
+                    isAccountStatusChanged = true;
                 }
                 userRepository.save(providedUserDetails);
+
+                final boolean isSmtpConfigured = GlobalSettingsUtil.getBoolean(SecurityConstants.CONFIGURE_SMTP, true);
+                if (isSmtpConfigured) {
+                    if (isPasswordChanged) {
+                        mailUtils.sendEmail(providedUserDetails.getEmail(),
+                                "Password is changed in server " + serverName,
+                                "Hi " + providedUserDetails.getFirstName() + " " + providedUserDetails.getLastName()
+                                        + ",\n\nPassword for your account with " + serverName
+                                        + " has been changed successfully. If this is not you, please contact the administrator immediately."
+                                        + "\n\nNOTE: This is an auto generated email. Please do not reply.\n\nThanks,\nAdministrator,\n"
+                                        + serverName);
+                    }
+                    if (isAccountStatusChanged) {
+                        mailUtils.sendEmail(providedUserDetails.getEmail(),
+                                "Account status is changed in server " + serverName,
+                                "Hi " + providedUserDetails.getFirstName() + " " + providedUserDetails.getLastName()
+                                        + ",\n\nStatus for your account with " + serverName + " has been changed to "
+                                        + providedUserDetails.getAccountStatus() + "."
+                                        + "\n\nNOTE: This is an auto generated email. Please do not reply.\n\nThanks,\nAdministrator,\n"
+                                        + serverName);
+                    }
+                }
             } else {
                 throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
             }

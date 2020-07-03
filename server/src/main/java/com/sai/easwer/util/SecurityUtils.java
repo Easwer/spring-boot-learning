@@ -152,7 +152,7 @@ public class SecurityUtils {
      * @throws IllegalArgumentException if not a valid email.
      */
     public void validateEmailAddress(final String email, final String username) throws IllegalArgumentException {
-        if (email == null || email.equals("")) {
+        if (email == null || email.trim().equals(MessageConstants.EMPTY)) {
             throw new IllegalArgumentException(MessageConstants.EMAIL_CANNOT_BE_EMPTY);
         }
 
@@ -179,7 +179,7 @@ public class SecurityUtils {
     public void validateUserName(final String username, final String firstName, final String lastName)
             throws IllegalArgumentException {
 
-        if (username == null || username.equals("")) {
+        if (username == null || username.trim().equals(MessageConstants.EMPTY)) {
             throw new IllegalArgumentException(MessageConstants.USERNAME_CANNOT_BE_EMPTY);
         }
 
@@ -189,11 +189,11 @@ public class SecurityUtils {
             throw new IllegalArgumentException(MessageConstants.USERNAME_PATTERN_ERROR);
         }
 
-        if (firstName == null || firstName.equals("")) {
+        if (firstName == null || firstName.trim().equals(MessageConstants.EMPTY)) {
             throw new IllegalArgumentException(MessageConstants.FIRST_NAME_CANNOT_BE_EMPTY);
         }
 
-        if (lastName == null || lastName.equals("")) {
+        if (lastName == null || lastName.trim().equals(MessageConstants.EMPTY)) {
             throw new IllegalArgumentException(MessageConstants.LAST_NAME_CANNOT_BE_EMPTY);
         }
 
