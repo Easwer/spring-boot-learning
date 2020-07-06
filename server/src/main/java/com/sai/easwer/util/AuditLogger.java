@@ -8,7 +8,7 @@ import com.sai.easwer.entity.AuditLog;
 import com.sai.easwer.entity.UserDetails;
 import com.sai.easwer.entity.UserSession;
 import com.sai.easwer.model.AuditLogType;
-import com.sai.easwer.model.Modules;
+import com.sai.easwer.model.AuditLogModules;
 import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.repository.AuditLogRepository;
 import com.sai.easwer.repository.UserRepository;
@@ -42,9 +42,9 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description {@link String}
-     * @param modules     {@link Modules}
+     * @param modules     {@link AuditLogModules}
      */
-    public void auditLog(final String description, final Modules modules) {
+    public void auditLog(final String description, final AuditLogModules modules) {
         auditLog(description, modules, AuditLogType.SYSTEM, null, null, null);
     }
 
@@ -52,10 +52,10 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description {@link String}
-     * @param modules     {@link Modules}
+     * @param modules     {@link AuditLogModules}
      * @param type        {@link AuditLogType}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type) {
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type) {
         auditLog(description, modules, type, null, null, null);
     }
 
@@ -63,11 +63,11 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description    {@link String}
-     * @param modules        {@link Modules}
+     * @param modules        {@link AuditLogModules}
      * @param type           {@link AuditLogType}
      * @param responseStatus {@link ResponseStatus}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final ResponseStatus responseStatus) {
         auditLog(description, modules, type, responseStatus, null, null);
     }
@@ -76,12 +76,12 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description    {@link String}
-     * @param modules        {@link Modules}
+     * @param modules        {@link AuditLogModules}
      * @param type           {@link AuditLogType}
      * @param responseStatus {@link ResponseStatus}
      * @param userSession    {@link UserSession}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserSession userSession) {
         final Optional<UserDetails> user = userRepository.findById(userSession.getUserId());
         auditLog(description, modules, type, responseStatus, user.get(), userSession);
@@ -91,11 +91,11 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description {@link String}
-     * @param modules     {@link Modules}
+     * @param modules     {@link AuditLogModules}
      * @param type        {@link AuditLogType}
      * @param userSession {@link UserSession}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final UserSession userSession) {
         final Optional<UserDetails> user = userRepository.findById(userSession.getUserId());
         auditLog(description, modules, type, null, user.get(), userSession);
@@ -105,12 +105,12 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description    {@link String}
-     * @param modules        {@link Modules}
+     * @param modules        {@link AuditLogModules}
      * @param type           {@link AuditLogType}
      * @param responseStatus {@link ResponseStatus}
      * @param user           {@link UserDetails}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserDetails user) {
         auditLog(description, modules, type, responseStatus, user, null);
     }
@@ -119,11 +119,11 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description {@link String}
-     * @param modules     {@link Modules}
+     * @param modules     {@link AuditLogModules}
      * @param type        {@link AuditLogType}
      * @param user        {@link UserDetails}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final UserDetails user) {
         auditLog(description, modules, type, null, user, null);
     }
@@ -132,11 +132,12 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description {@link String}
-     * @param modules     {@link Modules}
+     * @param modules     {@link AuditLogModules}
      * @param type        {@link AuditLogType}
      * @param userId      {@link UUID}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type, final UUID userId) {
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
+            final UUID userId) {
         final Optional<UserDetails> user = userRepository.findById(userId);
 
         auditLog(description, modules, type, user.get());
@@ -146,13 +147,13 @@ public class AuditLogger {
      * Add new audit log entry.
      * 
      * @param description    {@link String}
-     * @param modules        {@link Modules}
+     * @param modules        {@link AuditLogModules}
      * @param type           {@link AuditLogType}
      * @param responseStatus {@link ResponseStatus}
      * @param user           {@link UserDetails}
      * @param userSession    {@link UserSession}
      */
-    public void auditLog(final String description, final Modules modules, final AuditLogType type,
+    public void auditLog(final String description, final AuditLogModules modules, final AuditLogType type,
             final ResponseStatus responseStatus, final UserDetails user, final UserSession userSession) {
         final AuditLog auditLog = new AuditLog();
 
@@ -175,7 +176,7 @@ public class AuditLogger {
             auditLog.setStatus(responseStatus);
         }
 
-        if (modules == Modules.SECURITY) {
+        if (modules == AuditLogModules.SECURITY) {
             securityLogger.info(auditLog.getDescription());
             auditLogger.info(auditLog.toString());
         } else {

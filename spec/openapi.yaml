@@ -550,7 +550,7 @@ components:
         - Delete
         - Login
         - Logout
-    Modules:
+    AuditLogModules:
       type: string
       enum:
         - Security

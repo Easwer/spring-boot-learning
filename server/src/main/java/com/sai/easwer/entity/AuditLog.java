@@ -1,7 +1,7 @@
 package com.sai.easwer.entity;
 
 import com.sai.easwer.model.AuditLogType;
-import com.sai.easwer.model.Modules;
+import com.sai.easwer.model.AuditLogModules;
 import com.sai.easwer.model.ResponseStatus;
 
 import java.util.UUID;
@@ -47,6 +47,6 @@ public class AuditLog extends BaseEntity {
     private ResponseStatus status;
 
     @Column(name = "modules")
-    private Modules modules;
+    private AuditLogModules modules;
 
 }

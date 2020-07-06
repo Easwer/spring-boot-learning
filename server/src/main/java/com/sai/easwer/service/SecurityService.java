@@ -15,7 +15,7 @@ import com.sai.easwer.entity.UserSession;
 import com.sai.easwer.model.AuditLogType;
 import com.sai.easwer.model.LoginRequest;
 import com.sai.easwer.model.LoginResponse;
-import com.sai.easwer.model.Modules;
+import com.sai.easwer.model.AuditLogModules;
 import com.sai.easwer.model.Response;
 import com.sai.easwer.model.ResponseStatus;
 import com.sai.easwer.model.UserDto;
@@ -105,7 +105,7 @@ public class SecurityService extends BaseService implements SecurityController {
             failMessage += "un-successful.";
           }
         }
-        auditLogger.auditLog(failMessage, Modules.SECURITY, AuditLogType.LOGIN, ResponseStatus.FAILURE);
+        auditLogger.auditLog(failMessage, AuditLogModules.SECURITY, AuditLogType.LOGIN, ResponseStatus.FAILURE);
         return createResponse(MessageConstants.AUTHENTICATION_ERROR, ResponseStatus.FAILURE, null,
             HttpStatus.FORBIDDEN);
       }
@@ -122,7 +122,7 @@ public class SecurityService extends BaseService implements SecurityController {
     loginResponse.setUser(userDto);
     loginResponse.setAuthToken(userSession.getAuthToken());
 
-    auditLogger.auditLog(MessageConstants.LOGIN_SUCCESSFUL_FOR_USER + username + "'.", Modules.SECURITY,
+    auditLogger.auditLog(MessageConstants.LOGIN_SUCCESSFUL_FOR_USER + username + "'.", AuditLogModules.SECURITY,
         AuditLogType.LOGIN, userSession);
 
     return createResponse(MessageConstants.LOGIN_SUCCESSFUL, ResponseStatus.SUCCESS, loginResponse, HttpStatus.OK);
@@ -134,23 +134,21 @@ public class SecurityService extends BaseService implements SecurityController {
     Optional<UserSession> userSession = null;
     try {
       userSession = userSessionRepository.findByAuthToken(authToken);
-      loginUser = userRepository.findById(userSession.get().getUserId());
       if (userSession.isPresent()) {
+        loginUser = userRepository.findById(userSession.get().getUserId());
         userSessionRepository.delete(userSession.get());
+        auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
+            AuditLogModules.SECURITY, AuditLogType.LOGOUT);
       } else {
         return createResponse(MessageConstants.INVALID_SESSION_DETAILS, ResponseStatus.FAILURE, null,
             HttpStatus.INTERNAL_SERVER_ERROR);
       }
     } catch (final Exception e) {
-      if (loginUser != null && loginUser.isPresent()) {
-        auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
-            Modules.SECURITY, AuditLogType.LOGOUT);
-      }
-      return createResponse(MessageConstants.LOGOUT_FAILURE, ResponseStatus.FAILURE, null,
+      return createResponse(MessageConstants.LOGOUT_FAILURE + e.getMessage(), ResponseStatus.FAILURE, null,
           HttpStatus.INTERNAL_SERVER_ERROR);
     }
     auditLogger.auditLog(MessageConstants.LOGOUT_SUCCESSFUL_FOR_USER + loginUser.get().getUsername() + "'.",
-        Modules.SECURITY, AuditLogType.LOGOUT);
+        AuditLogModules.SECURITY, AuditLogType.LOGOUT);
     return createResponse(MessageConstants.LOGOUT_SUCCESSFUL, ResponseStatus.SUCCESS, null, HttpStatus.OK);
   }
 

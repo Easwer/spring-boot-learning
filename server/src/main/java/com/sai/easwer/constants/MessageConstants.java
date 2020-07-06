@@ -30,7 +30,7 @@ public class MessageConstants {
 
         public static final String INVALID_SESSION_DETAILS = "Invalid Session details.";
 
-        public static final String LOGOUT_FAILURE = "Logout Failure.";
+        public static final String LOGOUT_FAILURE = "Logout Failure due to ";
 
         public static final String INVALID_USER_DETAILS = "Invalid User details.";
 

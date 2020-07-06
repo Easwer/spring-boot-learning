@@ -22,7 +22,7 @@ import com.sai.easwer.entity.UserSession;
 import com.sai.easwer.entity.mapping.GroupRoleMapping;
 import com.sai.easwer.entity.mapping.UserGroupMapping;
 import com.sai.easwer.model.AuditLogType;
-import com.sai.easwer.model.Modules;
+import com.sai.easwer.model.AuditLogModules;
 import com.sai.easwer.model.UserAccountStatus;
 import com.sai.easwer.model.UserDto;
 import com.sai.easwer.repository.UserRepository;
@@ -111,7 +111,7 @@ public class SecurityUtils {
         if (limit.compareTo(currentMilliseconds) <= 0) {
             userSessionRepository.deleteByAuthToken(authToken);
             // WebSocketHandler.terminateUserSession(authToken);
-            auditLogger.auditLog(MessageConstants.ERROR_SESSION_TERMINATED_BY_INACTIVITY, Modules.SECURITY,
+            auditLogger.auditLog(MessageConstants.ERROR_SESSION_TERMINATED_BY_INACTIVITY, AuditLogModules.SECURITY,
                     AuditLogType.LOGOUT);
             return false;
         } else {
