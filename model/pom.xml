@@ -13,14 +13,14 @@
 	</parent>
 
 	<properties>
-		<swagger-annotations.version>1.6.1</swagger-annotations.version>
+		<swagger-parser.version>2.0.20</swagger-parser.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.swagger.parser.v3</groupId>
 			<artifactId>swagger-parser</artifactId>
-			<version>2.0.20</version>
+			<version>${swagger-parser.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
