@@ -23,7 +23,7 @@
 		<tomcat-jasper.version>9.0.37</tomcat-jasper.version>
 		<frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
 		<flyway-core.version>6.5.2</flyway-core.version>
-		<h2.version>1.4.200</h2.version>
+		<h2.version>2.0.206</h2.version>
 		<lombok.version>1.18.12</lombok.version>
 		<javax.mail-api.version>1.6.2</javax.mail-api.version>
 		<spring-data-rest-hal-explorer.version>3.3.2.RELEASE</spring-data-rest-hal-explorer.version>
