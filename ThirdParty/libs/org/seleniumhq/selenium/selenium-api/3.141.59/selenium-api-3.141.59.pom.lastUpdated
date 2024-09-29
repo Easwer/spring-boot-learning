@@ -1,7 +1,0 @@
-#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
-#Mon Jun 22 21:30:43 IST 2020
-http\://www.terracotta.org/download/reflector/snapshots/.error=
-http\://www.terracotta.org/download/reflector/releases/.error=Could not transfer artifact org.seleniumhq.selenium\:selenium-api\:pom\:3.141.59 from/to terracotta-releases (http\://www.terracotta.org/download/reflector/releases)\: Access denied to\: http\://www.terracotta.org/download/reflector/releases/org/seleniumhq/selenium/selenium-api/3.141.59/selenium-api-3.141.59.pom , ReasonPhrase\:Forbidden.
-https\://repo.maven.apache.org/maven2/.lastUpdated=1592841643299
-@default-terracotta-releases-http\://www.terracotta.org/download/reflector/releases/.lastUpdated=1592841642900
-http\://www.terracotta.org/download/reflector/snapshots/.lastUpdated=1592841642390

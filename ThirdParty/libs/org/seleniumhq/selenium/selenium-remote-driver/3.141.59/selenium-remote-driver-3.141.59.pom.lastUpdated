@@ -1,7 +1,0 @@
-#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
-#Mon Jun 22 21:31:15 IST 2020
-http\://www.terracotta.org/download/reflector/snapshots/.error=
-http\://www.terracotta.org/download/reflector/releases/.error=Could not transfer artifact org.seleniumhq.selenium\:selenium-remote-driver\:pom\:3.141.59 from/to terracotta-releases (http\://www.terracotta.org/download/reflector/releases)\: Access denied to\: http\://www.terracotta.org/download/reflector/releases/org/seleniumhq/selenium/selenium-remote-driver/3.141.59/selenium-remote-driver-3.141.59.pom , ReasonPhrase\:Forbidden.
-https\://repo.maven.apache.org/maven2/.lastUpdated=1592841675552
-@default-terracotta-releases-http\://www.terracotta.org/download/reflector/releases/.lastUpdated=1592841675158
-http\://www.terracotta.org/download/reflector/snapshots/.lastUpdated=1592841674375
